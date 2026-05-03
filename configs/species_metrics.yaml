@@ -1,0 +1,118 @@
+species:
+  boar:
+    label: "Boar"
+    metrics: [sperm_motility, semen_volume, abnormality_rate]
+    units:
+      sperm_motility: "%"
+      semen_volume: "mL"
+      abnormality_rate: "%"
+
+  pregnant_sow:
+    label: "Pregnant Sow"
+    metrics: [healthy_piglet_rate, birth_weight_uniformity, weak_piglet_rate]
+    units:
+      healthy_piglet_rate: "%"
+      birth_weight_uniformity: "%"
+      weak_piglet_rate: "%"
+
+  lactating_sow:
+    label: "Lactating Sow"
+    metrics: [grade_a_weaner_rate, weaning_weight_uniformity, sow_weight_loss]
+    units:
+      grade_a_weaner_rate: "%"
+      weaning_weight_uniformity: "%"
+      sow_weight_loss: "kg"
+
+  nursery_pig:
+    label: "Nursery Pig"
+    metrics: [ADG, FCR, diarrhea_rate]
+    units:
+      ADG: "g/day"
+      FCR: "ratio"
+      diarrhea_rate: "%"
+
+  finisher_pig:
+    label: "Finisher Pig"
+    metrics: [FCR, carcass_rate, live_weight]
+    units:
+      FCR: "ratio"
+      carcass_rate: "%"
+      live_weight: "kg"
+
+  layer_hen:
+    label: "Layer Hen"
+    metrics: [FCR, eggshell_strength, peak_duration_weeks]
+    units:
+      FCR: "ratio"
+      eggshell_strength: "N"
+      peak_duration_weeks: "weeks"
+
+  broiler:
+    label: "Broiler / Native Chicken"
+    metrics: [breast_yield_pct, carcass_rate_pct, FCR]
+    units:
+      breast_yield_pct: "%"
+      carcass_rate_pct: "%"
+      FCR: "ratio"
+
+  breeder_chicken:
+    label: "Breeder Chicken"
+    metrics: [fertility_rate, hatchability, healthy_chick_rate]
+    units:
+      fertility_rate: "%"
+      hatchability: "%"
+      healthy_chick_rate: "%"
+
+  shrimp:
+    label: "White Shrimp / Tiger Prawn"
+    metrics: [survival_rate, vibrio_reduction_pct, EMS_resistance]
+    units:
+      survival_rate: "%"
+      vibrio_reduction_pct: "%"
+      EMS_resistance: "binary"
+
+  tilapia:
+    label: "Tilapia"
+    metrics: [survival_rate, avg_body_weight_gain_pct, streptococcus_survival_rate]
+    units:
+      survival_rate: "%"
+      avg_body_weight_gain_pct: "%"
+      streptococcus_survival_rate: "%"
+
+  livestock:
+    label: "Beef Cattle / Dairy / Sheep"
+    metrics: [ADG_beef_pct, milk_yield_kg_per_day, FCR_sheep]
+    units:
+      ADG_beef_pct: "%"
+      milk_yield_kg_per_day: "kg/day"
+      FCR_sheep: "ratio"
+
+search_keywords:
+  en:
+    - "bacillus subtilis protease feed poultry"
+    - "bacillus subtilis protease feed swine"
+    - "bacillus subtilis protease feed aquaculture"
+    - "bacillus subtilis protease feed cattle"
+    - "feed enzyme protease broiler FCR"
+    - "feed enzyme protease layer eggshell"
+    - "feed enzyme protease shrimp survival"
+    - "feed protease pig ADG"
+    - "subtilisin animal feed performance"
+    - "serine protease feed additive livestock"
+  zh:
+    - "枯草芽孢杆菌 蛋白酶 饲料"
+    - "二十八烷醇 饲料 肉鸡"
+    - "虾青素 水产 饲料添加剂"
+
+settings:
+  min_year: 1990
+  max_results_per_query: 50
+  request_delay_sec: 0.5
+  batch_size: 5
+  batch_delay_sec: 2
+  qwen_endpoint: "http://127.0.0.1:1234/v1/chat/completions"
+  chromadb_path: "D:/LLM/knowledge/biotech/db"
+  chromadb_collection: "biotech_papers"
+  store_threshold: 2
+  query_default_min: 3
+  highlight_threshold: 4
