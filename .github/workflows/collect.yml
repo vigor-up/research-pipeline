@@ -14,11 +14,15 @@ on:
         description: "強制全量爬取 (true/false)"
         required: false
         default: "false"
+      skip_market:
+        description: "跳過市場數據蒐集 (true/false)"
+        required: false
+        default: "false"
 
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
 
     steps:
       - name: Checkout repo
@@ -34,7 +38,7 @@ jobs:
           pip install httpx boto3 pyyaml beautifulsoup4 \
                       feedparser lxml tenacity python-dateutil
 
-      - name: Download ingredients.yaml from R2
+      - name: Download configs from R2
         env:
           R2_ACCESS_KEY_ID:     ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
@@ -50,12 +54,15 @@ jobs:
               aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
               region_name="auto",
           )
-          s3.download_file(os.environ["R2_BUCKET"], "configs/ingredients.yaml",
-                           "configs/ingredients.yaml")
-          print("ingredients.yaml downloaded from R2")
+          bucket = os.environ["R2_BUCKET"]
+          os.makedirs("configs", exist_ok=True)
+          s3.download_file(bucket, "configs/ingredients.yaml", "configs/ingredients.yaml")
+          s3.download_file(bucket, "configs/species_metrics.yaml", "configs/species_metrics.yaml")
+          print("configs downloaded from R2")
           EOF
 
-      - name: Run collector
+      # ── Step 1: 學術論文蒐集 ────────────────────────────────────────────────
+      - name: Run paper collector
         env:
           SEMANTIC_SCHOLAR_KEY: ${{ secrets.SEMANTIC_SCHOLAR_KEY }}
           LENS_API_TOKEN:       ${{ secrets.LENS_API_TOKEN }}
@@ -68,13 +75,13 @@ jobs:
         run: |
           python collect/github_collector.py
 
-      - name: Score credibility
+      - name: Score paper credibility
         run: |
           python collect/credibility_scorer.py \
             --input /tmp/raw_papers_collected.json \
             --output /tmp/raw_papers_scored.json
 
-      - name: Push to R2
+      - name: Push papers to R2
         env:
           R2_ACCESS_KEY_ID:     ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
@@ -84,22 +91,91 @@ jobs:
           python collect/push_to_r2.py \
             --input /tmp/raw_papers_scored.json
 
+      # ── Step 2: 市場數據蒐集 ────────────────────────────────────────────────
+      - name: Run market data collector
+        if: ${{ github.event.inputs.skip_market != 'true' }}
+        env:
+          FORCE_FULL: ${{ github.event.inputs.force_full || 'false' }}
+        run: |
+          python collect/market_collector.py
+
+      - name: Push market data to R2
+        if: ${{ github.event.inputs.skip_market != 'true' }}
+        env:
+          R2_ACCESS_KEY_ID:     ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID:        ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET:            ${{ secrets.R2_BUCKET }}
+        run: |
+          python - <<'EOF'
+          import boto3, os, json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          data = Path("/tmp/market_data_collected.json").read_text(encoding="utf-8")
+          now  = datetime.now(timezone.utc)
+          week = now.strftime("%Y-W%W")
+
+          s3 = boto3.client(
+              "s3",
+              endpoint_url=f"https://{os.environ['R2_ACCOUNT_ID']}.r2.cloudflarestorage.com",
+              aws_access_key_id=os.environ["R2_ACCESS_KEY_ID"],
+              aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
+              region_name="auto",
+          )
+          bucket = os.environ["R2_BUCKET"]
+
+          # 週次存檔
+          s3.put_object(Bucket=bucket,
+                        Key=f"market_data/{week}.json",
+                        Body=data.encode("utf-8"),
+                        ContentType="application/json")
+          # latest
+          s3.put_object(Bucket=bucket,
+                        Key="market_data/latest.json",
+                        Body=data.encode("utf-8"),
+                        ContentType="application/json")
+
+          parsed = json.loads(data)
+          print(f"Market data pushed: kpi={parsed['market_kpi_total']} competitor={parsed['competitor_total']}")
+          EOF
+
+      # ── Summary ─────────────────────────────────────────────────────────────
       - name: Summary
         if: always()
         run: |
           python - <<'EOF'
           import json, os
+
+          # 論文摘要
           try:
               with open("/tmp/raw_papers_scored.json") as f:
-                  data = json.load(f)
-              papers = data.get("papers", [])
+                  papers = json.load(f)
+              p = papers.get("papers", [])
               by_src = {}
-              for p in papers:
-                  s = p.get("source_type","unknown")
+              for x in p:
+                  s = x.get("source_type","unknown")
                   by_src[s] = by_src.get(s, 0) + 1
-              print(f"Total collected: {len(papers)}")
+              print(f"[Papers] Total: {len(p)}")
               for k,v in sorted(by_src.items()):
                   print(f"  {k}: {v}")
           except Exception as e:
-              print(f"Summary error: {e}")
+              print(f"[Papers] summary error: {e}")
+
+          # 市場數據摘要
+          try:
+              with open("/tmp/market_data_collected.json") as f:
+                  market = json.load(f)
+              print(f"\n[Market] KPI records: {market['market_kpi_total']}")
+              print(f"[Market] Competitor records: {market['competitor_total']}")
+
+              # 物種分布
+              species_dist = {}
+              for r in market.get("market_kpi", []):
+                  s = r.get("species","unknown")
+                  species_dist[s] = species_dist.get(s, 0) + 1
+              for k,v in sorted(species_dist.items()):
+                  print(f"  {k}: {v}")
+          except Exception as e:
+              print(f"[Market] summary error: {e}")
           EOF

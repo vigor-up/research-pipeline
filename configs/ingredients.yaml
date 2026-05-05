@@ -1,0 +1,483 @@
+# ingredients.yaml — Research Pipeline v3
+# ─────────────────────────────────────────────────────────────────────────────
+# role     : core=你生產 | competitor=競品 | adjacent=潛力監控
+# strategy : moat=護城河主攻 | watch=監控 | b_group_only=只做對照數字
+# carbon   : 碳數（長鏈脂肪醇專用）
+# 新增原料 : 加一個 entry → 重跑 pipeline 自動生效
+# ─────────────────────────────────────────────────────────────────────────────
+
+ingredients:
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 一、長鏈脂肪醇全族（Long-chain Fatty Alcohols, LCFA）C16–C36
+#     核心生產：C24–C32（strategy: moat）
+#     全族監控：C16–C23、C33–C36（strategy: watch）
+# ══════════════════════════════════════════════════════════════════════════════
+
+  - id: alcohol_c16
+    display: "16烷醇 (Cetyl Alcohol)"
+    role: core
+    strategy: watch
+    carbon: 16
+    aliases:
+      en: ["1-Hexadecanol","cetyl alcohol","hexadecanol","palmityl alcohol",
+           "C16 alcohol","n-hexadecanol","cetylic alcohol"]
+      zh: ["十六烷醇","鯨蠟醇","棕櫚醇"]
+
+  - id: alcohol_c17
+    display: "17烷醇 (1-Heptadecanol)"
+    role: core
+    strategy: watch
+    carbon: 17
+    aliases:
+      en: ["1-Heptadecanol","heptadecanol","heptadecyl alcohol",
+           "C17 alcohol","n-heptadecanol"]
+      zh: ["十七烷醇","廿七烷醇"]
+
+  - id: alcohol_c18
+    display: "18烷醇 (Stearyl Alcohol)"
+    role: core
+    strategy: watch
+    carbon: 18
+    aliases:
+      en: ["1-Octadecanol","stearyl alcohol","octadecanol","stearic alcohol",
+           "C18 alcohol","n-octadecanol","1-octadecyl alcohol"]
+      zh: ["十八烷醇","硬脂醇","十八醇"]
+
+  - id: alcohol_c19
+    display: "19烷醇 (1-Nonadecanol)"
+    role: core
+    strategy: watch
+    carbon: 19
+    aliases:
+      en: ["1-Nonadecanol","nonadecanol","nonadecyl alcohol",
+           "C19 alcohol","n-nonadecanol"]
+      zh: ["十九烷醇"]
+
+  - id: alcohol_c20
+    display: "20烷醇 (Arachidyl Alcohol)"
+    role: core
+    strategy: watch
+    carbon: 20
+    aliases:
+      en: ["1-Eicosanol","arachidyl alcohol","eicosanol","icosanol",
+           "C20 alcohol","n-eicosanol","eicosyl alcohol","arachic alcohol"]
+      zh: ["二十烷醇","廿烷醇","花生醇","廿碳醇"]
+
+  - id: alcohol_c21
+    display: "21烷醇 (1-Heneicosanol)"
+    role: core
+    strategy: watch
+    carbon: 21
+    aliases:
+      en: ["1-Heneicosanol","heneicosanol","heneicosyl alcohol",
+           "C21 alcohol","n-heneicosanol"]
+      zh: ["二十一烷醇","廿一烷醇"]
+
+  - id: alcohol_c22
+    display: "22烷醇 (Behenyl Alcohol)"
+    role: core
+    strategy: watch
+    carbon: 22
+    aliases:
+      en: ["1-Docosanol","behenyl alcohol","docosanol","behenic alcohol",
+           "C22 alcohol","n-docosanol","1-docosyl alcohol","docosyl alcohol"]
+      zh: ["二十二烷醇","廿二烷醇","芥子醇","山崳醇","山嵛醇"]
+
+  - id: alcohol_c23
+    display: "23烷醇 (1-Tricosanol)"
+    role: core
+    strategy: watch
+    carbon: 23
+    aliases:
+      en: ["1-Tricosanol","tricosanol","tricosyl alcohol",
+           "C23 alcohol","n-tricosanol"]
+      zh: ["二十三烷醇","廿三烷醇"]
+
+  # ── C24–C32：你生產的核心系列（strategy: moat）────────────────────────────
+
+  - id: alcohol_c24
+    display: "24烷醇 (1-Tetracosanol)"
+    role: core
+    strategy: moat
+    carbon: 24
+    aliases:
+      en: ["1-Tetracosanol","tetracosanol","lignoceryl alcohol",
+           "C24 alcohol","n-tetracosanol","1-tetracosyl alcohol",
+           "tetracosyl alcohol","carnaubyl alcohol"]
+      zh: ["二十四烷醇","廿四烷醇","木蠟醇","木焦油醇","巴西棕櫚醇"]
+
+  - id: alcohol_c25
+    display: "25烷醇 (1-Pentacosanol)"
+    role: core
+    strategy: moat
+    carbon: 25
+    aliases:
+      en: ["1-Pentacosanol","pentacosanol","pentacosyl alcohol",
+           "C25 alcohol","n-pentacosanol"]
+      zh: ["二十五烷醇","廿五烷醇"]
+
+  - id: alcohol_c26
+    display: "26烷醇 (1-Hexacosanol)"
+    role: core
+    strategy: moat
+    carbon: 26
+    aliases:
+      en: ["1-Hexacosanol","hexacosanol","ceryl alcohol",
+           "C26 alcohol","n-hexacosanol","hexacosyl alcohol",
+           "cerylic alcohol"]
+      zh: ["二十六烷醇","廿六烷醇","蠟醇","蟲蠟醇","白蠟醇"]
+
+  - id: alcohol_c27
+    display: "27烷醇 (1-Heptacosanol)"
+    role: core
+    strategy: moat
+    carbon: 27
+    aliases:
+      en: ["1-Heptacosanol","heptacosanol","heptacosyl alcohol",
+           "C27 alcohol","n-heptacosanol"]
+      zh: ["二十七烷醇","廿七烷醇"]
+
+  - id: alcohol_c28
+    display: "28烷醇 (1-Octacosanol)"
+    role: core
+    strategy: moat
+    carbon: 28
+    aliases:
+      en: ["1-Octacosanol","octacosanol","n-octacosanol","C28 alcohol",
+           "28-carbon alcohol","octacosanyl alcohol",
+           "policosanol","policosanol C28","octacosanol acetate"]
+      zh: ["二十八烷醇","廿八烷醇","多廿八烷醇","蠟酸醇",
+           "正二十八烷醇"]
+
+  - id: alcohol_c29
+    display: "29烷醇 (1-Nonacosanol)"
+    role: core
+    strategy: moat
+    carbon: 29
+    aliases:
+      en: ["1-Nonacosanol","nonacosanol","nonacosyl alcohol",
+           "C29 alcohol","n-nonacosanol"]
+      zh: ["二十九烷醇","廿九烷醇"]
+
+  - id: alcohol_c30
+    display: "30烷醇 (1-Triacontanol)"
+    role: core
+    strategy: moat
+    carbon: 30
+    aliases:
+      en: ["1-Triacontanol","triacontanol","n-triacontanol",
+           "melissyl alcohol","myricyl alcohol","C30 alcohol",
+           "TRIA","triacontyl alcohol","tricontanol",
+           "melissic alcohol","myricyl primary alcohol"]
+      zh: ["三十烷醇","卅烷醇","蜂蠟醇","蜜蠟醇",
+           "蜂蠟一級醇","正三十烷醇","米粒醇"]
+
+  - id: alcohol_c31
+    display: "31烷醇 (1-Hentriacontanol)"
+    role: core
+    strategy: moat
+    carbon: 31
+    aliases:
+      en: ["1-Hentriacontanol","hentriacontanol","hentriacontyl alcohol",
+           "C31 alcohol","n-hentriacontanol"]
+      zh: ["三十一烷醇","卅一烷醇"]
+
+  - id: alcohol_c32
+    display: "32烷醇 (1-Dotriacontanol)"
+    role: core
+    strategy: moat
+    carbon: 32
+    aliases:
+      en: ["1-Dotriacontanol","dotriacontanol","lacceryl alcohol",
+           "C32 alcohol","n-dotriacontanol","dotriacontyl alcohol",
+           "lacceryl alcohol","laccerol"]
+      zh: ["三十二烷醇","卅二烷醇","蟲膠醇","漆蠟醇"]
+
+  # ── C33–C36：高碳數稀有系列（strategy: watch）────────────────────────────
+
+  - id: alcohol_c33
+    display: "33烷醇 (1-Tritriacontanol)"
+    role: core
+    strategy: watch
+    carbon: 33
+    aliases:
+      en: ["1-Tritriacontanol","tritriacontanol","tritriacontyl alcohol",
+           "C33 alcohol","n-tritriacontanol"]
+      zh: ["三十三烷醇","卅三烷醇"]
+
+  - id: alcohol_c34
+    display: "34烷醇 (1-Tetratriacontanol)"
+    role: core
+    strategy: watch
+    carbon: 34
+    aliases:
+      en: ["1-Tetratriacontanol","tetratriacontanol","tetratriacontyl alcohol",
+           "C34 alcohol","n-tetratriacontanol","geddyl alcohol"]
+      zh: ["三十四烷醇","卅四烷醇"]
+
+  - id: alcohol_c35
+    display: "35烷醇 (1-Pentatriacontanol)"
+    role: core
+    strategy: watch
+    carbon: 35
+    aliases:
+      en: ["1-Pentatriacontanol","pentatriacontanol","pentatriacontyl alcohol",
+           "C35 alcohol","n-pentatriacontanol"]
+      zh: ["三十五烷醇","卅五烷醇"]
+
+  - id: alcohol_c36
+    display: "36烷醇 (1-Hexatriacontanol)"
+    role: core
+    strategy: watch
+    carbon: 36
+    aliases:
+      en: ["1-Hexatriacontanol","hexatriacontanol","hexatriacontyl alcohol",
+           "C36 alcohol","n-hexatriacontanol","ceroplastyl alcohol"]
+      zh: ["三十六烷醇","卅六烷醇","白蠟蟲醇"]
+
+  # ── 群組索引：混合物 / 不明碳數搜尋用 ────────────────────────────────────
+  - id: policosanol_group
+    display: "Policosanol 混合物群組（跨碳數索引）"
+    role: core
+    strategy: moat
+    carbon: null
+    note: >
+      天然來源混合物（甘蔗蠟、米糠蠟、蜂蠟等），論文常只寫 policosanol
+      不標具體碳數，此 entry 作為群組捕捉 alias。
+    aliases:
+      en: ["policosanol","polycosanol","sugarcane wax alcohol",
+           "rice bran wax alcohol","wheat germ wax alcohol","beeswax alcohol",
+           "carnauba wax alcohol","very long chain fatty alcohol","VLCFA alcohol",
+           "VLCFA","long-chain fatty alcohol","LCFA alcohol","wax alcohol",
+           "higher primary alcohol","natural wax alcohol extract",
+           "aliphatic primary alcohol","D-003","Cuban policosanol",
+           "sugar cane policosanol extract"]
+      zh: ["多廿八烷醇","植物蠟醇","甘蔗蠟醇","米糠蠟醇",
+           "小麥胚芽醇","蜂蠟醇混合物","長鏈脂肪醇混合物",
+           "高級直鏈醇","天然蠟醇","古巴多廿八烷醇","D-003",
+           "巴西棕櫚蠟醇","超長鏈脂肪醇"]
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 二、ch-OSA 有機矽（核心）
+# ══════════════════════════════════════════════════════════════════════════════
+
+  - id: ch_osa
+    display: "ch-OSA 有機矽"
+    role: core
+    strategy: moat
+    aliases:
+      en: ["choline-stabilized orthosilicic acid","ch-OSA","BioSil",
+           "orthosilicic acid","bioavailable silicon","monomeric silicic acid",
+           "Si(OH)4","monosilicic acid","water-soluble silicon",
+           "soluble silica","organic silicon","choline silicate",
+           "silicic acid","silicon supplement","silicon bioavailability"]
+      zh: ["膽鹼穩定正矽酸","有機矽","生物可利用矽","單矽酸",
+           "水溶性矽","有機矽酸","矽酸膽鹼","正矽酸","活性矽",
+           "可溶性矽","飼料矽"]
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 三、蝦青素 Astaxanthin（核心）
+# ══════════════════════════════════════════════════════════════════════════════
+
+  - id: astaxanthin
+    display: "蝦青素 (Astaxanthin)"
+    role: core
+    strategy: watch
+    aliases:
+      en: ["astaxanthin","Haematococcus pluvialis","AstaReal","Carophyll Pink",
+           "Lucantin Pink","3,3-dihydroxy-beta,beta-carotene-4,4-dione",
+           "natural astaxanthin","synthetic astaxanthin","xanthophyll",
+           "astaxanthin ester","free astaxanthin","astaxanthin oleoresin",
+           "keto-carotenoid","ovoester","Phaffia rhodozyma",
+           "Xanthophyllomyces dendrorhous","astaxanthin diester",
+           "astaxanthin monoester","carotenoid pigment"]
+      zh: ["蝦青素","蝦紅素","雨生紅球藻提取物","類蝦青素",
+           "酮式類胡蘿蔔素","天然蝦青素","合成蝦青素",
+           "蝦青素酯","游離蝦青素","法夫酵母蝦青素",
+           "類胡蘿蔔素色素","蝦紅質"]
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 四、NMN / NAD+ 前體（監控）
+# ══════════════════════════════════════════════════════════════════════════════
+
+  - id: nmn
+    display: "NMN / NAD+ 前體"
+    role: adjacent
+    strategy: watch
+    aliases:
+      en: ["NMN","nicotinamide mononucleotide","NAD+ precursor",
+           "nicotinamide riboside","NR","NMNH","NAD+","beta-NMN",
+           "nicotinamide adenine dinucleotide precursor",
+           "NAD biosynthesis","salvage pathway NAD",
+           "nicotinamide","niacin metabolism","CD38 inhibitor"]
+      zh: ["煙酰胺單核苷酸","NMN","NAD+前驅物","菸鹼醯胺核苷",
+           "煙醯胺單核苷酸","β-NMN","NAD+補充劑",
+           "菸鹼醯胺腺嘌呤二核苷酸前驅"]
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 五、MG／AGP-free 研究目標（新增 2026-05-05）
+#     策略：「細胞膜物理干預」× 「天然替代抗生素」兩大主軸
+#     policosanol / LCFA 族在 MG 防治的學術機制支撐
+# ══════════════════════════════════════════════════════════════════════════════
+
+  - id: mg_mycoplasma_gallisepticum
+    display: "雞毒支原體 MG (Mycoplasma gallisepticum)"
+    role: adjacent
+    strategy: moat
+    note: >
+      目標1：追蹤 policosanol / LCFA 族與 MG 的關聯研究。
+      兩大機制主軸：
+      (1) 細胞膜物理干預 — 長鏈脂肪醇嵌入 MG 膜脂雙層，改變膜流動性與通透性
+      (2) 天然替代抗生素（AGP-free）— 無抗養殖中替代泰樂菌素/恩諾沙星的自然方案
+    aliases:
+      en: ["Mycoplasma gallisepticum","MG","avian mycoplasmosis",
+           "chronic respiratory disease","CRD","MG infection poultry",
+           "Mycoplasma gallisepticum broiler","MG layer hen",
+           "mycoplasma membrane disruption","mycoplasma fatty alcohol",
+           "policosanol mycoplasma","LCFA mycoplasma membrane",
+           "long-chain alcohol antimycoplasmal","wax alcohol MG",
+           "membrane fluidity mycoplasma","lipid bilayer disruption bacteria",
+           "cell membrane physical intervention","membrane-active compound poultry",
+           "natural antimycoplasmal","non-antibiotic MG control"]
+      zh: ["雞毒支原體","MG","慢性呼吸道病","CRD","支原體感染",
+           "雞支原體病","蛋雞MG","肉雞MG",
+           "支原體膜干預","長鏈脂肪醇抗支原體",
+           "細胞膜物理干預","膜流動性","膜通透性",
+           "天然替代抗生素","無抗養殖","AGP替代"]
+
+  - id: agp_free_natural
+    display: "AGP-free 天然替代抗生素"
+    role: adjacent
+    strategy: moat
+    note: >
+      追蹤所有「天然成分替代飼料抗生素」的研究，
+      聚焦與 LCFA 族機制重疊的細胞膜干預路徑。
+      競品包括：精油、有機酸、中草藥、噬菌體等。
+    aliases:
+      en: ["AGP-free","antibiotic-free poultry","antibiotic growth promoter alternative",
+           "natural antimicrobial feed additive","membrane-disrupting compound",
+           "membrane active agent feed","non-antibiotic growth promoter",
+           "antibiotic replacement poultry","antibiotic resistance poultry",
+           "AMR poultry feed","antimicrobial resistance livestock",
+           "tylosin alternative","enrofloxacin alternative natural",
+           "antibiotic ban poultry","EU antibiotic ban feed",
+           "China antibiotic ban 2020","natural bacteriostatic feed",
+           "alternative to AGP broiler","alternative to AGP layer"]
+      zh: ["無抗養殖","飼料抗生素替代","AGP替代","促生長抗生素替代",
+           "天然抑菌飼料添加劑","抗生素禁用","禁抗令",
+           "中國禁抗2020","飼料無抗","天然抗菌促生長",
+           "泰樂菌素替代","恩諾沙星替代","抗生素耐藥性",
+           "AMR畜牧","細菌耐藥飼料"]
+
+  - id: membrane_intervention
+    display: "細胞膜物理干預機制"
+    role: adjacent
+    strategy: moat
+    note: >
+      機制支撐層：追蹤「長鏈脂肪族化合物 × 細菌/支原體細胞膜」的基礎研究。
+      為 LCFA 族的 AGP-free 宣稱提供機制彈藥。
+    aliases:
+      en: ["membrane fluidity fatty alcohol","lipid bilayer long-chain alcohol",
+           "membrane disruption wax alcohol","cell membrane permeability LCFA",
+           "very long chain fatty alcohol antimicrobial","VLCFA antimicrobial",
+           "fatty alcohol membrane active","membrane intercalation alcohol",
+           "lipid membrane disruption natural compound",
+           "mycoplasma membrane composition","mycoplasma sterol",
+           "mycoplasma cholesterol requirement","mollicute membrane",
+           "cell membrane physical disruption","membrane-targeting natural product"]
+      zh: ["細胞膜流動性","膜脂雙層干預","長鏈脂肪醇抗菌機制",
+           "支原體膜組成","支原體固醇需求","軟壁菌膜",
+           "天然化合物膜靶向","膜通透性長鏈醇",
+           "物理抗菌機制","非化學抗菌"]
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 六、競品原料 B 組（strategy: b_group_only）
+#     Qwen 運行後會透過 ingredient_proposals 表提議新增
+# ══════════════════════════════════════════════════════════════════════════════
+
+  - id: beta_glucan
+    display: "Beta-Glucan 葡聚糖"
+    role: competitor
+    strategy: b_group_only
+    aliases:
+      en: ["beta-glucan","beta glucan","yeast cell wall","Macrogard","Betavet",
+           "oat beta-glucan","mushroom beta-glucan","laminarin","curdlan",
+           "paramylon","1,3-1,4 beta glucan"]
+      zh: ["葡聚糖","酵母細胞壁","β-葡聚糖","酵母多糖","燕麥葡聚糖"]
+
+  - id: phytogenic
+    display: "植物提取物 (Phytogenics)"
+    role: competitor
+    strategy: b_group_only
+    aliases:
+      en: ["phytogenic","essential oil","oregano oil","thymol","carvacrol",
+           "herb extract","botanical feed additive","Crina","Activo",
+           "Ropadiar","Fresta F","plant extract","phytobiotic",
+           "rosemary extract","curcumin","resveratrol"]
+      zh: ["植物提取物","精油","牛至油","百里香酚","草本飼料添加劑",
+           "植物性促生長劑","迷迭香提取物","薑黃素"]
+
+  - id: organic_acid
+    display: "有機酸 (Organic Acids)"
+    role: competitor
+    strategy: b_group_only
+    aliases:
+      en: ["organic acid","butyric acid","sodium butyrate","formic acid",
+           "propionic acid","VFA","short chain fatty acid","SCFA",
+           "protected butyrate","encapsulated butyrate","Gustor","Provion",
+           "calcium propionate","ammonium formate"]
+      zh: ["有機酸","丁酸鈉","甲酸","丙酸","短鏈脂肪酸","包被丁酸鈉"]
+
+  - id: probiotics_feed
+    display: "益生菌 (Probiotics / DFM)"
+    role: competitor
+    strategy: b_group_only
+    aliases:
+      en: ["probiotic","Bacillus subtilis","Lactobacillus","direct-fed microbial",
+           "DFM","GalliPro","BioPlus","Clostat","Calsporin",
+           "Enterococcus faecium","Bifidobacterium","lactic acid bacteria",
+           "spore-forming probiotic"]
+      zh: ["益生菌","枯草桿菌","乳酸菌","直接飼餵微生物","芽孢益生菌"]
+
+  - id: enzyme_protease
+    display: "蛋白酶 (Protease)"
+    role: competitor
+    strategy: b_group_only
+    aliases:
+      en: ["protease","serine protease","Ronozyme ProAct","Versazyme",
+           "Cibenza","DuPont Syncra SWI","Axtra PRO","subtilisin",
+           "alkaline protease","acid protease","metalloprotease",
+           "keratinase","elastase"]
+      zh: ["蛋白酶","飼料蛋白酶","枯草菌源蛋白酶","絲胺酸蛋白酶",
+           "鹼性蛋白酶","酸性蛋白酶","角蛋白酶"]
+
+  - id: ractopamine
+    display: "萊克多巴胺 / β激動劑"
+    role: competitor
+    strategy: b_group_only
+    aliases:
+      en: ["ractopamine","Paylean","Optaflexx","beta-agonist","PAC",
+           "zilpaterol","clenbuterol","beta2-adrenergic agonist",
+           "salbutamol feed"]
+      zh: ["萊克多巴胺","瘦肉精","β激動劑","克倫特羅","齊帕特羅"]
+
+  - id: lysolecithin
+    display: "溶血卵磷脂 (Lysolecithin)"
+    role: competitor
+    strategy: b_group_only
+    aliases:
+      en: ["lysolecithin","lysophosphatidylcholine","LPC","emulsifier",
+           "Lysoforte","LysoGold","phospholipase-treated lecithin",
+           "lyso-phospholipid","lysophospholipid"]
+      zh: ["溶血卵磷脂","溶血磷脂醯膽鹼","飼料乳化劑","溶血磷脂"]
+
+  - id: xylanase_nsp
+    display: "木聚糖酶 / NSP 酶"
+    role: competitor
+    strategy: b_group_only
+    aliases:
+      en: ["xylanase","NSP enzyme","non-starch polysaccharide enzyme",
+           "cellulase","beta-glucanase","arabinoxylanase",
+           "Ronozyme WX","Axtra XB","Econase XT","Belfeed","hemicellulase"]
+      zh: ["木聚糖酶","非澱粉多糖酶","NSP酶","纖維素酶","半纖維素酶"]
