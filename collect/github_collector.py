@@ -1,360 +1,536 @@
 """
 github_collector.py
-Collects animal nutrition papers from PubMed, EuropePMC, and Lens.org (placeholder).
-Outputs raw_papers.json for downstream scoring and analysis.
+多源爬蟲：PubMed / Semantic Scholar / EuropePMC / Lens.org / RSS / Vendor scraper
+從 configs/ingredients.yaml 讀取原料清單 → 產出 /tmp/raw_papers_collected.json
+只抓 Abstract + Metadata，不下載 PDF
 """
 
 import os
-import sys
 import json
 import time
 import hashlib
-import argparse
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timedelta
+from pathlib import Path
 
-import requests
+import httpx
 import yaml
+import feedparser
+from bs4 import BeautifulSoup
+from tenacity import retry, stop_after_attempt, wait_exponential
 
-logging.basicConfig(stream=sys.stderr, level=logging.INFO,
-                    format="%(asctime)s [collector] %(levelname)s %(message)s")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s"
+)
 log = logging.getLogger(__name__)
 
-CONFIG_PATH = os.path.join(os.path.dirname(__file__), "..", "configs", "species_metrics.yaml")
+# ── 設定 ──────────────────────────────────────────────────────────────────────
+OUTPUT_PATH   = Path("/tmp/raw_papers_collected.json")
+INGREDIENTS_P = Path("configs/ingredients.yaml")
 
-SPECIES_HINT_MAP = {
-    "broiler": "broiler", "poultry": "broiler", "chicken": "broiler",
-    "layer": "layer_hen", "eggshell": "layer_hen",
-    "swine": "finisher_pig", "pig": "nursery_pig", "sow": "pregnant_sow",
-    "shrimp": "shrimp", "prawn": "shrimp",
-    "tilapia": "tilapia", "fish": "tilapia",
-    "cattle": "livestock", "beef": "livestock", "dairy": "livestock",
-    "sheep": "livestock", "lamb": "livestock",
-    "aquaculture": "shrimp",
-}
+S2_API_KEY    = os.environ.get("SEMANTIC_SCHOLAR_KEY", "")
+LENS_TOKEN    = os.environ.get("LENS_API_TOKEN", "")
+FORCE_FULL    = os.environ.get("FORCE_FULL", "false").lower() == "true"
+TOPICS_FILTER = os.environ.get("TOPICS_FILTER", "").strip()
+
+# 增量：只爬近 N 天（full run 爬 365 天）
+INCREMENTAL_DAYS = 8
+LOOKBACK_DAYS    = 365 if FORCE_FULL else INCREMENTAL_DAYS
+SINCE_DATE       = (datetime.utcnow() - timedelta(days=LOOKBACK_DAYS)).strftime("%Y/%m/%d")
+SINCE_DATE_ISO   = (datetime.utcnow() - timedelta(days=LOOKBACK_DAYS)).strftime("%Y-%m-%d")
+
+# 每個 source 最大筆數限制（防止 Actions 超時）
+MAX_PER_QUERY = 100 if FORCE_FULL else 30
+
+# ── 載入 ingredients.yaml ────────────────────────────────────────────────────
+def load_ingredients():
+    with open(INGREDIENTS_P, encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+    items = cfg.get("ingredients", [])
+    log.info(f"Loaded {len(items)} ingredients")
+    return items
+
+def build_search_queries(ingredients: list) -> list[dict]:
+    """每個 ingredient 的 EN 別名展開成搜尋關鍵字組"""
+    queries = []
+    seen_ids = set()
+    for ing in ingredients:
+        if ing["id"] in seen_ids:
+            continue
+        seen_ids.add(ing["id"])
+
+        # 只用 role=core/adjacent 的原料主動搜尋
+        # role=competitor 只在 vendor scraper 被動捕捉
+        if ing.get("role") == "competitor" and ing.get("strategy") == "b_group_only":
+            # 競品原料只加入 alias 表，不主動搜尋
+            continue
+
+        aliases_en = ing.get("aliases", {}).get("en", [])
+        if not aliases_en:
+            continue
+
+        # 主要關鍵字：取前 3 個最具代表性的 alias
+        primary = aliases_en[:3]
+        # 動物應用限縮詞（讓搜尋更精準）
+        animal_terms = ["broiler", "poultry", "swine", "pig", "shrimp",
+                        "fish", "aquaculture", "livestock", "cattle",
+                        "layer", "feed additive", "animal nutrition"]
+
+        queries.append({
+            "ingredient_id": ing["id"],
+            "display": ing["display"],
+            "primary_aliases": primary,
+            "all_aliases_en": aliases_en,
+            "animal_terms": animal_terms,
+            "role": ing.get("role"),
+            "strategy": ing.get("strategy"),
+        })
+
+    if TOPICS_FILTER:
+        ids = [t.strip() for t in TOPICS_FILTER.split(",")]
+        queries = [q for q in queries if q["ingredient_id"] in ids]
+        log.info(f"Filtered to topics: {ids}")
+
+    log.info(f"Search queries: {len(queries)} ingredients")
+    return queries
 
 
-def load_config() -> dict:
-    with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
-
-
-def make_id(source: str, uid: str) -> str:
-    return f"{source}_{uid}"
-
-
-def infer_species(text: str) -> str:
-    text_lower = text.lower()
-    for kw, species in SPECIES_HINT_MAP.items():
-        if kw in text_lower:
-            return species
-    return "unknown"
+# ── 去重 hash ─────────────────────────────────────────────────────────────────
+def paper_id(title: str, doi: str = "") -> str:
+    key = (doi or title or "").lower().strip()
+    return hashlib.sha256(key.encode()).hexdigest()[:16]
 
 
 # ── PubMed ────────────────────────────────────────────────────────────────────
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=2, max=10))
+async def fetch_pubmed(client: httpx.AsyncClient, query: dict) -> list[dict]:
+    results = []
+    aliases = query["primary_aliases"]
+    animal  = query["animal_terms"]
 
-def fetch_pubmed(keywords: list, min_year: int, max_results: int, delay: float) -> list:
-    base = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
-    papers = []
+    # 建立 PubMed 搜尋式
+    alias_clause  = " OR ".join(f'"{a}"[tiab]' for a in aliases)
+    animal_clause = " OR ".join(f'"{t}"[tiab]' for t in animal[:6])
+    search_term   = f"({alias_clause}) AND ({animal_clause})"
+    if not FORCE_FULL:
+        search_term += f" AND (\"{SINCE_DATE}\"[PDAT]:\"3000\"[PDAT])"
 
-    for kw in keywords:
-        log.info("PubMed query: %s", kw)
+    # Step 1: esearch
+    r = await client.get(
+        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
+        params={"db": "pubmed", "term": search_term,
+                "retmax": MAX_PER_QUERY, "retmode": "json"},
+        timeout=30
+    )
+    ids = r.json().get("esearchresult", {}).get("idlist", [])
+    if not ids:
+        return []
+
+    # Step 2: efetch abstracts
+    r2 = await client.get(
+        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi",
+        params={"db": "pubmed", "id": ",".join(ids),
+                "rettype": "abstract", "retmode": "xml"},
+        timeout=60
+    )
+    soup = BeautifulSoup(r2.text, "lxml-xml")
+    for article in soup.find_all("PubmedArticle"):
         try:
-            search_url = f"{base}esearch.fcgi"
-            params = {
-                "db": "pubmed",
-                "term": f"{kw} AND {min_year}:3000[pdat]",
-                "retmax": max_results,
-                "usehistory": "y",
-                "retmode": "json",
-                "sort": "relevance",
-            }
-            r = requests.get(search_url, params=params, timeout=30)
-            r.raise_for_status()
-            data = r.json()
-            ids = data.get("esearchresult", {}).get("idlist", [])
-            webenv = data["esearchresult"].get("webenv", "")
-            query_key = data["esearchresult"].get("querykey", "")
-            log.info("  Found %d PMIDs", len(ids))
-            time.sleep(delay)
-
-            if not ids:
+            pmid  = article.find("PMID").text if article.find("PMID") else ""
+            title = article.find("ArticleTitle").text if article.find("ArticleTitle") else ""
+            ab    = article.find("AbstractText")
+            abstract = ab.text if ab else ""
+            if not abstract:
                 continue
+            year_tag = article.find("PubDate")
+            year = int(year_tag.find("Year").text) if year_tag and year_tag.find("Year") else 0
+            authors = [
+                f"{a.find('LastName').text if a.find('LastName') else ''} "
+                f"{a.find('Initials').text if a.find('Initials') else ''}".strip()
+                for a in article.find_all("Author")[:5]
+            ]
+            doi_tag = article.find("ArticleId", IdType="doi")
+            doi = doi_tag.text if doi_tag else ""
 
-            fetch_url = f"{base}efetch.fcgi"
-            fetch_params = {
-                "db": "pubmed",
-                "query_key": query_key,
-                "WebEnv": webenv,
-                "rettype": "abstract",
-                "retmode": "xml",
-                "retmax": max_results,
-            }
-            fr = requests.get(fetch_url, params=fetch_params, timeout=60)
-            fr.raise_for_status()
-            time.sleep(delay)
-
-            # Parse XML minimally
-            import xml.etree.ElementTree as ET
-            root = ET.fromstring(fr.content)
-            for article in root.findall(".//PubmedArticle"):
-                try:
-                    pmid_el = article.find(".//PMID")
-                    pmid = pmid_el.text if pmid_el is not None else "unknown"
-                    title_el = article.find(".//ArticleTitle")
-                    title = "".join(title_el.itertext()) if title_el is not None else ""
-                    abstract_el = article.find(".//AbstractText")
-                    abstract = "".join(abstract_el.itertext()) if abstract_el is not None else ""
-                    journal_el = article.find(".//Journal/Title")
-                    journal = journal_el.text if journal_el is not None else ""
-                    year_el = article.find(".//PubDate/Year")
-                    year_str = year_el.text if year_el is not None else "0"
-                    try:
-                        year = int(year_str)
-                    except ValueError:
-                        year = 0
-                    author_els = article.findall(".//Author")
-                    authors = []
-                    for a in author_els[:5]:
-                        ln = a.find("LastName")
-                        fn = a.find("ForeName")
-                        if ln is not None:
-                            authors.append(f"{ln.text} {fn.text if fn is not None else ''}".strip())
-                    doi_el = article.find(".//ArticleId[@IdType='doi']")
-                    doi = doi_el.text if doi_el is not None else ""
-
-                    if year < min_year:
-                        continue
-
-                    papers.append({
-                        "id": make_id("pubmed", pmid),
-                        "source": "pubmed",
-                        "title": title,
-                        "abstract": abstract,
-                        "authors": authors,
-                        "journal": journal,
-                        "year": year,
-                        "citation_count": 0,
-                        "doi": doi,
-                        "url": f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/",
-                        "species_hint": infer_species(f"{kw} {title}"),
-                        "collected_at": datetime.now(timezone.utc).isoformat(),
-                    })
-                except Exception as e:
-                    log.warning("  Parse error for article: %s", e)
-
+            results.append({
+                "id":            paper_id(title, doi),
+                "title":         title,
+                "abstract":      abstract[:2000],
+                "authors":       "; ".join(authors),
+                "year":          year,
+                "doi":           doi,
+                "source_url":    f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/",
+                "source_type":   "paper",
+                "source_db":     "pubmed",
+                "language":      "en",
+                "ingredient_hint": query["ingredient_id"],
+                "collected_at":  datetime.utcnow().isoformat(),
+            })
         except Exception as e:
-            log.error("PubMed error for query '%s': %s", kw, e)
+            log.debug(f"PubMed parse error: {e}")
 
-    return papers
+    log.info(f"PubMed [{query['ingredient_id']}]: {len(results)} papers")
+    return results
+
+
+# ── Semantic Scholar ──────────────────────────────────────────────────────────
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=2, max=10))
+async def fetch_s2(client: httpx.AsyncClient, query: dict) -> list[dict]:
+    results = []
+    headers = {"x-api-key": S2_API_KEY} if S2_API_KEY else {}
+    aliases = query["primary_aliases"]
+
+    for alias in aliases[:2]:  # 最多 2 個 alias 避免超 quota
+        search_q = f"{alias} animal feed"
+        params = {
+            "query": search_q,
+            "limit": MAX_PER_QUERY,
+            "fields": "title,abstract,authors,year,externalIds,citationCount,publicationDate",
+        }
+        if not FORCE_FULL:
+            params["publicationDateOrYear"] = f"{SINCE_DATE_ISO}:"
+
+        try:
+            r = await client.get(
+                "https://api.semanticscholar.org/graph/v1/paper/search",
+                params=params, headers=headers, timeout=30
+            )
+            data = r.json()
+        except Exception as e:
+            log.warning(f"S2 error: {e}")
+            continue
+
+        for p in data.get("data", []):
+            abstract = p.get("abstract") or ""
+            if not abstract or len(abstract) < 50:
+                continue
+            doi = (p.get("externalIds") or {}).get("DOI", "")
+            authors = [
+                a.get("name", "") for a in (p.get("authors") or [])[:5]
+            ]
+            results.append({
+                "id":             paper_id(p.get("title",""), doi),
+                "title":          p.get("title", ""),
+                "abstract":       abstract[:2000],
+                "authors":        "; ".join(authors),
+                "year":           p.get("year") or 0,
+                "doi":            doi,
+                "citation_count": p.get("citationCount") or 0,
+                "source_url":     f"https://www.semanticscholar.org/paper/{p.get('paperId','')}",
+                "source_type":    "paper",
+                "source_db":      "semantic_scholar",
+                "language":       "en",
+                "ingredient_hint": query["ingredient_id"],
+                "collected_at":   datetime.utcnow().isoformat(),
+            })
+        await asyncio.sleep(1)  # S2 rate limit
+
+    log.info(f"S2 [{query['ingredient_id']}]: {len(results)} papers")
+    return results
 
 
 # ── EuropePMC ─────────────────────────────────────────────────────────────────
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=2, max=10))
+async def fetch_europepmc(client: httpx.AsyncClient, query: dict) -> list[dict]:
+    results = []
+    alias = query["primary_aliases"][0]
+    search_q = f'("{alias}") AND (broiler OR poultry OR swine OR shrimp OR fish OR livestock)'
+    if not FORCE_FULL:
+        search_q += f" AND FIRST_PDATE:[{SINCE_DATE_ISO} TO *]"
 
-def fetch_europepmc(keywords: list, min_year: int, max_results: int, delay: float) -> list:
-    base = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
-    papers = []
-
-    for kw in keywords:
-        log.info("EuropePMC query: %s", kw)
-        try:
-            params = {
-                "query": f"{kw} AND FIRST_PDATE:[{min_year}-01-01 TO 9999-12-31]",
-                "format": "json",
-                "pageSize": max_results,
-                "resultType": "core",
-                "sort": "CITED desc",
-            }
-            r = requests.get(base, params=params, timeout=30)
-            r.raise_for_status()
-            data = r.json()
-            results = data.get("resultList", {}).get("result", [])
-            log.info("  Found %d results", len(results))
-            time.sleep(delay)
-
-            for item in results:
-                try:
-                    year = int(item.get("pubYear", 0))
-                    if year < min_year:
-                        continue
-                    uid = item.get("pmid") or item.get("id") or hashlib.md5(
-                        item.get("title", "").encode()).hexdigest()[:8]
-                    papers.append({
-                        "id": make_id("europepmc", str(uid)),
-                        "source": "europepmc",
-                        "title": item.get("title", ""),
-                        "abstract": item.get("abstractText", ""),
-                        "authors": [a.get("fullName", "") for a in
-                                    item.get("authorList", {}).get("author", [])[:5]],
-                        "journal": item.get("journalTitle", ""),
-                        "year": year,
-                        "citation_count": item.get("citedByCount", 0),
-                        "doi": item.get("doi", ""),
-                        "url": f"https://europepmc.org/article/{item.get('source','MED')}/{uid}",
-                        "species_hint": infer_species(f"{kw} {item.get('title','')}"),
-                        "collected_at": datetime.now(timezone.utc).isoformat(),
-                    })
-                except Exception as e:
-                    log.warning("  Parse error: %s", e)
-
-        except Exception as e:
-            log.error("EuropePMC error for query '%s': %s", kw, e)
-
-    return papers
-
-
-# ── Lens.org Placeholder ───────────────────────────────────────────────────────
-
-def fetch_lens_scholarly(keywords: list, min_year: int, max_results: int) -> list:
-    token = os.environ.get("LENS_API_TOKEN", "")
-    if not token:
-        log.warning("LENS_API_TOKEN not set — skipping Lens Scholarly.")
-        return []
-
-    base = "https://api.lens.org/scholarly/search"
-    papers = []
-    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-
-    for kw in keywords:
-        log.info("Lens Scholarly query: %s", kw)
-        try:
-            payload = {
-                "query": {"match": {"abstract": kw}},
-                "filter": {"range": {"year_published": {"gte": min_year}}},
-                "sort": [{"_score": "desc"}],
-                "size": max_results,
-                "include": ["lens_id", "title", "abstract", "authors",
-                            "publication", "year_published", "scholarly_citations_count", "doi"],
-            }
-            r = requests.post(base, json=payload, headers=headers, timeout=30)
-            r.raise_for_status()
-            for item in r.json().get("data", []):
-                try:
-                    papers.append({
-                        "id": make_id("lens_scholarly", item.get("lens_id", "")),
-                        "source": "lens_scholarly",
-                        "title": item.get("title", ""),
-                        "abstract": item.get("abstract", ""),
-                        "authors": [a.get("display_name", "") for a in item.get("authors", [])[:5]],
-                        "journal": item.get("publication", {}).get("title", ""),
-                        "year": item.get("year_published", 0),
-                        "citation_count": item.get("scholarly_citations_count", 0),
-                        "doi": item.get("doi", ""),
-                        "url": f"https://www.lens.org/lens/scholar/article/{item.get('lens_id','')}",
-                        "species_hint": infer_species(f"{kw} {item.get('title','')}"),
-                        "collected_at": datetime.now(timezone.utc).isoformat(),
-                    })
-                except Exception as e:
-                    log.warning("  Lens parse error: %s", e)
-        except Exception as e:
-            log.error("Lens Scholarly error for '%s': %s", kw, e)
-
-    return papers
-
-
-def fetch_lens_patent(keywords: list, min_year: int, max_results: int) -> list:
-    token = os.environ.get("LENS_API_TOKEN", "")
-    if not token:
-        log.warning("LENS_API_TOKEN not set — skipping Lens Patent.")
-        return []
-
-    base = "https://api.lens.org/patent/search"
-    papers = []
-    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-
-    for kw in keywords:
-        log.info("Lens Patent query: %s", kw)
-        try:
-            payload = {
-                "query": {
-                    "bool": {
-                        "must": [{"match": {"description": kw}}],
-                        "filter": [{"term": {"classifications_ipcr.symbol": "A23K"}}],
-                    }
-                },
-                "size": max_results,
-                "include": ["lens_id", "title", "abstract", "applicants",
-                            "date_published", "doc_number", "jurisdiction"],
-            }
-            r = requests.post(base, json=payload, headers=headers, timeout=30)
-            r.raise_for_status()
-            for item in r.json().get("data", []):
-                try:
-                    year_str = (item.get("date_published") or "0000")[:4]
-                    year = int(year_str) if year_str.isdigit() else 0
-                    papers.append({
-                        "id": make_id("lens_patent", item.get("lens_id", "")),
-                        "source": "lens_patent",
-                        "title": item.get("title", ""),
-                        "abstract": item.get("abstract", ""),
-                        "authors": [a.get("display_name", "")
-                                    for a in item.get("applicants", [])[:5]],
-                        "journal": f"Patent {item.get('jurisdiction','')} {item.get('doc_number','')}",
-                        "year": year,
-                        "citation_count": 0,
-                        "doi": "",
-                        "url": f"https://www.lens.org/lens/patent/{item.get('lens_id','')}",
-                        "species_hint": infer_species(f"{kw} {item.get('title','')}"),
-                        "collected_at": datetime.now(timezone.utc).isoformat(),
-                    })
-                except Exception as e:
-                    log.warning("  Lens patent parse error: %s", e)
-        except Exception as e:
-            log.error("Lens Patent error for '%s': %s", kw, e)
-
-    return papers
-
-
-# ── Dedup ─────────────────────────────────────────────────────────────────────
-
-def dedupe(papers: list) -> list:
-    seen_ids = set()
-    seen_titles = set()
-    result = []
-    for p in papers:
-        pid = p.get("id", "")
-        title_key = p.get("title", "").lower().strip()[:80]
-        if pid in seen_ids or title_key in seen_titles:
+    r = await client.get(
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+        params={
+            "query": search_q,
+            "resultType": "core",
+            "pageSize": MAX_PER_QUERY,
+            "format": "json",
+        },
+        timeout=30
+    )
+    for p in r.json().get("resultList", {}).get("result", []):
+        abstract = p.get("abstractText") or ""
+        if not abstract:
             continue
-        seen_ids.add(pid)
-        if title_key:
-            seen_titles.add(title_key)
-        result.append(p)
-    return result
+        results.append({
+            "id":            paper_id(p.get("title",""), p.get("doi","")),
+            "title":         p.get("title", ""),
+            "abstract":      abstract[:2000],
+            "authors":       p.get("authorString", ""),
+            "year":          int(p.get("pubYear") or 0),
+            "doi":           p.get("doi", ""),
+            "citation_count": int(p.get("citedByCount") or 0),
+            "source_url":    f"https://europepmc.org/article/{p.get('source','')}/{p.get('id','')}",
+            "source_type":   "paper",
+            "source_db":     "europepmc",
+            "language":      "en",
+            "ingredient_hint": query["ingredient_id"],
+            "collected_at":  datetime.utcnow().isoformat(),
+        })
+
+    log.info(f"EuropePMC [{query['ingredient_id']}]: {len(results)} papers")
+    return results
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
+# ── Lens.org 專利 ─────────────────────────────────────────────────────────────
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=2, max=10))
+async def fetch_lens_patents(client: httpx.AsyncClient, query: dict) -> list[dict]:
+    if not LENS_TOKEN:
+        return []
+    results = []
+    aliases = query["primary_aliases"][:3]
 
-def main():
-    parser = argparse.ArgumentParser(description="Collect animal nutrition papers")
-    parser.add_argument("--output", default="raw_papers.json")
-    parser.add_argument("--dry-run", action="store_true",
-                        help="Run collection but do not write output file")
-    args = parser.parse_args()
+    payload = {
+        "query": {
+            "bool": {
+                "must": [
+                    {"terms": {"claims.text": aliases}},
+                    {"terms": {"abstract.text": [
+                        "broiler","poultry","swine","shrimp","aquaculture",
+                        "animal feed","livestock","feed additive"
+                    ]}}
+                ]
+            }
+        },
+        "include": ["lens_id","title","abstract","inventor","owner",
+                    "publication_date","jurisdiction","doc_number"],
+        "size": min(MAX_PER_QUERY, 50),
+        "sort": [{"publication_date": "desc"}],
+    }
+    if not FORCE_FULL:
+        payload["query"]["bool"]["filter"] = [
+            {"range": {"publication_date": {"gte": SINCE_DATE_ISO}}}
+        ]
 
-    cfg = load_config()
-    keywords = cfg["search_keywords"]["en"]
-    min_year = cfg["settings"]["min_year"]
-    max_results = cfg["settings"]["max_results_per_query"]
-    delay = cfg["settings"]["request_delay_sec"]
+    r = await client.post(
+        "https://api.lens.org/patent/search",
+        json=payload,
+        headers={"Authorization": f"Bearer {LENS_TOKEN}",
+                 "Content-Type": "application/json"},
+        timeout=30
+    )
+    for p in r.json().get("data", []):
+        abstract = (p.get("abstract") or [{}])[0].get("text", "")
+        if not abstract:
+            continue
+        title = (p.get("title") or [{}])[0].get("text", "")
+        results.append({
+            "id":            paper_id(title, p.get("doc_number","")),
+            "title":         title,
+            "abstract":      abstract[:2000],
+            "authors":       "; ".join(
+                [i.get("name","") for i in (p.get("inventor") or [])[:5]]
+            ),
+            "year":          int((p.get("publication_date") or "0")[:4]),
+            "doi":           "",
+            "patent_number": p.get("doc_number",""),
+            "jurisdiction":  p.get("jurisdiction",""),
+            "source_url":    f"https://www.lens.org/lens/patent/{p.get('lens_id','')}",
+            "source_type":   "patent",
+            "source_db":     "lens",
+            "language":      "en",
+            "ingredient_hint": query["ingredient_id"],
+            "collected_at":  datetime.utcnow().isoformat(),
+        })
 
-    all_papers = []
-    all_papers += fetch_pubmed(keywords, min_year, max_results, delay)
-    all_papers += fetch_europepmc(keywords, min_year, max_results, delay)
-    all_papers += fetch_lens_scholarly(keywords, min_year, max_results)
-    all_papers += fetch_lens_patent(keywords[:3], min_year, max_results)
+    log.info(f"Lens.org [{query['ingredient_id']}]: {len(results)} patents")
+    return results
 
-    deduped = dedupe(all_papers)
-    log.info("Total collected: %d | After dedupe: %d", len(all_papers), len(deduped))
 
-    if args.dry_run:
-        log.info("[dry-run] Skipping file write. Sample:\n%s",
-                 json.dumps(deduped[:2], ensure_ascii=False, indent=2))
-    else:
-        with open(args.output, "w", encoding="utf-8") as f:
-            json.dump(deduped, f, ensure_ascii=False, indent=2)
-        log.info("Written %d papers to %s", len(deduped), args.output)
+# ── RSS 行業媒體 ──────────────────────────────────────────────────────────────
+RSS_FEEDS = [
+    {"url": "https://www.feednavigator.com/rss/feed",        "name": "FeedNavigator"},
+    {"url": "https://www.wattagnet.com/rss.xml",             "name": "WATTPoultry"},
+    {"url": "https://www.pigprogress.net/rss",               "name": "PigProgress"},
+    {"url": "https://www.aquaculturenorth.com/feed",         "name": "AquacultureNorth"},
+    {"url": "https://www.globalseafood.org/feed",            "name": "GSAA"},
+    {"url": "https://www.allaboutfeed.net/rss",              "name": "AllAboutFeed"},
+    {"url": "https://www.thepigsite.com/rss",                "name": "ThePigSite"},
+    {"url": "https://thepoultrysite.com/rss",                "name": "ThePoultrysite"},
+]
+
+async def fetch_rss(client: httpx.AsyncClient,
+                    all_aliases: set[str]) -> list[dict]:
+    results = []
+    alias_lower = {a.lower() for a in all_aliases}
+
+    for feed_info in RSS_FEEDS:
+        try:
+            r = await client.get(feed_info["url"], timeout=20,
+                                 follow_redirects=True)
+            feed = feedparser.parse(r.text)
+        except Exception as e:
+            log.warning(f"RSS {feed_info['name']}: {e}")
+            continue
+
+        for entry in feed.entries[:50]:
+            title   = entry.get("title", "")
+            summary = entry.get("summary", "") or entry.get("description","")
+            content = (title + " " + summary).lower()
+
+            # 只收錄包含 alias 的文章
+            matched = [a for a in alias_lower if a in content]
+            if not matched:
+                continue
+
+            pub_date = entry.get("published", "")
+            results.append({
+                "id":            paper_id(title, entry.get("link","")),
+                "title":         title,
+                "abstract":      summary[:2000],
+                "authors":       entry.get("author",""),
+                "year":          int(pub_date[:4]) if pub_date and pub_date[:4].isdigit() else 0,
+                "doi":           "",
+                "source_url":    entry.get("link",""),
+                "source_type":   "industry_media",
+                "source_db":     feed_info["name"],
+                "language":      "en",
+                "ingredient_hint": matched[0],
+                "collected_at":  datetime.utcnow().isoformat(),
+            })
+
+    log.info(f"RSS total: {len(results)} articles")
+    return results
+
+
+# ── Vendor Scraper（東南亞廠商 + 競品）────────────────────────────────────────
+# 用 Google Custom Search 自動找有技術文件的廠商頁面
+VENDOR_SEARCH_QUERIES = [
+    "site:*.th feed additive octacosanol OR triacontanol OR astaxanthin",
+    "site:*.id pakan ternak feed additive long chain alcohol",
+    "site:*.my feed additive aquaculture astaxanthin policosanol",
+    "site:*.ph feed supplement poultry aquaculture performance",
+    "site:*.vn thuc an chan nuoi astaxanthin feed additive",
+    "CP Group technical brochure feed additive performance",
+    "Japfa Comfeed feed additive technical data",
+    "Charoen Pokphand feed supplement trial results",
+]
+
+async def scrape_vendor_pages(client: httpx.AsyncClient,
+                              all_aliases: set[str]) -> list[dict]:
+    """
+    簡化版：直接爬已知廠商技術頁面
+    完整版需要 Google Custom Search API key（可選）
+    """
+    results = []
+    # 固定已知高價值頁面清單（可持續補充）
+    KNOWN_VENDOR_URLS = [
+        "https://www.dsm.com/animal-nutrition/en/products.html",
+        "https://www.kemin.com/en/animal-nutrition-and-health/solutions",
+        "https://www.novonesis.com/en/animal-health-nutrition",
+        "https://www.adisseo.com/en/solutions/poultry",
+        "https://www.evonik.com/en/products/animal-nutrition",
+    ]
+    alias_lower = {a.lower() for a in all_aliases}
+
+    for url in KNOWN_VENDOR_URLS:
+        try:
+            r = await client.get(url, timeout=20, follow_redirects=True)
+            soup = BeautifulSoup(r.text, "lxml")
+            # 找包含 alias 的段落
+            for tag in soup.find_all(["p", "li", "div"], limit=200):
+                text = tag.get_text(" ", strip=True)
+                if len(text) < 50 or len(text) > 2000:
+                    continue
+                matched = [a for a in alias_lower if a in text.lower()]
+                if not matched:
+                    continue
+                results.append({
+                    "id":            paper_id(text[:100], url),
+                    "title":         soup.find("title").text if soup.find("title") else url,
+                    "abstract":      text[:2000],
+                    "authors":       "",
+                    "year":          datetime.utcnow().year,
+                    "doi":           "",
+                    "source_url":    url,
+                    "source_type":   "vendor_claim",
+                    "source_db":     "vendor_scraper",
+                    "language":      "en",
+                    "ingredient_hint": matched[0],
+                    "collected_at":  datetime.utcnow().isoformat(),
+                })
+            await asyncio.sleep(2)
+        except Exception as e:
+            log.warning(f"Vendor scrape {url}: {e}")
+
+    log.info(f"Vendor scraper: {len(results)} claims")
+    return results
+
+
+# ── 去重合併 ──────────────────────────────────────────────────────────────────
+def dedupe(papers: list[dict]) -> list[dict]:
+    seen = {}
+    for p in papers:
+        pid = p["id"]
+        if pid not in seen:
+            seen[pid] = p
+        else:
+            # 保留 citation_count 較高的版本
+            if p.get("citation_count",0) > seen[pid].get("citation_count",0):
+                seen[pid] = p
+    log.info(f"Dedupe: {len(papers)} → {len(seen)}")
+    return list(seen.values())
+
+
+# ── 主程式 ────────────────────────────────────────────────────────────────────
+import asyncio
+
+async def main():
+    ingredients = load_ingredients()
+    queries     = build_search_queries(ingredients)
+
+    # 所有 alias 集合（供 RSS + Vendor 使用）
+    all_aliases: set[str] = set()
+    for ing in ingredients:
+        all_aliases.update(ing.get("aliases", {}).get("en", []))
+
+    all_papers: list[dict] = []
+
+    async with httpx.AsyncClient(
+        headers={"User-Agent": "research-pipeline/3.0 (academic use)"},
+        follow_redirects=True,
+    ) as client:
+
+        # 學術來源：每個 ingredient 並發爬取
+        for q in queries:
+            log.info(f"=== {q['ingredient_id']} ===")
+            tasks = [
+                fetch_pubmed(client, q),
+                fetch_s2(client, q),
+                fetch_europepmc(client, q),
+                fetch_lens_patents(client, q),
+            ]
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+            for r in results:
+                if isinstance(r, list):
+                    all_papers.extend(r)
+                elif isinstance(r, Exception):
+                    log.warning(f"Source error: {r}")
+            await asyncio.sleep(2)  # 避免 rate limit
+
+        # RSS（一次性，不按 ingredient 分）
+        rss_papers = await fetch_rss(client, all_aliases)
+        all_papers.extend(rss_papers)
+
+        # Vendor scraper
+        vendor_papers = await scrape_vendor_pages(client, all_aliases)
+        all_papers.extend(vendor_papers)
+
+    # 去重
+    final_papers = dedupe(all_papers)
+
+    # 輸出
+    output = {
+        "collected_at": datetime.utcnow().isoformat(),
+        "lookback_days": LOOKBACK_DAYS,
+        "total": len(final_papers),
+        "papers": final_papers,
+    }
+    OUTPUT_PATH.write_text(json.dumps(output, ensure_ascii=False, indent=2),
+                           encoding="utf-8")
+    log.info(f"Done. Total: {len(final_papers)} → {OUTPUT_PATH}")
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

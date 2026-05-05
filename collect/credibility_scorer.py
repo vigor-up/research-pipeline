@@ -1,154 +1,112 @@
 """
 credibility_scorer.py
-Scores papers 1-5 based on source credibility for B-group comparison database.
-Level 1 = noise (not stored), Level 5 = gold standard.
+讀取 /tmp/raw_papers_collected.json → 每筆打 L1-L5 信心度 → 輸出 scored.json
+不需要 LLM，純規則評分
 """
 
-import sys
 import json
 import argparse
 import logging
+from pathlib import Path
 
-logging.basicConfig(stream=sys.stderr, level=logging.INFO,
-                    format="%(asctime)s [scorer] %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 
-STORE_THRESHOLD = 2
-QUERY_DEFAULT_MIN = 3
-HIGHLIGHT_THRESHOLD = 4
+# L5 關鍵字
+L5_TITLE_KEYWORDS = [
+    "meta-analysis","systematic review","meta analysis",
+    "efsa opinion","fao report","breed standard","aviagen","cobb","hy-line","isa brown",
+]
+L5_SOURCE_DOMAINS = ["efsa.europa.eu","fao.org","apps.who.int"]
 
-LEVEL_WEIGHTS = {5: 1.0, 4: 0.8, 3: 0.6, 2: 0.3, 1: 0.1}
+# L4 高引用期刊（部分 journal 名）
+L4_JOURNALS = [
+    "poultry science","journal of animal science","animal feed science",
+    "aquaculture","journal of nutrition","british journal of nutrition",
+    "livestock science","meat science","animal","frontiers in veterinary",
+]
+L4_SUPPLIERS = ["dsm","kemin","novozymes","novonesis","basf","evonik","adisseo","alltech"]
 
-HIGH_IF_JOURNALS = {
-    "journal of animal science",
-    "poultry science",
-    "animal feed science and technology",
-    "aquaculture",
-    "livestock science",
-    "animal",
-    "british journal of nutrition",
-    "journal of nutrition",
-    "frontiers in veterinary science",
-    "veterinary microbiology",
-}
-
-TRUSTED_COMPANIES = {
-    "dsm", "kemin", "novozymes", "basf", "dupont", "evonik",
-    "adm", "cargill", "AB vista", "alltech",
-}
-
-BREED_STANDARD_SOURCES = {
-    "aviagen", "cobb", "pic", "hendrix", "hy-line", "lohmann",
-}
-
-OFFICIAL_SOURCES = {
-    "efsa", "fao", "who", "usda", "coa", "council of agriculture",
-}
-
-TRADE_MEDIA = {
-    "feednavigator", "wattagnet", "wattpoultry", "pigprogress",
-    "aquaculturemag", "the fish site", "global aquaculture advocate",
-    "poultry world", "feedstuffs",
-}
-
-NOISE_INDICATORS = {
-    "blog", "forum", "reddit", "facebook", "twitter", "instagram",
-    "linkedin post", "wechat", "weibo",
-}
+# L1 雜訊域名
+L1_DOMAINS = ["blogspot","wordpress","medium.com","reddit","quora","zhihu"]
 
 
-def score_paper(paper: dict) -> int:
-    """
-    Score a single paper 1-5.
-    Returns credibility level integer.
-    """
-    title = (paper.get("title") or "").lower()
-    abstract = (paper.get("abstract") or "").lower()
-    journal = (paper.get("journal") or "").lower()
-    source = (paper.get("source") or "").lower()
-    citation_count = paper.get("citation_count") or 0
-    year = paper.get("year") or 9999
-    authors = " ".join(paper.get("authors") or []).lower()
-    url = (paper.get("url") or "").lower()
+def score(paper: dict) -> int:
+    title  = (paper.get("title","") or "").lower()
+    ab     = (paper.get("abstract","") or "").lower()
+    url    = (paper.get("source_url","") or "").lower()
+    stype  = paper.get("source_type","")
+    cites  = paper.get("citation_count") or 0
+    year   = paper.get("year") or 0
 
-    combined_text = f"{title} {abstract} {journal} {source} {authors} {url}"
+    # L1：雜訊
+    if any(d in url for d in L1_DOMAINS):
+        return 1
+    if stype == "social":
+        return 1
+    if len(ab) < 80:
+        return 1
 
-    # Level 5: meta-analysis or official body
-    if "meta-analysis" in combined_text or "systematic review" in combined_text:
+    # L5：最高可信
+    if any(k in title for k in L5_TITLE_KEYWORDS):
         return 5
-    for src in OFFICIAL_SOURCES:
-        if src in combined_text:
-            return 5
-    for src in BREED_STANDARD_SOURCES:
-        if src in combined_text:
-            return 5
+    if any(d in url for d in L5_SOURCE_DOMAINS):
+        return 5
 
-    # Level 4: highly cited classic OR high-IF journal OR trusted company
-    if citation_count >= 50 and year <= 2015:
-        return 4
-    for j in HIGH_IF_JOURNALS:
-        if j in journal:
+    # L4：高可信
+    if stype == "paper":
+        if cites >= 50 and year <= 2015:
             return 4
-    for company in TRUSTED_COMPANIES:
-        if company in combined_text:
+        if any(j in ab or j in title for j in L4_JOURNALS):
+            return 4
+    if stype == "whitepaper":
+        if any(s in url or s in ab for s in L4_SUPPLIERS):
             return 4
 
-    # Level 1: noise
-    for noise in NOISE_INDICATORS:
-        if noise in combined_text:
-            return 1
-
-    # Level 3: trade media or academic source (pubmed/europepmc default)
-    for media in TRADE_MEDIA:
-        if media in combined_text:
-            return 3
-    if source in ("pubmed", "europepmc", "lens_scholarly"):
+    # L3：中可信
+    if stype == "paper":
+        return 3
+    if stype == "patent":
+        return 3
+    if stype == "industry_media":
         return 3
 
-    # Level 2: everything else (company claims, press releases)
-    return 2
+    # L2：低可信（廠商宣稱）
+    if stype == "vendor_claim":
+        return 2
 
-
-def score_batch(papers: list) -> list:
-    """Add credibility_level and credibility_weight fields to each paper."""
-    results = []
-    for p in papers:
-        level = score_paper(p)
-        p["credibility_level"] = level
-        p["credibility_weight"] = LEVEL_WEIGHTS[level]
-        results.append(p)
-    log.info("Scored %d papers. Distribution: %s", len(results),
-             {lvl: sum(1 for p in results if p["credibility_level"] == lvl)
-              for lvl in range(1, 6)})
-    return results
-
-
-def filter_by_level(papers: list, min_level: int = QUERY_DEFAULT_MIN) -> list:
-    """Filter papers to only those at or above min_level."""
-    return [p for p in papers if p.get("credibility_level", 0) >= min_level]
+    return 2  # 預設
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Score paper credibility")
-    parser.add_argument("--input", default="raw_papers.json")
-    parser.add_argument("--output", default="raw_papers.json")
-    parser.add_argument("--dry-run", action="store_true")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input",  default="/tmp/raw_papers_collected.json")
+    parser.add_argument("--output", default="/tmp/raw_papers_scored.json")
     args = parser.parse_args()
 
-    with open(args.input, "r", encoding="utf-8") as f:
-        papers = json.load(f)
+    data = json.loads(Path(args.input).read_text(encoding="utf-8"))
+    papers = data.get("papers", [])
 
-    log.info("Loaded %d papers from %s", len(papers), args.input)
-    scored = score_batch(papers)
-    storable = [p for p in scored if p["credibility_level"] >= STORE_THRESHOLD]
-    log.info("Storable (level >= %d): %d / %d", STORE_THRESHOLD, len(storable), len(scored))
+    dist = {1:0, 2:0, 3:0, 4:0, 5:0}
+    for p in papers:
+        lvl = score(p)
+        p["credibility"] = lvl
+        dist[lvl] += 1
 
-    if not args.dry_run:
-        with open(args.output, "w", encoding="utf-8") as f:
-            json.dump(scored, f, ensure_ascii=False, indent=2)
-        log.info("Written scored papers to %s", args.output)
-    else:
-        log.info("[dry-run] Skipped writing output.")
+    # L1 標記為 category E（skip embedding）
+    for p in papers:
+        if p["credibility"] == 1:
+            p["skip"] = True
+
+    data["papers"] = papers
+    data["credibility_dist"] = dist
+    Path(args.output).write_text(
+        json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+    log.info(f"Scored {len(papers)} papers")
+    for lvl in range(5,0,-1):
+        log.info(f"  L{lvl}: {dist[lvl]}")
 
 
 if __name__ == "__main__":
