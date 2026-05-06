@@ -1,378 +1,338 @@
 species:
-  boar:
-    label: "Boar"
-    metrics: [sperm_motility, semen_volume, abnormality_rate]
-    units:
-      sperm_motility: "%"
-      semen_volume: "mL"
-      abnormality_rate: "%"
-
-  pregnant_sow:
-    label: "Pregnant Sow"
-    metrics: [healthy_piglet_rate, birth_weight_uniformity, weak_piglet_rate]
-    units:
-      healthy_piglet_rate: "%"
-      birth_weight_uniformity: "%"
-      weak_piglet_rate: "%"
-
-  lactating_sow:
-    label: "Lactating Sow"
-    metrics: [grade_a_weaner_rate, weaning_weight_uniformity, sow_weight_loss]
-    units:
-      grade_a_weaner_rate: "%"
-      weaning_weight_uniformity: "%"
-      sow_weight_loss: "kg"
-
-  nursery_pig:
-    label: "Nursery Pig"
-    metrics: [ADG, FCR, diarrhea_rate]
-    units:
-      ADG: "g/day"
-      FCR: "ratio"
-      diarrhea_rate: "%"
-
-  finisher_pig:
-    label: "Finisher Pig (>80kg)"
-    metrics: [FCR, carcass_rate, live_weight, slaughter_cost_per_kg,
-              slaughter_price_per_kg, litter_size, healthy_piglet_count,
-              healthy_piglet_weight, healthy_piglet_price]
-    units:
-      FCR: "ratio"
-      carcass_rate: "%"
-      live_weight: "kg"
-      slaughter_cost_per_kg: "CNY/kg"
-      slaughter_price_per_kg: "CNY/kg"
-      litter_size: "head"
-      healthy_piglet_count: "head"
-      healthy_piglet_weight: "kg"
-      healthy_piglet_price: "CNY/head"
+  broiler:
+    label: "Broiler / Native Chicken"
+    metrics: [FCR, breast_yield_pct, carcass_rate_pct, mortality_rate, ADG, live_weight]
+    roi_primary: [FCR, mortality_rate]
+    units: {FCR: "ratio", breast_yield_pct: "%", carcass_rate_pct: "%",
+            mortality_rate: "%", ADG: "g/day", live_weight: "g"}
 
   layer_hen:
     label: "Layer Hen"
-    metrics: [laying_rate, FCR_egg, mortality_rate, peak_duration_weeks,
-              egg_price_per_500g, eggshell_strength]
-    units:
-      laying_rate: "%"
-      FCR_egg: "ratio"
-      mortality_rate: "%"
-      peak_duration_weeks: "weeks"
-      egg_price_per_500g: "CNY/500g"
-      eggshell_strength: "N"
-
-  broiler:
-    label: "Broiler / Native Chicken"
-    metrics: [breast_yield_pct, carcass_rate_pct, FCR,
-              live_price_per_500g, mortality_rate]
-    units:
-      breast_yield_pct: "%"
-      carcass_rate_pct: "%"
-      FCR: "ratio"
-      live_price_per_500g: "CNY/500g"
-      mortality_rate: "%"
+    metrics: [egg_feed_ratio, laying_rate, peak_duration_weeks, mortality_rate,
+              eggshell_strength, egg_weight_g, hen_day_production]
+    roi_primary: [egg_feed_ratio, laying_rate]
+    roi_note: "料蛋比+產蛋率是蛋雞ROI兩個核心驅動指標"
+    units: {egg_feed_ratio: "ratio", laying_rate: "%", peak_duration_weeks: "weeks",
+            mortality_rate: "%", eggshell_strength: "N", egg_weight_g: "g",
+            hen_day_production: "%"}
 
   breeder_chicken:
-    label: "Breeder Chicken"
-    metrics: [fertility_rate, hatchability, healthy_chick_rate]
-    units:
-      fertility_rate: "%"
-      hatchability: "%"
-      healthy_chick_rate: "%"
+    label: "Broiler Breeder"
+    metrics: [fertility_rate, hatchability, healthy_chick_rate, chicks_per_hen_housed]
+    roi_primary: [hatchability, chicks_per_hen_housed]
+    units: {fertility_rate: "%", hatchability: "%", healthy_chick_rate: "%",
+            chicks_per_hen_housed: "head/hen"}
+
+  duck:
+    label: "Meat Duck (Pekin)"
+    metrics: [FCR, ADG, live_weight, mortality_rate]
+    roi_primary: [FCR, mortality_rate]
+    units: {FCR: "ratio", ADG: "g/day", live_weight: "g", mortality_rate: "%"}
+
+  goose:
+    label: "Goose"
+    metrics: [FCR, live_weight, mortality_rate]
+    roi_primary: [FCR]
+    units: {FCR: "ratio", live_weight: "g", mortality_rate: "%"}
+
+  suckling_piglet:
+    label: "Suckling Piglet (Birth to Weaning)"
+    metrics: [pre_weaning_mortality, weaning_weight, birth_weight, ADG, litter_weaning_rate]
+    roi_primary: [pre_weaning_mortality, weaning_weight]
+    roi_note: "哺乳期死亡率和斷奶體重直接影響後期效率"
+    units: {pre_weaning_mortality: "%", weaning_weight: "kg", birth_weight: "kg",
+            ADG: "g/day", litter_weaning_rate: "%"}
+
+  nursery_pig:
+    label: "Nursery Pig (7-25kg)"
+    metrics: [FCR, ADG, diarrhea_rate, mortality_rate, weaning_to_finish_days]
+    roi_primary: [FCR, diarrhea_rate, mortality_rate]
+    units: {FCR: "ratio", ADG: "g/day", diarrhea_rate: "%",
+            mortality_rate: "%", weaning_to_finish_days: "days"}
+
+  finisher_pig:
+    label: "Finisher Pig (>80kg)"
+    metrics: [FCR, ADG, live_weight, carcass_rate, mortality_rate, backfat_mm]
+    roi_primary: [FCR, ADG]
+    units: {FCR: "ratio", ADG: "g/day", live_weight: "kg",
+            carcass_rate: "%", mortality_rate: "%", backfat_mm: "mm"}
+
+  pregnant_sow:
+    label: "Pregnant Sow"
+    metrics: [litter_size, healthy_piglet_count, healthy_piglet_weight,
+              weak_piglet_rate, stillborn_rate, birth_weight_uniformity,
+              farrowing_rate, wean_to_estrus_days, npe_per_sow_year]
+    roi_primary: [healthy_piglet_count, healthy_piglet_weight, weak_piglet_rate]
+    roi_note: "健仔數×健仔體重×弱仔率是母豬ROI三角"
+    units: {litter_size: "head/litter", healthy_piglet_count: "head/litter",
+            healthy_piglet_weight: "kg", weak_piglet_rate: "%",
+            stillborn_rate: "%", birth_weight_uniformity: "%",
+            farrowing_rate: "%", wean_to_estrus_days: "days",
+            npe_per_sow_year: "head/sow/year"}
+
+  lactating_sow:
+    label: "Lactating Sow"
+    metrics: [grade_a_weaner_rate, weaning_weight_uniformity, sow_weight_loss,
+              milk_yield_kg_day, litter_gain_g_day]
+    roi_primary: [grade_a_weaner_rate, sow_weight_loss]
+    units: {grade_a_weaner_rate: "%", weaning_weight_uniformity: "%",
+            sow_weight_loss: "kg", milk_yield_kg_day: "kg/day",
+            litter_gain_g_day: "g/day"}
+
+  boar:
+    label: "Boar"
+    metrics: [sperm_motility, semen_volume, abnormality_rate, sperm_concentration]
+    roi_primary: [sperm_motility, abnormality_rate]
+    units: {sperm_motility: "%", semen_volume: "mL",
+            abnormality_rate: "%", sperm_concentration: "million/mL"}
+
+  beef_cattle:
+    label: "Beef Cattle"
+    metrics: [FCR, ADG, slaughter_weight, carcass_dressing_pct, rearing_cycle_days, marbling_score]
+    roi_primary: [FCR, ADG]
+    units: {FCR: "ratio", ADG: "kg/day", slaughter_weight: "kg",
+            carcass_dressing_pct: "%", rearing_cycle_days: "days", marbling_score: "score"}
+
+  dairy_cow:
+    label: "Dairy Cow"
+    metrics: [milk_yield_kg_per_day, 305d_milk_yield, fat_pct, protein_pct, SCC]
+    roi_primary: [milk_yield_kg_per_day, SCC]
+    units: {milk_yield_kg_per_day: "kg/day", 305d_milk_yield: "kg",
+            fat_pct: "%", protein_pct: "%", SCC: "cells/mL"}
+
+  meat_sheep:
+    label: "Meat Sheep"
+    metrics: [FCR, ADG, slaughter_weight, carcass_dressing_pct, lambing_rate]
+    roi_primary: [FCR, ADG]
+    units: {FCR: "ratio", ADG: "g/day", slaughter_weight: "kg",
+            carcass_dressing_pct: "%", lambing_rate: "%"}
+
+  wool_sheep:
+    label: "Wool Sheep (Merino)"
+    metrics: [wool_yield_kg, wool_fibre_diameter, staple_length_mm,
+              staple_strength_nkt, clean_fleece_pct, lambing_rate]
+    roi_primary: [wool_yield_kg, staple_strength_nkt]
+    roi_note: "產毛量×毛辮強度決定拍賣價格"
+    units: {wool_yield_kg: "kg/head/year", wool_fibre_diameter: "micron",
+            staple_length_mm: "mm", staple_strength_nkt: "N/ktex",
+            clean_fleece_pct: "%", lambing_rate: "%"}
+
+  meat_goat:
+    label: "Meat Goat"
+    metrics: [FCR, ADG, slaughter_weight]
+    roi_primary: [FCR, ADG]
+    units: {FCR: "ratio", ADG: "g/day", slaughter_weight: "kg"}
+
+  dairy_goat:
+    label: "Dairy Goat"
+    metrics: [milk_yield_kg_per_day, 305d_milk_yield]
+    roi_primary: [milk_yield_kg_per_day]
+    units: {milk_yield_kg_per_day: "kg/day", 305d_milk_yield: "kg"}
 
   shrimp:
-    label: "White Shrimp / Tiger Prawn"
-    metrics: [survival_rate, FCR, harvest_cycle_days,
-              vibrio_reduction_pct, EMS_resistance]
-    units:
-      survival_rate: "%"
-      FCR: "ratio"
-      harvest_cycle_days: "days"
-      vibrio_reduction_pct: "%"
-      EMS_resistance: "binary"
+    label: "White Shrimp (Vannamei)"
+    metrics: [FCR, survival_rate, harvest_cycle_days, ADG, vibrio_reduction_pct]
+    roi_primary: [survival_rate, FCR]
+    roi_note: "白蝦ROI：存活率×FCR，弧菌/EMS防控關鍵"
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days",
+            ADG: "g/day", vibrio_reduction_pct: "%"}
+
+  tiger_prawn:
+    label: "Tiger Prawn (Penaeus monodon)"
+    metrics: [FCR, survival_rate, harvest_cycle_days, market_weight]
+    roi_primary: [survival_rate, FCR]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days", market_weight: "g"}
+
+  giant_freshwater_prawn:
+    label: "Giant Freshwater Prawn (Macrobrachium)"
+    metrics: [FCR, survival_rate, harvest_cycle_days, market_weight]
+    roi_primary: [survival_rate, FCR]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days", market_weight: "g"}
 
   tilapia:
-    label: "Tilapia / Other Fish"
-    metrics: [survival_rate, FCR, harvest_cycle_days,
-              avg_body_weight_gain_pct, streptococcus_survival_rate]
-    units:
-      survival_rate: "%"
-      FCR: "ratio"
-      harvest_cycle_days: "days"
-      avg_body_weight_gain_pct: "%"
-      streptococcus_survival_rate: "%"
+    label: "Tilapia (Nile)"
+    metrics: [FCR, survival_rate, harvest_cycle_days, ADG, streptococcus_survival_rate]
+    roi_primary: [survival_rate, FCR]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days",
+            ADG: "g/day", streptococcus_survival_rate: "%"}
 
-  livestock:
-    label: "Beef Cattle / Dairy / Sheep"
-    metrics: [ADG_beef_pct, FCR_beef, slaughter_weight_kg,
-              rearing_cycle_days, rearing_cost_per_head,
-              milk_yield_kg_per_day, FCR_sheep]
-    units:
-      ADG_beef_pct: "%"
-      FCR_beef: "ratio"
-      slaughter_weight_kg: "kg"
-      rearing_cycle_days: "days"
-      rearing_cost_per_head: "CNY/head"
-      milk_yield_kg_per_day: "kg/day"
-      FCR_sheep: "ratio"
+  milkfish:
+    label: "Milkfish (Chanos chanos)"
+    metrics: [FCR, survival_rate, harvest_cycle_days, ADG]
+    roi_primary: [survival_rate, FCR]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days", ADG: "g/day"}
 
-# ══════════════════════════════════════════════════════════════════════════════
-# 目標2：市場情報蒐集架構（新增 2026-05-05）
-# 用途：銷售ROI工具 / 內部定價成本分析 / 競品B組對標
-# ══════════════════════════════════════════════════════════════════════════════
+  grey_mullet:
+    label: "Grey Mullet / Mullet"
+    metrics: [FCR, survival_rate, harvest_cycle_days, roe_yield_pct]
+    roi_primary: [roe_yield_pct, survival_rate]
+    roi_note: "台灣烏魚：卵巢率（烏魚子）是最高附加值指標"
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days", roe_yield_pct: "%"}
+
+  pangasius_catfish:
+    label: "Pangasius Catfish (Basa)"
+    metrics: [FCR, survival_rate, harvest_cycle_days, ADG]
+    roi_primary: [FCR, survival_rate]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days", ADG: "g/day"}
+
+  channel_catfish:
+    label: "Channel Catfish"
+    metrics: [FCR, survival_rate, harvest_cycle_days]
+    roi_primary: [FCR, survival_rate]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days"}
+
+  largemouth_catfish:
+    label: "Largemouth Catfish"
+    metrics: [FCR, survival_rate]
+    roi_primary: [FCR, survival_rate]
+    units: {FCR: "ratio", survival_rate: "%"}
+
+  largemouth_bass:
+    label: "Largemouth Bass"
+    metrics: [FCR, survival_rate, harvest_cycle_days, ADG]
+    roi_primary: [FCR, survival_rate]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days", ADG: "g/day"}
+
+  grass_carp:
+    label: "Grass Carp"
+    metrics: [FCR, survival_rate, harvest_cycle_days, ADG]
+    roi_primary: [FCR, survival_rate]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days", ADG: "g/day"}
+
+  grouper:
+    label: "Grouper (Epinephelus)"
+    metrics: [FCR, survival_rate, harvest_cycle_days]
+    roi_primary: [survival_rate, FCR]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days"}
+
+  atlantic_salmon:
+    label: "Atlantic Salmon"
+    metrics: [FCR, survival_rate, harvest_cycle_days, ADG]
+    roi_primary: [FCR, survival_rate]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days", ADG: "g/day"}
+
+  seabass:
+    label: "European Seabass"
+    metrics: [FCR, survival_rate, harvest_cycle_days]
+    roi_primary: [FCR, survival_rate]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days"}
+
+  rice_field_eel:
+    label: "Rice Field Eel"
+    metrics: [FCR, survival_rate, harvest_cycle_days]
+    roi_primary: [survival_rate, FCR]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days"}
+
+  pond_loach:
+    label: "Pond Loach (Misgurnus)"
+    metrics: [FCR, survival_rate, harvest_cycle_days]
+    roi_primary: [FCR, survival_rate]
+    units: {FCR: "ratio", survival_rate: "%", harvest_cycle_days: "days"}
+
+  mink:
+    label: "Mink"
+    metrics: [kit_survival_rate, kits_per_female, FCR, pelt_quality_grade_A_pct, grow_out_days]
+    roi_primary: [pelt_quality_grade_A_pct, kits_per_female]
+    units: {kit_survival_rate: "%", kits_per_female: "head/female",
+            FCR: "ratio", pelt_quality_grade_A_pct: "%", grow_out_days: "days"}
+
+  fox:
+    label: "Fox (Silver / Blue)"
+    metrics: [kits_per_female, pelt_quality_grade_A_pct, FCR]
+    roi_primary: [pelt_quality_grade_A_pct, kits_per_female]
+    units: {kits_per_female: "head/female", pelt_quality_grade_A_pct: "%", FCR: "ratio"}
+
+  rabbit:
+    label: "Rabbit"
+    metrics: [FCR, ADG, slaughter_weight, kits_per_doe_year, mortality_rate]
+    roi_primary: [FCR, kits_per_doe_year]
+    units: {FCR: "ratio", ADG: "g/day", slaughter_weight: "kg",
+            kits_per_doe_year: "head/doe/year", mortality_rate: "%"}
+
+  deer:
+    label: "Deer (Red Deer / Fallow)"
+    metrics: [velvet_yield_kg, FCR, ADG]
+    roi_primary: [velvet_yield_kg]
+    roi_note: "鹿茸是主要ROI來源"
+    units: {velvet_yield_kg: "kg/head/year", FCR: "ratio", ADG: "g/day"}
+
+  crocodile:
+    label: "Crocodile"
+    metrics: [FCR, survival_rate, harvest_cycle_days, skin_quality_grade_A_pct]
+    roi_primary: [skin_quality_grade_A_pct, survival_rate]
+    units: {FCR: "ratio", survival_rate: "%",
+            harvest_cycle_days: "days", skin_quality_grade_A_pct: "%"}
+
+  wild_boar_hybrid:
+    label: "Wild Boar Hybrid"
+    metrics: [FCR, ADG, slaughter_weight]
+    roi_primary: [FCR, ADG]
+    units: {FCR: "ratio", ADG: "g/day", slaughter_weight: "kg"}
+
 
 market_data:
-
-  # ── 地區定義 ──────────────────────────────────────────────────────────────
   regions:
     china:
-      - id: CN_north
-        label: "中國北方（華北/東北）"
-        provinces: ["河北","山東","遼寧","吉林","黑龍江","北京","天津","內蒙古"]
-      - id: CN_south
-        label: "中國南方（華南/西南）"
-        provinces: ["廣東","廣西","福建","海南","雲南","貴州","四川","重慶"]
-      - id: CN_central
-        label: "中國中部（華中/華東）"
-        provinces: ["湖南","湖北","江西","安徽","江蘇","浙江","上海","河南"]
-      - id: CN_northwest
-        label: "中國西北（新疆/甘肅）"
-        provinces: ["新疆","甘肅","陝西","寧夏","青海"]
+      - {id: CN_north,    label: "中國北方",  provinces: [河北, 山東, 遼寧, 吉林, 黑龍江]}
+      - {id: CN_south,    label: "中國南方",  provinces: [廣東, 廣西, 福建, 海南, 雲南, 四川]}
+      - {id: CN_central,  label: "中國中部",  provinces: [湖南, 湖北, 江蘇, 浙江, 安徽, 上海]}
+      - {id: CN_northwest,label: "中國西北",  provinces: [新疆, 甘肅, 陝西, 寧夏]}
     taiwan:
-      - id: TW_all
-        label: "台灣全島"
+      - {id: TW_all, label: "台灣全島"}
     sea:
-      - id: SEA_vietnam
-        label: "越南"
-      - id: SEA_thailand
-        label: "泰國"
-      - id: SEA_indonesia
-        label: "印尼"
-      - id: SEA_malaysia
-        label: "馬來西亞"
-      - id: SEA_philippines
-        label: "菲律賓"
+      - {id: SEA_vietnam,     label: "越南"}
+      - {id: SEA_thailand,    label: "泰國"}
+      - {id: SEA_indonesia,   label: "印尼"}
+      - {id: SEA_malaysia,    label: "馬來西亞"}
+      - {id: SEA_philippines, label: "菲律賓"}
 
-  # ── 各物種市場參數 ─────────────────────────────────────────────────────────
-  species_market_params:
+  source_priority:
+    - {type: gov_stats,          credibility: 5, label: "政府統計"}
+    - {type: vendor_whitepaper,  credibility: 5, label: "品種公司手冊"}
+    - {type: academic_background,credibility: 4, label: "學術論文"}
+    - {type: industry_media,     credibility: 3, label: "行業媒體"}
+    - {type: vendor_claim,       credibility: 2, label: "廠商宣稱"}
 
-    layer_hen:
-      label: "蛋雞市場參數"
-      kpis:
-        - id: laying_rate_benchmark
-          label: "產蛋率基準值"
-          unit: "%"
-          source_types: [gov_stats, industry_media, vendor_whitepaper]
-        - id: egg_feed_ratio
-          label: "蛋料比（蛋價/飼料價）"
-          unit: "ratio"
-          source_types: [gov_stats, industry_media]
-        - id: mortality_cull_rate
-          label: "死淘率"
-          unit: "%"
-          source_types: [industry_media, academic_background]
-        - id: peak_production_weeks
-          label: "產蛋峰值週期"
-          unit: "weeks"
-          source_types: [industry_media, academic_background]
-        - id: egg_price_per_500g
-          label: "雞蛋每斤價格"
-          unit: "CNY/500g"
-          source_types: [gov_stats, industry_media]
-          regions: [CN_north, CN_south, CN_central, TW_all, SEA_vietnam, SEA_thailand]
-
-    broiler:
-      label: "肉雞市場參數"
-      kpis:
-        - id: broiler_fcr_benchmark
-          label: "肉雞FCR基準值"
-          unit: "ratio"
-          source_types: [gov_stats, industry_media, vendor_whitepaper]
-        - id: broiler_live_price
-          label: "毛雞每斤收購價"
-          unit: "CNY/500g"
-          source_types: [gov_stats, industry_media]
-          regions: [CN_north, CN_south, CN_central, TW_all, SEA_vietnam, SEA_thailand]
-
-    finisher_pig:
-      label: "育肥豬市場參數（>80kg出欄）"
-      kpis:
-        - id: pig_fcr_benchmark
-          label: "育肥豬FCR基準值"
-          unit: "ratio"
-          source_types: [gov_stats, industry_media]
-        - id: pig_slaughter_weight
-          label: "出欄體重"
-          unit: "kg"
-          source_types: [gov_stats, industry_media]
-        - id: pig_rearing_cost
-          label: "養殖成本"
-          unit: "CNY/head"
-          source_types: [industry_media, vendor_whitepaper]
-        - id: pig_slaughter_price
-          label: "出欄價格"
-          unit: "CNY/kg"
-          source_types: [gov_stats, industry_media]
-          regions: [CN_north, CN_south, CN_central, TW_all]
-        - id: sow_litter_size
-          label: "母豬產仔數"
-          unit: "head/litter"
-          source_types: [gov_stats, industry_media, academic_background]
-        - id: healthy_piglet_count
-          label: "健仔數"
-          unit: "head/litter"
-          source_types: [industry_media, academic_background]
-        - id: healthy_piglet_weight
-          label: "健仔體重"
-          unit: "kg"
-          source_types: [industry_media, academic_background]
-        - id: healthy_piglet_price
-          label: "健仔價格"
-          unit: "CNY/head"
-          source_types: [industry_media]
-
-    livestock:
-      label: "肉牛/肉羊市場參數"
-      kpis:
-        - id: cattle_fcr_benchmark
-          label: "肉牛FCR基準值"
-          unit: "ratio"
-          source_types: [industry_media, academic_background]
-        - id: cattle_rearing_cycle
-          label: "養殖週期"
-          unit: "days"
-          source_types: [industry_media, academic_background]
-        - id: cattle_slaughter_weight
-          label: "出欄體重"
-          unit: "kg"
-          source_types: [gov_stats, industry_media]
-        - id: cattle_rearing_cost
-          label: "養殖成本"
-          unit: "CNY/head"
-          source_types: [industry_media]
-        - id: sheep_fcr_benchmark
-          label: "肉羊FCR基準值"
-          unit: "ratio"
-          source_types: [industry_media, academic_background]
-
-    aquaculture:
-      label: "魚蝦養殖市場參數"
-      kpis:
-        - id: aqua_fcr_benchmark
-          label: "魚蝦FCR基準值"
-          unit: "ratio"
-          source_types: [industry_media, academic_background]
-        - id: aqua_survival_rate
-          label: "育成率"
-          unit: "%"
-          source_types: [industry_media, gov_stats]
-        - id: aqua_harvest_cycle
-          label: "收成週期"
-          unit: "days"
-          source_types: [industry_media, academic_background]
-
-  # ── ROI 計算參數 ───────────────────────────────────────────────────────────
   roi_params:
-    note: >
-      用於銷售工具的 ROI 計算基礎數據。
-      比例範圍 1:3～1:8，禁止用百分比呈現。
-      所有價格數據需標記來源、地區、採集時間。
-    product_dose_per_ton: 20  # kg/噸全價飼料
+    product_dose_per_ton: 20
     roi_range_min: 3
     roi_range_max: 8
-    currency_display: [CNY, USD, THB, VND]  # 禁用 NTD
+    currency_display: [CNY, USD, THB, VND]
 
-  # ── 搜尋來源優先序 ─────────────────────────────────────────────────────────
-  source_priority:
-    - type: gov_stats
-      label: "政府統計報告"
-      examples: ["農業農村部","行政院農業部","FAO","泰國農業部"]
-      credibility: 5
-    - type: industry_media
-      label: "行業媒體"
-      examples: ["中國畜牧業","豬業科學","禽業科學","Water AQUA","Undercurrent News"]
-      credibility: 4
-    - type: vendor_whitepaper
-      label: "競品廠商白皮書/官網"
-      examples: ["DSM","Evonik","Novozymes","Kemin","Alltech"]
-      credibility: 3
-    - type: academic_background
-      label: "學術論文背景數據"
-      examples: ["Poultry Science","Animal Feed Science","Aquaculture"]
-      credibility: 4
 
 search_keywords:
   en:
-    # ── 原有：bacillus protease ───────────────────────────────────────────
     - "bacillus subtilis protease feed poultry"
     - "bacillus subtilis protease feed swine"
     - "bacillus subtilis protease feed aquaculture"
-    - "bacillus subtilis protease feed cattle"
     - "feed enzyme protease broiler FCR"
     - "feed enzyme protease layer eggshell"
     - "feed enzyme protease shrimp survival"
-    - "feed protease pig ADG"
     - "subtilisin animal feed performance"
-    - "serine protease feed additive livestock"
-    # ── 新增：LCFA / policosanol 動物效能 ────────────────────────────────
     - "octacosanol broiler performance FCR"
     - "octacosanol poultry feed additive"
     - "triacontanol feed livestock growth"
     - "policosanol animal feed performance"
-    - "very long chain fatty alcohol poultry"
     - "VLCFA animal nutrition broiler layer"
-    - "long chain fatty alcohol swine FCR"
-    - "wax alcohol feed additive livestock"
-    # ── 新增：MG / AGP-free 主軸 ─────────────────────────────────────────
-    - "Mycoplasma gallisepticum natural control"
-    - "Mycoplasma gallisepticum membrane disruption"
-    - "policosanol antimicrobial mechanism"
-    - "LCFA antimycoplasmal activity"
-    - "long chain fatty alcohol membrane fluidity bacteria"
-    - "AGP-free poultry natural alternative antibiotic"
-    - "antibiotic free broiler natural growth promoter"
-    - "membrane active compound Mycoplasma"
-    - "cell membrane physical intervention poultry pathogen"
-    - "tylosin alternative natural poultry"
-    - "enrofloxacin alternative broiler feed"
-    - "China antibiotic ban poultry feed additive 2020"
-    # ── 新增：astaxanthin 水產/畜牧 ──────────────────────────────────────
     - "astaxanthin shrimp survival FCR"
-    - "astaxanthin tilapia growth performance"
     - "astaxanthin poultry laying rate"
-    - "astaxanthin broiler oxidative stress"
-    # ── 新增：市場數據 ────────────────────────────────────────────────────
-    - "layer hen laying rate benchmark China 2024"
-    - "broiler FCR benchmark Southeast Asia"
-    - "pig FCR China finisher benchmark"
-    - "egg price China market 2024"
-    - "live pig price China 2024"
-    - "aquaculture FCR shrimp benchmark Asia"
-
+    - "Mycoplasma gallisepticum natural control"
+    - "policosanol antimicrobial mechanism"
+    - "AGP-free poultry natural alternative antibiotic"
+    - "layer hen egg feed ratio improvement"
+    - "layer hen laying rate feed additive trial"
+    - "sow healthy piglet count supplement trial"
+    - "shrimp survival rate feed additive vibrio"
   zh:
-    # ── 原有 ──────────────────────────────────────────────────────────────
     - "枯草芽孢杆菌 蛋白酶 饲料"
     - "二十八烷醇 饲料 肉鸡"
     - "虾青素 水产 饲料添加剂"
-    # ── 新增：MG / AGP-free ───────────────────────────────────────────────
-    - "鸡毒支原体 天然防控"
-    - "鸡毒支原体 细胞膜干预"
-    - "多廿八烷醇 抗菌 机制"
-    - "长链脂肪醇 抗支原体"
+    - "蛋雞 料蛋比 改善 飼料添加劑"
+    - "蛋鸡产蛋率 饲料添加剂 改善"
+    - "母猪 健仔数 营养 添加剂"
+    - "对虾 存活率 饲料 弧菌"
     - "无抗养殖 饲料添加剂 替代"
-    - "禁抗令 天然替代 肉鸡"
-    - "泰乐菌素替代 天然 饲料"
-    # ── 新增：市場數據 ────────────────────────────────────────────────────
-    - "蛋鸡产蛋率 行业基准 2024"
-    - "肉鸡FCR 中国 基准值"
-    - "育肥猪 出栏成本 2024"
-    - "鸡蛋价格 行情 2024"
-    - "毛猪价格 中国 2024"
-    - "对虾FCR 育成率 基准"
-    - "蛋料比 行情 华南 华北"
-    # ── 台灣/東南亞 ────────────────────────────────────────────────────────
-    - "蛋雞產蛋率 台灣 基準"
-    - "肉雞FCR 東南亞 基準"
-    - "泰国 肉鸡 饲料转化率"
-    - "越南 蛋鸡 生产性能"
+    - "鸡毒支原体 天然防控"
 
 settings:
   min_year: 1990
@@ -386,6 +346,5 @@ settings:
   store_threshold: 2
   query_default_min: 3
   highlight_threshold: 4
-  # 市場數據獨立存儲（不進 ChromaDB，存 SQLite market_data 表）
   market_data_db: "D:/LLM/knowledge/market/market_data.db"
   market_data_min_credibility: 3

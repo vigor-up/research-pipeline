@@ -28,83 +28,320 @@ ROI_RATIO_MAX           = 8       # 最高 1:8
 # ── 各物種 FCR 改善預期（基於文獻/田間試驗）─────────────────────────────────
 # 格式：{species: {kpi_id: improvement_pct}}
 IMPROVEMENT_TABLE = {
+    # ── 家禽 ──────────────────────────────────────────────────────────────────
     "broiler": {
-        "FCR":             0.05,   # FCR 改善 5%
-        "breast_yield_pct": 0.03,  # 胸肉率 +3%
-        "carcass_rate_pct": 0.02,  # 屠體率 +2%
-        "mortality_rate":  -0.15,  # 死亡率 -15%
+        "FCR":              0.05,   # 飼料轉化率 -5%
+        "breast_yield_pct": 0.03,   # 胸肉率 +3%
+        "carcass_rate_pct": 0.02,   # 屠體率 +2%
+        "mortality_rate":  -0.15,   # 死亡率 -15%
     },
     "layer_hen": {
-        "laying_rate":          0.04,   # 產蛋率 +4%
-        "FCR":                 0.05,   # 蛋料比改善 5%
-        "egg_feed_ratio":      0.05,
-        "peak_duration_weeks": 0.10,   # 高峰期延長 10%
-        "mortality_rate":     -0.15,
+        # 料蛋比 + 產蛋率 = 蛋雞 ROI 兩個核心驅動
+        "egg_feed_ratio":       0.05,   # 料蛋比改善 5%（核心ROI指標1：節省飼料成本）
+        "laying_rate":          0.04,   # 產蛋率 +4%（核心ROI指標2：直接增加收入）
+        "peak_duration_weeks":  0.10,   # 高峰期延長 10%（長期收益）
+        "mortality_rate":      -0.15,   # 死亡率 -15%
+    },
+    "breeder_chicken": {
+        "fertility_rate":    0.02,
+        "hatchability":      0.03,
+        "healthy_chick_rate":0.02,
+    },
+    "duck": {
+        "FCR":           0.05,
+        "live_weight":   0.03,
+        "mortality_rate":-0.15,
+    },
+    # ── 豬 ────────────────────────────────────────────────────────────────────
+    "suckling_piglet": {
+        "pre_weaning_mortality": -0.20,  # 死亡率 -20%
+        "weaning_weight":         0.05,  # 斷奶體重 +5%
+        "litter_weaning_rate":    0.03,  # 存活率 +3%
+    },
+    "nursery_pig": {
+        "FCR":           0.05,
+        "ADG":           0.05,
+        "diarrhea_rate": -0.20,
+        "mortality_rate":-0.20,
     },
     "finisher_pig": {
-        "FCR":                  0.05,
-        "carcass_rate":         0.02,
-        "slaughter_weight_kg":  0.03,
+        "FCR":              0.05,
+        "carcass_rate":     0.02,
+        "ADG":              0.04,
+        "mortality_rate":  -0.15,
     },
     "pregnant_sow": {
-        "healthy_piglet_rate":       0.05,
-        "birth_weight_uniformity":   0.05,
-        "weak_piglet_rate":         -0.20,
+        "healthy_piglet_count":   0.05,  # 健仔數 +5%
+        "healthy_piglet_weight":  0.04,  # 健仔體重 +4%
+        "weak_piglet_rate":      -0.20,  # 弱仔率 -20%
+        "stillborn_rate":        -0.15,  # 死胎率 -15%
+        "farrowing_rate":         0.02,  # 分娩率 +2%
     },
     "lactating_sow": {
         "grade_a_weaner_rate":       0.05,
         "weaning_weight_uniformity": 0.04,
         "sow_weight_loss":          -0.10,
+        "milk_yield_kg_day":         0.04,
     },
+    "boar": {
+        "sperm_motility":   0.05,
+        "abnormality_rate":-0.15,
+    },
+    # ── 牛 ────────────────────────────────────────────────────────────────────
+    "beef_cattle": {
+        "FCR":    0.05,
+        "ADG":    0.05,
+        "carcass_dressing_pct": 0.02,
+    },
+    "dairy_cow": {
+        "milk_yield_kg_per_day": 0.04,
+        "fat_pct":               0.03,
+        "SCC":                  -0.15,  # 體細胞數 -15% = 乳房炎減少
+    },
+    # ── 羊 ────────────────────────────────────────────────────────────────────
+    "meat_sheep": {
+        "FCR":    0.05,
+        "ADG":    0.05,
+    },
+    "wool_sheep": {
+        "wool_yield_kg":     0.05,
+        "staple_strength_nkt":0.05,
+        "lambing_rate":      0.03,
+    },
+    "meat_goat": {
+        "FCR": 0.05,
+        "ADG": 0.05,
+    },
+    "dairy_goat": {
+        "milk_yield_kg_per_day": 0.04,
+    },
+    # ── 蝦 ────────────────────────────────────────────────────────────────────
     "shrimp": {
         "survival_rate":        0.08,
-        "FCR":                 0.05,
+        "FCR":                  0.05,
         "vibrio_reduction_pct": 0.20,
     },
-    "tilapia": {
-        "survival_rate":             0.06,
-        "avg_body_weight_gain_pct":  0.05,
-        "FCR":                      0.05,
+    "tiger_prawn": {
+        "survival_rate": 0.07,
+        "FCR":           0.05,
     },
-    "livestock": {
-        "ADG_beef_pct":        0.05,
-        "FCR_beef":           0.05,
-        "milk_yield_kg_per_day": 0.04,
-        "FCR_sheep":          0.05,
+    "giant_freshwater_prawn": {
+        "survival_rate": 0.07,
+        "FCR":           0.05,
+    },
+    # ── 魚 ────────────────────────────────────────────────────────────────────
+    "tilapia": {
+        "survival_rate":  0.06,
+        "FCR":            0.05,
+        "ADG":            0.05,
+    },
+    "milkfish": {
+        "survival_rate":  0.05,
+        "FCR":            0.05,
+    },
+    "grey_mullet": {
+        "survival_rate":  0.05,
+        "FCR":            0.05,
+        "roe_yield_pct":  0.05,
+    },
+    "pangasius_catfish": {
+        "survival_rate":  0.06,
+        "FCR":            0.05,
+    },
+    "channel_catfish": {
+        "survival_rate":  0.06,
+        "FCR":            0.05,
+    },
+    "largemouth_catfish": {
+        "survival_rate":  0.06,
+        "FCR":            0.05,
+    },
+    "largemouth_bass": {
+        "survival_rate":  0.06,
+        "FCR":            0.05,
+    },
+    "grass_carp": {
+        "survival_rate":  0.05,
+        "FCR":            0.05,
+    },
+    "grouper": {
+        "survival_rate":  0.07,
+        "FCR":            0.05,
+    },
+    "atlantic_salmon": {
+        "survival_rate":  0.05,
+        "FCR":            0.04,
+        "ADG":            0.05,
+    },
+    "seabass": {
+        "survival_rate":  0.05,
+        "FCR":            0.05,
+    },
+    "rice_field_eel": {
+        "survival_rate":  0.07,
+        "FCR":            0.05,
+    },
+    "pond_loach": {
+        "survival_rate":  0.06,
+        "FCR":            0.05,
+    },
+    # ── 毛皮 ──────────────────────────────────────────────────────────────────
+    "mink": {
+        "kit_survival_rate":       0.05,
+        "kits_per_female":         0.04,
+        "pelt_quality_grade_A_pct":0.05,
+    },
+    "fox": {
+        "kits_per_female":         0.04,
+        "pelt_quality_grade_A_pct":0.05,
+    },
+    "rabbit": {
+        "FCR":              0.05,
+        "ADG":              0.05,
+        "mortality_rate":  -0.15,
+        "kits_per_doe_year":0.04,
+    },
+    # ── 特種 ──────────────────────────────────────────────────────────────────
+    "deer": {
+        "velvet_yield_kg": 0.08,
+        "ADG":             0.05,
+    },
+    "crocodile": {
+        "survival_rate":            0.05,
+        "skin_quality_grade_A_pct": 0.05,
+    },
+    "wild_boar_hybrid": {
+        "FCR": 0.05,
+        "ADG": 0.05,
     },
 }
 
 # ── KPI 顯示名稱 ──────────────────────────────────────────────────────────────
 KPI_LABELS = {
-    "FCR":                   "飼料轉化率 (FCR)",
-    "egg_feed_ratio":        "蛋料比",
-    "laying_rate":           "產蛋率",
-    "peak_duration_weeks":   "產蛋高峰期",
-    "mortality_rate":        "死亡率",
-    "breast_yield_pct":      "胸肉率",
-    "carcass_rate_pct":      "屠體率",
-    "carcass_rate":          "屠體率",
-    "slaughter_weight_kg":   "出欄體重",
-    "healthy_piglet_rate":   "健仔率",
-    "weak_piglet_rate":      "弱仔率",
-    "survival_rate":         "育成率",
-    "vibrio_reduction_pct":  "弧菌降低率",
-    "ADG_beef_pct":          "日增重",
-    "milk_yield_kg_per_day": "日產奶量",
-    "egg_price_per_500g":    "雞蛋價格",
-    "live_price_per_500g":   "毛雞收購價",
-    "slaughter_price_per_kg":"出欄豬價",
+    "FCR":                      "飼料轉化率 (FCR)",
+    "egg_feed_ratio":           "蛋料比",
+    "laying_rate":              "產蛋率",
+    "hen_day_production":       "當日產蛋率",
+    "peak_duration_weeks":      "產蛋高峰期",
+    "eggshell_strength":        "蛋殼強度",
+    "egg_weight_g":             "蛋重",
+    "mortality_rate":           "死亡率",
+    "breast_yield_pct":         "胸肉率",
+    "carcass_rate_pct":         "屠體率",
+    "carcass_rate":             "屠體率",
+    "carcass_dressing_pct":     "屠體率",
+    "slaughter_weight_kg":      "出欄體重",
+    "slaughter_weight":         "出欄體重",
+    "live_weight":              "出欄體重",
+    "ADG":                      "日增重",
+    "healthy_piglet_rate":      "健仔率",
+    "healthy_piglet_count":     "健仔數",
+    "healthy_piglet_weight":    "健仔體重",
+    "weak_piglet_rate":         "弱仔率",
+    "stillborn_rate":           "死胎率",
+    "birth_weight_uniformity":  "初生體重整齊度",
+    "litter_size":              "窩產仔數",
+    "farrowing_rate":           "分娩率",
+    "wean_to_estrus_days":      "斷奶至發情天數",
+    "npe_per_sow_year":         "每母豬年斷奶仔豬數",
+    "pre_weaning_mortality":    "哺乳期死亡率",
+    "weaning_weight":           "斷奶體重",
+    "litter_weaning_rate":      "哺乳期存活率",
+    "birth_weight":             "初生體重",
+    "grade_a_weaner_rate":      "優質斷奶仔豬率",
+    "weaning_weight_uniformity":"斷奶整齊度",
+    "sow_weight_loss":          "哺乳期母豬體重損失",
+    "milk_yield_kg_day":        "日產奶量",
+    "litter_gain_g_day":        "窩日增重",
+    "sperm_motility":           "精子活力",
+    "semen_volume":             "射精量",
+    "abnormality_rate":         "精子畸形率",
+    "milk_yield_kg_per_day":    "日產奶量",
+    "305d_milk_yield":          "305天泌乳量",
+    "fat_pct":                  "乳脂率",
+    "protein_pct":              "乳蛋白率",
+    "SCC":                      "體細胞數",
+    "conception_rate":          "受孕率",
+    "lambing_rate":             "產羔率",
+    "wool_yield_kg":            "羊毛產量",
+    "wool_fibre_diameter":      "羊毛纖維直徑",
+    "staple_length_mm":         "毛辮長度",
+    "staple_strength_nkt":      "毛辮強度",
+    "clean_fleece_pct":         "淨毛率",
+    "survival_rate":            "育成率/存活率",
+    "harvest_cycle_days":       "養殖週期",
+    "vibrio_reduction_pct":     "弧菌降低率",
+    "EMS_resistance":           "EMS抗性",
+    "stocking_density":         "放養密度",
+    "market_weight":            "收穫體重",
+    "roe_yield_pct":            "卵巢率（烏魚子）",
+    "streptococcus_survival_rate":"鏈球菌挑戰存活率",
+    "kit_survival_rate":        "仔獸存活率",
+    "kits_per_female":          "每母獸產仔數",
+    "kits_per_doe_year":        "每母兔年產仔數",
+    "pelt_quality_grade_A_pct": "頂級毛皮比例",
+    "grow_out_days":            "育成天數",
+    "velvet_yield_kg":          "鹿茸產量",
+    "skin_quality_grade_A_pct": "頂級皮革比例",
+    "fertility_rate":           "受精率",
+    "hatchability":             "孵化率",
+    "healthy_chick_rate":       "健雛率",
+    "chicks_per_hen_housed":    "每母雞產健雛數",
+    "marbling_score":           "大理石花紋評分",
+    "rearing_cycle_days":       "育肥週期",
+    "diarrhea_rate":            "腹瀉率",
+    "weaning_to_finish_days":   "保育天數",
+    "backfat_mm":               "背脂厚度",
 }
 
 SPECIES_LABELS = {
-    "broiler":       "肉雞",
-    "layer_hen":     "蛋雞",
-    "finisher_pig":  "育肥豬",
-    "pregnant_sow":  "懷孕母豬",
-    "lactating_sow": "哺乳母豬",
-    "shrimp":        "白蝦/對蝦",
-    "tilapia":       "吳郭魚/羅非魚",
-    "livestock":     "肉牛/奶牛/肉羊",
+    # 家禽
+    "broiler":              "肉雞",
+    "layer_hen":            "蛋雞",
+    "breeder_chicken":      "種雞",
+    "duck":                 "肉鴨",
+    "goose":                "鵝",
+    # 豬
+    "suckling_piglet":      "哺乳仔豬",
+    "nursery_pig":          "保育豬",
+    "finisher_pig":         "育肥豬",
+    "pregnant_sow":         "懷孕母豬",
+    "lactating_sow":        "哺乳母豬",
+    "boar":                 "公豬",
+    # 牛
+    "beef_cattle":          "肉牛",
+    "dairy_cow":            "奶牛",
+    # 羊
+    "meat_sheep":           "肉羊",
+    "wool_sheep":           "取毛綿羊",
+    "meat_goat":            "肉山羊",
+    "dairy_goat":           "乳山羊",
+    # 蝦
+    "shrimp":               "南美白對蝦",
+    "tiger_prawn":          "草蝦/斑節對蝦",
+    "giant_freshwater_prawn":"淡水長臂大蝦（泰國蝦）",
+    # 魚
+    "tilapia":              "吳郭魚/羅非魚",
+    "milkfish":             "虱目魚",
+    "grey_mullet":          "烏魚/鯔魚",
+    "pangasius_catfish":    "巴沙魚/越南鯰",
+    "channel_catfish":      "斑點叉尾鮰",
+    "largemouth_catfish":   "大口鯰",
+    "largemouth_bass":      "加州鱸",
+    "grass_carp":           "草魚",
+    "grouper":              "石斑魚",
+    "atlantic_salmon":      "大西洋鮭",
+    "seabass":              "海鱸",
+    "rice_field_eel":       "黃鱔",
+    "pond_loach":           "泥鰍",
+    # 毛皮
+    "mink":                 "水貂",
+    "fox":                  "狐",
+    "rabbit":               "兔",
+    # 特種
+    "deer":                 "鹿",
+    "crocodile":            "鱷魚",
+    "wild_boar_hybrid":     "野豬雜交",
 }
 
 REGION_LABELS = {
@@ -183,31 +420,80 @@ def calculate_roi(species: str, region: str, conn) -> dict:
         revenue_per_ton = None
         price_bench = get_price_benchmark(conn, species, region)
 
-        if price_bench and kpi_id in ("FCR", "egg_feed_ratio"):
-            # FCR 改善 → 每噸飼料少用多少 → 節省飼料成本
-            # 簡化：FCR 改善 X% → 同樣產出少吃 X% 飼料
-            feed_cost = get_benchmark(conn, species, "feed_cost_per_ton", region)
-            if feed_cost:
-                saved_feed = feed_cost["value"] * abs(improvement_pct)
-                revenue_per_ton = saved_feed
-            else:
-                # 用市場均價估算（CNY 2,800/噸 飼料成本）
-                revenue_per_ton = 2800 * abs(improvement_pct)
+        # ── ROI 金額估算（每噸飼料）────────────────────────────────────────
+        # 蛋雞：料蛋比是核心 — 改善5% = 同產出省5%飼料成本
+        # 蛋雞：產蛋率是核心 — +4% = 多產4顆蛋/百隻/天
+        # 無市場價格時用保守行業均值估算
+        FEED_COST_DEFAULTS = {
+            # 物種: 每噸飼料成本（CNY）
+            "layer_hen":      3200,   # 蛋雞料
+            "broiler":        3000,   # 肉雞料
+            "finisher_pig":   2800,   # 豬料
+            "nursery_pig":    3500,
+            "suckling_piglet":4500,
+            "beef_cattle":    2600,
+            "dairy_cow":      2800,
+            "shrimp":         7000,   # 蝦料高
+            "tilapia":        4500,
+            "default":        3000,
+        }
+        feed_cost_default = FEED_COST_DEFAULTS.get(species, FEED_COST_DEFAULTS["default"])
+        feed_cost_bench = get_benchmark(conn, species, "feed_cost_per_ton", region)
+        feed_cost = feed_cost_bench["value"] if feed_cost_bench else feed_cost_default
 
-        elif kpi_id == "laying_rate" and price_bench:
-            # 產蛋率提升 → 多產蛋 → 多收益
-            # 每隻雞每天多產 improvement_pct 顆蛋
-            # 每噸飼料約養 200 隻雞（簡化）
-            birds_per_ton = 200
-            egg_price = price_bench["value"]  # CNY/500g
-            # 每隻每天多 0.04 顆蛋，每顆蛋約 60g
-            extra_egg_per_bird_day = 0.04
-            extra_revenue_per_bird_day = extra_egg_per_bird_day * (60/500) * egg_price
-            revenue_per_ton = extra_revenue_per_bird_day * birds_per_ton * 30  # 月收益
+        if kpi_id == "egg_feed_ratio":
+            # 料蛋比改善 X% → 每噸飼料省 X% 飼料成本
+            # 例：料蛋比 2.1→2.205，改善5% → 省 CNY 3200×5% = 160元/噸
+            revenue_per_ton = feed_cost * abs(improvement_pct)
 
-        elif kpi_id == "survival_rate" and price_bench:
+        elif kpi_id == "laying_rate":
+            # 產蛋率 +4% → 每噸飼料（養約180隻蛋雞）多 180×0.04=7.2顆蛋/天
+            # 每顆蛋重63g，蛋價 CNY 5.5/500g = 0.0693元/g
+            # 月多收益 = 7.2顆 × 63g × (5.5/500) × 30天 ≈ 150元/噸
+            birds_per_ton = 180
+            egg_price_per_500g = 5.5   # 中國南方均值，無市場數據時使用
+            if price_bench:
+                egg_price_per_500g = price_bench["value"]
+            extra_eggs_per_day = birds_per_ton * improvement_pct
+            revenue_per_day = extra_eggs_per_day * 63 / 500 * egg_price_per_500g
+            revenue_per_ton = revenue_per_day * 30  # 月收益換算
+
+        elif kpi_id in ("FCR",) and species != "layer_hen":
+            # 非蛋雞的 FCR 改善 = 省飼料成本
+            revenue_per_ton = feed_cost * abs(improvement_pct)
+
+        elif kpi_id == "survival_rate":
+            # 存活率提升 = 少損失動物
+            # 用飼料成本×改善幅度作保守估算
+            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.5
+
+        elif kpi_id in ("healthy_piglet_count", "kits_per_female", "kits_per_doe_year",
+                        "litter_size", "npe_per_sow_year"):
+            # 產仔數提升 = 直接增加收入（保守：飼料成本的倍數）
+            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.8
+
+        elif kpi_id in ("milk_yield_kg_per_day", "milk_yield_kg_day",
+                        "305d_milk_yield", "wool_yield_kg", "velvet_yield_kg",
+                        "roe_yield_pct"):
+            # 產品量提升 = 直接收益
+            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.6
+
+        elif kpi_id in ("mortality_rate", "pre_weaning_mortality", "diarrhea_rate",
+                        "weak_piglet_rate", "stillborn_rate"):
+            # 死亡率降低 = 少損失（以飼料成本的10%保守估算）
+            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.3
+
+        elif kpi_id in ("peak_duration_weeks", "harvest_cycle_days"):
+            # 週期延長/縮短 = 間接收益（保守）
+            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.2
+
+        elif kpi_id in ("pelt_quality_grade_A_pct", "skin_quality_grade_A_pct"):
+            # 皮毛品質提升 = 直接溢價
+            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.8
+
+        if price_bench and kpi_id == "survival_rate":
             price = price_bench["value"]
-            revenue_per_ton = abs(improvement_pct) * price * 50  # 估算每噸養殖數量
+            revenue_per_ton = abs(improvement_pct) * price * 50
 
         results.append({
             "kpi_id":           kpi_id,
