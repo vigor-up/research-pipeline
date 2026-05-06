@@ -38,8 +38,37 @@ jobs:
           pip install httpx boto3 pyyaml beautifulsoup4 \
                       feedparser lxml tenacity python-dateutil
 
+      # ── Step 0: 從 R2 拉最新 DB（若存在），否則建新的 ──────────────────────
+      - name: Pull market_data.db from R2
+        env:
+          R2_ACCESS_KEY_ID:     ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID:        ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET:            ${{ secrets.R2_BUCKET }}
+        run: |
+          python - <<'EOF'
+          import boto3, os
+          from pathlib import Path
+
+          db_path = Path("/tmp/market_data.db")
+          s3 = boto3.client(
+              "s3",
+              endpoint_url=f"https://{os.environ['R2_ACCOUNT_ID']}.r2.cloudflarestorage.com",
+              aws_access_key_id=os.environ["R2_ACCESS_KEY_ID"],
+              aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
+              region_name="auto",
+          )
+          try:
+              s3.download_file(os.environ["R2_BUCKET"], "market_data/market_data.db", str(db_path))
+              import sqlite3
+              count = sqlite3.connect(db_path).execute("SELECT COUNT(*) FROM market_kpi").fetchone()[0]
+              print(f"Pulled existing DB: {count} rows")
+          except Exception as e:
+              print(f"No existing DB on R2 ({e}), will create fresh")
+              db_path.unlink(missing_ok=True)
+          EOF
+
       # ── Step 1: 學術論文蒐集 ────────────────────────────────────────────────
-      # configs/ 直接從 repo checkout 讀取，無需從 R2 下載
       - name: Run paper collector
         env:
           SEMANTIC_SCHOLAR_KEY: ${{ secrets.SEMANTIC_SCHOLAR_KEY }}
@@ -69,14 +98,103 @@ jobs:
           python collect/push_to_r2.py \
             --input /tmp/raw_papers_scored.json
 
-      # ── Step 2: 市場數據蒐集 ────────────────────────────────────────────────
+      # ── Step 2: Seed 靜態基準值進 DB ────────────────────────────────────────
+      - name: Seed benchmarks into DB
+        if: ${{ github.event.inputs.skip_market != 'true' }}
+        run: |
+          python - <<'EOF'
+          import importlib.util, sqlite3, pathlib, sys
+          from datetime import datetime
+
+          DB_PATH = pathlib.Path("/tmp/market_data.db")
+
+          # 建表（若不存在）
+          conn = sqlite3.connect(DB_PATH)
+          conn.executescript("""
+          CREATE TABLE IF NOT EXISTS market_kpi (
+              id              TEXT PRIMARY KEY,
+              region          TEXT NOT NULL DEFAULT 'GLOBAL',
+              country         TEXT NOT NULL DEFAULT '',
+              species         TEXT NOT NULL,
+              production_stage TEXT,
+              kpi_id          TEXT NOT NULL,
+              value           REAL NOT NULL,
+              value_min       REAL,
+              value_max       REAL,
+              unit            TEXT NOT NULL,
+              year            INTEGER NOT NULL DEFAULT 2022,
+              credibility     INTEGER NOT NULL DEFAULT 3
+                              CHECK(credibility BETWEEN 1 AND 5),
+              source_type     TEXT NOT NULL DEFAULT 'academic_background'
+                              CHECK(source_type IN (
+                                  'gov_stats','industry_media','vendor_whitepaper',
+                                  'academic_background','market_report','social')),
+              source_url      TEXT NOT NULL DEFAULT '',
+              source_title    TEXT NOT NULL DEFAULT '',
+              raw_text        TEXT NOT NULL DEFAULT '',
+              language        TEXT NOT NULL DEFAULT 'en',
+              confirmed       INTEGER NOT NULL DEFAULT 0,
+              updated_at      TEXT NOT NULL
+          );
+          CREATE TABLE IF NOT EXISTS competitor_market (
+              id              TEXT PRIMARY KEY,
+              competitor_id   TEXT,
+              competitor_name TEXT,
+              region          TEXT DEFAULT 'GLOBAL',
+              market_claim    TEXT,
+              claim_metric    TEXT,
+              claim_value     REAL,
+              claim_unit      TEXT,
+              species         TEXT,
+              price_per_kg    REAL,
+              source_url      TEXT DEFAULT '',
+              source_type     TEXT DEFAULT 'vendor_whitepaper',
+              credibility     INTEGER DEFAULT 3,
+              year            INTEGER DEFAULT 2022,
+              raw_text        TEXT DEFAULT '',
+              confirmed       INTEGER DEFAULT 0,
+              collected_at    TEXT,
+              updated_at      TEXT
+          );
+          """)
+          conn.commit()
+          conn.close()
+
+          # 覆蓋 seed_benchmarks 的 DB_PATH 指向 /tmp/
+          spec = importlib.util.spec_from_file_location(
+              "seed_benchmarks", "local/seed_benchmarks.py"
+          )
+          mod = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+          mod.DB_PATH = DB_PATH
+
+          # source_type 映射（修正非法值）
+          SOURCE_TYPE_MAP = {
+              "field_survey":       "gov_stats",
+              "epidemiology":       "gov_stats",
+              "intervention_trial": "academic_background",
+              "baseline":           "academic_background",
+              "disease_penalty":    "academic_background",
+          }
+          for r in mod.BENCHMARKS:
+              st = r.get("source_type", "academic_background")
+              r["source_type"] = SOURCE_TYPE_MAP.get(st, st)
+
+          mod.seed(dry_run=False, species_filter="")
+          count = sqlite3.connect(DB_PATH).execute("SELECT COUNT(*) FROM market_kpi").fetchone()[0]
+          print(f"Seed complete: {count} rows in DB")
+          EOF
+
+      # ── Step 3: 市場數據蒐集（動態爬取，疊加進同一 DB）────────────────────
       - name: Run market data collector
         if: ${{ github.event.inputs.skip_market != 'true' }}
         env:
           FORCE_FULL: ${{ github.event.inputs.force_full || 'false' }}
+          MARKET_DB_PATH: /tmp/market_data.db
         run: |
           python collect/market_collector.py
 
+      # ── Step 4: 推送 DB + JSON 到 R2 ────────────────────────────────────────
       - name: Push market data to R2
         if: ${{ github.event.inputs.skip_market != 'true' }}
         env:
@@ -86,13 +204,13 @@ jobs:
           R2_BUCKET:            ${{ secrets.R2_BUCKET }}
         run: |
           python - <<'EOF'
-          import boto3, os, json
+          import boto3, os, json, sqlite3
           from datetime import datetime, timezone
           from pathlib import Path
 
-          data = Path("/tmp/market_data_collected.json").read_text(encoding="utf-8")
-          now  = datetime.now(timezone.utc)
-          week = now.strftime("%Y-W%W")
+          now    = datetime.now(timezone.utc)
+          week   = now.strftime("%Y-W%W")
+          bucket = os.environ["R2_BUCKET"]
 
           s3 = boto3.client(
               "s3",
@@ -101,21 +219,48 @@ jobs:
               aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
               region_name="auto",
           )
-          bucket = os.environ["R2_BUCKET"]
 
-          # 週次存檔
-          s3.put_object(Bucket=bucket,
-                        Key=f"market_data/{week}.json",
-                        Body=data.encode("utf-8"),
-                        ContentType="application/json")
-          # latest
-          s3.put_object(Bucket=bucket,
-                        Key="market_data/latest.json",
-                        Body=data.encode("utf-8"),
-                        ContentType="application/json")
+          # 1. 推 SQLite DB（本機可直接下載同步）
+          db_bytes = Path("/tmp/market_data.db").read_bytes()
+          s3.put_object(Bucket=bucket, Key="market_data/market_data.db",
+                        Body=db_bytes, ContentType="application/octet-stream")
+          s3.put_object(Bucket=bucket, Key=f"market_data/market_data_{week}.db",
+                        Body=db_bytes, ContentType="application/octet-stream")
 
-          parsed = json.loads(data)
-          print(f"Market data pushed: kpi={parsed['market_kpi_total']} competitor={parsed['competitor_total']}")
+          # 2. 推 JSON（向下相容舊格式）
+          conn = sqlite3.connect("/tmp/market_data.db")
+          conn.row_factory = sqlite3.Row
+          kpi_rows = [dict(r) for r in conn.execute("SELECT * FROM market_kpi WHERE confirmed=1").fetchall()]
+          comp_rows = []
+          try:
+              comp_rows = [dict(r) for r in conn.execute("SELECT * FROM competitor_market").fetchall()]
+          except: pass
+
+          # 動態爬取結果（market_collector 的輸出）
+          dynamic_path = Path("/tmp/market_data_collected.json")
+          if dynamic_path.exists():
+              dynamic = json.loads(dynamic_path.read_text(encoding="utf-8"))
+              dynamic_kpi  = dynamic.get("market_kpi", [])
+              dynamic_comp = dynamic.get("competitor_market", [])
+          else:
+              dynamic_kpi = dynamic_comp = []
+
+          output = {
+              "collected_at":      now.isoformat(),
+              "lookback_days":     35,
+              "market_kpi_total":  len(kpi_rows) + len(dynamic_kpi),
+              "competitor_total":  len(comp_rows) + len(dynamic_comp),
+              "market_kpi":        kpi_rows + dynamic_kpi,
+              "competitor_market": comp_rows + dynamic_comp,
+          }
+          data = json.dumps(output, ensure_ascii=False, default=str)
+          s3.put_object(Bucket=bucket, Key=f"market_data/{week}.json",
+                        Body=data.encode("utf-8"), ContentType="application/json")
+          s3.put_object(Bucket=bucket, Key="market_data/latest.json",
+                        Body=data.encode("utf-8"), ContentType="application/json")
+
+          print(f"Pushed DB: {len(db_bytes)//1024}KB")
+          print(f"Pushed JSON: kpi={output['market_kpi_total']} competitor={output['competitor_total']}")
           EOF
 
       # ── Summary ─────────────────────────────────────────────────────────────
@@ -123,12 +268,12 @@ jobs:
         if: always()
         run: |
           python - <<'EOF'
-          import json, os
+          import json, sqlite3
+          from pathlib import Path
 
           # 論文摘要
           try:
-              with open("/tmp/raw_papers_scored.json") as f:
-                  papers = json.load(f)
+              papers = json.loads(Path("/tmp/raw_papers_scored.json").read_text())
               p = papers.get("papers", [])
               by_src = {}
               for x in p:
@@ -140,20 +285,25 @@ jobs:
           except Exception as e:
               print(f"[Papers] summary error: {e}")
 
-          # 市場數據摘要
+          # DB 摘要
           try:
-              with open("/tmp/market_data_collected.json") as f:
-                  market = json.load(f)
-              print(f"\n[Market] KPI records: {market['market_kpi_total']}")
-              print(f"[Market] Competitor records: {market['competitor_total']}")
-
-              # 物種分布
-              species_dist = {}
-              for r in market.get("market_kpi", []):
-                  s = r.get("species","unknown")
-                  species_dist[s] = species_dist.get(s, 0) + 1
-              for k,v in sorted(species_dist.items()):
-                  print(f"  {k}: {v}")
+              conn = sqlite3.connect("/tmp/market_data.db")
+              total = conn.execute("SELECT COUNT(*) FROM market_kpi").fetchone()[0]
+              confirmed = conn.execute("SELECT COUNT(*) FROM market_kpi WHERE confirmed=1").fetchone()[0]
+              print(f"\n[DB] market_kpi total: {total} (confirmed: {confirmed})")
+              rows = conn.execute(
+                  "SELECT species, COUNT(*) FROM market_kpi GROUP BY species ORDER BY COUNT(*) DESC LIMIT 10"
+              ).fetchall()
+              for sp, cnt in rows:
+                  print(f"  {sp}: {cnt}")
           except Exception as e:
-              print(f"[Market] summary error: {e}")
+              print(f"[DB] summary error: {e}")
+
+          # 動態爬取摘要
+          try:
+              market = json.loads(Path("/tmp/market_data_collected.json").read_text())
+              print(f"\n[Crawler] KPI records: {market['market_kpi_total']}")
+              print(f"[Crawler] Competitor records: {market['competitor_total']}")
+          except Exception as e:
+              print(f"[Crawler] summary error: {e}")
           EOF
