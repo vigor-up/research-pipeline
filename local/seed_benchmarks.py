@@ -740,6 +740,37 @@ BENCHMARKS += [
 ]
 
 
+# batch1 2025-05-06
+BENCHMARKS += [
+    b("layer_hen","fcr_layer_cn_all",2.2,"kg_feed_per_kg_egg",value_min=2.0,value_max=2.4,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="中國畜牧業協會蛋雞養殖調研報告 2023",note="料蛋比，全周期平均"),
+    b("layer_hen","egg_production_rate_layer_cn_all",82.0,"percentage",value_min=75.0,value_max=90.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="農業農村部全國蛋雞生產形勢監測 2023",note="產蛋率，周期平均"),
+    b("layer_hen","mortality_layer_cn_all",6.0,"percentage",value_min=3.0,value_max=10.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="蛋雞產業技術體系調研 2023",note="全周期死淘率"),
+    b("layer_hen","adg_layer_cn_all",18.0,"g_per_day",value_min=15.0,value_max=22.0,region="CN_all",year=2023,credibility=3,source_type="academic_background",source_title="蛋雞育雛育成期生長標準 2022",note="育雛期日增重"),
+    b("layer_hen","mg_egg_loss_layer_cn_all",10.0,"percentage_points",value_min=5.0,value_max=15.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="雞毒支原體感染對產蛋影響田間調查 2021",note="MG感染後產蛋率下降"),
+    b("layer_hen","ai_h5n1_mortality_layer_cn_all",80.0,"percentage",value_min=50.0,value_max=100.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="農業農村部疫病監測報告 2022-2024",note="高致病性AI爆發期死亡率"),
+    b("layer_hen","nd_mortality_layer_cn_all",35.0,"percentage",value_min=15.0,value_max=50.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="新城疫流行病學調查 2021",note="未免疫新城疫死亡率"),
+    b("broiler","fcr_broiler_cn_all",1.65,"kg_feed_per_kg_gain",value_min=1.5,value_max=1.8,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="白羽肉雞營養需要標準 NY/T 3645-2020",note="42日齡料肉比"),
+    b("broiler","adg_broiler_cn_all",62.0,"g_per_day",value_min=55.0,value_max=70.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="白羽肉雞生長性能標準 2023",note="1-42日齡平均日增重"),
+    b("broiler","mortality_broiler_cn_all",4.0,"percentage",value_min=2.0,value_max=7.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="肉雞養殖場生產效益分析 2023",note="全期死淘率"),
+    b("broiler","slaughter_rate_broiler_cn_all",92.0,"percentage",value_min=90.0,value_max=95.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="肉雞屠宰加工標準 2021",note="屠宰率"),
+    b("broiler","coccidiosis_fcr_penalty_broiler_cn_all",15.0,"percentage_points",value_min=5.0,value_max=25.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="球蟲病對肉雞生產性能影響試驗 2020",note="臨床球蟲病FCR惡化幅度"),
+    b("broiler","necrotic_enteritis_mortality_broiler_cn_all",15.0,"percentage",value_min=5.0,value_max=30.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="壞死性腸炎田間流行調查 2022",note="壞死性腸炎臨床發病死亡率"),
+    b("dairy_cow","milk_yield_dairy_cn_all",9500.0,"kg_per_lactation",value_min=8000.0,value_max=11000.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="中國奶牛生產性能測定報告 2023",note="305天泌乳量，全國平均"),
+    b("dairy_cow","fcr_dairy_cn_all",1.0,"kg_dmi_per_kg_milk",value_min=0.8,value_max=1.3,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="奶牛營養需要標準 NY/T 2771-2022",note="飼料轉化效率"),
+    b("dairy_cow","somatic_cell_dairy_cn_all",300.0,"thousands_per_ml",value_min=150.0,value_max=500.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="生鮮乳質量安全監測報告 2023",note="體細胞數，全國平均"),
+    b("dairy_cow","calf_mortality_dairy_cn_all",8.0,"percentage",value_min=3.0,value_max=15.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="奶牛場犢牛管理調研 2022",note="犢牛死淘率"),
+    b("dairy_cow","mastitis_incidence_dairy_cn_all",25.0,"percentage",value_min=15.0,value_max=40.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="奶牛乳房炎防控技術報告 2023",note="臨床+隱性乳房炎發病率"),
+    b("dairy_cow","mastitis_milk_loss_dairy_cn_all",10.0,"percentage_points",value_min=5.0,value_max=20.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="乳房炎對泌乳量影響研究 2021",note="乳房炎發病後泌乳量下降幅度"),
+    b("dairy_cow","lameness_incidence_dairy_cn_all",15.0,"percentage",value_min=8.0,value_max=25.0,region="CN_all",year=2023,credibility=4,source_type="academic_background",source_title="奶牛蹄病流行病學調查 2022",note="蹄病發病率"),
+    b("shrimp","fcr_shrimp_cn_south",1.4,"kg_feed_per_kg_gain",value_min=1.2,value_max=1.7,region="CN_south",year=2023,credibility=4,source_type="academic_background",source_title="對蝦養殖技術規範 DB46-2021",note="90天養殖週期FCR"),
+    b("shrimp","survival_rate_shrimp_cn_south",65.0,"percentage",value_min=50.0,value_max=80.0,region="CN_south",year=2023,credibility=4,source_type="academic_background",source_title="海南省對蝦養殖調研 2023",note="養殖成活率"),
+    b("shrimp","adg_shrimp_cn_south",0.2,"g_per_day",value_min=0.15,value_max=0.28,region="CN_south",year=2023,credibility=4,source_type="academic_background",source_title="白對蝦生長髮育標準 2022",note="養殖期日增重"),
+    b("shrimp","fcr_shrimp_sea_thailand",1.3,"kg_feed_per_kg_gain",value_min=1.1,value_max=1.5,region="SEA_thailand",year=2023,credibility=4,source_type="academic_background",source_title="Thai Shrimp Association Standards 2023",note="泰國對蝦養殖FCR"),
+    b("shrimp","ems_ahpnd_mortality_shrimp_cn_south",50.0,"percentage",value_min=30.0,value_max=70.0,region="CN_south",year=2023,credibility=4,source_type="academic_background",source_title="對蝦EMS/AHPND流行監測 2022-2024",note="EMS急性爆發死亡率"),
+    b("shrimp","wssv_mortality_shrimp_cn_south",70.0,"percentage",value_min=50.0,value_max=90.0,region="CN_south",year=2023,credibility=4,source_type="academic_background",source_title="白點病WSSV流行病學調查 2023",note="白點病急性爆發死亡率"),
+    b("shrimp","vibrio_outbreak_mortality_shrimp_cn_south",40.0,"percentage",value_min=20.0,value_max=60.0,region="CN_south",year=2023,credibility=3,source_type="academic_background",source_title="弧菌病對蝦養殖影響報告 2023",note="弧菌病爆發死亡率"),
+]
+
 # ══════════════════════════════════════════════════════════════════════════════
 # DB 寫入引擎
 # ══════════════════════════════════════════════════════════════════════════════
