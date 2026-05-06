@@ -38,30 +38,8 @@ jobs:
           pip install httpx boto3 pyyaml beautifulsoup4 \
                       feedparser lxml tenacity python-dateutil
 
-      - name: Download configs from R2
-        env:
-          R2_ACCESS_KEY_ID:     ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          R2_ACCOUNT_ID:        ${{ secrets.R2_ACCOUNT_ID }}
-          R2_BUCKET:            ${{ secrets.R2_BUCKET }}
-        run: |
-          python - <<'EOF'
-          import boto3, os
-          s3 = boto3.client(
-              "s3",
-              endpoint_url=f"https://{os.environ['R2_ACCOUNT_ID']}.r2.cloudflarestorage.com",
-              aws_access_key_id=os.environ["R2_ACCESS_KEY_ID"],
-              aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
-              region_name="auto",
-          )
-          bucket = os.environ["R2_BUCKET"]
-          os.makedirs("configs", exist_ok=True)
-          s3.download_file(bucket, "configs/ingredients.yaml", "configs/ingredients.yaml")
-          s3.download_file(bucket, "configs/species_metrics.yaml", "configs/species_metrics.yaml")
-          print("configs downloaded from R2")
-          EOF
-
       # ── Step 1: 學術論文蒐集 ────────────────────────────────────────────────
+      # configs/ 直接從 repo checkout 讀取，無需從 R2 下載
       - name: Run paper collector
         env:
           SEMANTIC_SCHOLAR_KEY: ${{ secrets.SEMANTIC_SCHOLAR_KEY }}
