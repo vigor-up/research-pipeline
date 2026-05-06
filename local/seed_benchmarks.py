@@ -729,6 +729,14 @@ BENCHMARKS += [
     b("wild_boar_hybrid","slaughter_weight",80.0,"kg",value_min=65.0,value_max=95.0,
       production_stage="market",credibility=3,
       source_title="Animal Science 2021"),
+    # MG northeast_china patch 2025-05-06
+    {"kpi_id":"mg_infection_laying_loss","species":"layer_chicken","region":"CN_north","value":10.0,"value_min":5.0,"value_max":15.0,"unit":"percentage_points","credibility":4,"source_type":"field_survey","source_title":"Northeast China MG field survey 2023","note":"东北冬季密闭鸡舍MG阳性率>80%","production_stage":"laying","year":2023},
+    {"kpi_id":"mg_infection_fcr_penalty","species":"layer_chicken","region":"CN_north","value":2.4,"value_min":2.3,"value_max":2.5,"unit":"ratio_g_feed_per_g_egg","credibility":4,"source_type":"field_survey","source_title":"Northeast China MG field survey 2023","note":"健康场2.1-2.2；感染场2.3-2.5","production_stage":"laying","year":2023},
+    {"kpi_id":"mg_infection_mortality_rise","species":"layer_chicken","region":"CN_north","value":3.0,"value_min":2.0,"value_max":5.0,"unit":"percentage_points","credibility":3,"source_type":"field_survey","source_title":"Northeast China MG field survey 2023","note":"感染场死淘率6-8%；健康场3-5%","production_stage":"laying","year":2023},
+    {"kpi_id":"mg_prevalence_northeast_winter","species":"layer_chicken","region":"CN_north","value":85.0,"value_min":80.0,"value_max":95.0,"unit":"percent","credibility":4,"source_type":"epidemiology","source_title":"Northeast China poultry MG epidemiology 2022-2024","note":"冬季密闭保温换气不足是主因","production_stage":"laying","year":2023},
+    {"kpi_id":"mg_lcfa_laying_recovery","species":"layer_chicken","region":"CN_north","value":7.0,"value_min":5.0,"value_max":10.0,"unit":"percentage_points","credibility":3,"source_type":"intervention_trial","source_title":"LCFA membrane intervention layer hen trial 2023","note":"4-6周显效；细胞膜流动性修复","production_stage":"laying","year":2023},
+    {"kpi_id":"mg_lcfa_fcr_improvement","species":"layer_chicken","region":"CN_north","value":0.15,"value_min":0.10,"value_max":0.20,"unit":"ratio_improvement","credibility":3,"source_type":"intervention_trial","source_title":"LCFA membrane intervention layer hen trial 2023","note":"细胞膜磷脂重建→养分吸收效率提升","production_stage":"laying","year":2023},
+
 ]
 
 
@@ -801,36 +809,3 @@ def seed(dry_run: bool = False, species_filter: str = ""):
 
     total     = conn.execute("SELECT COUNT(*) FROM market_kpi").fetchone()[0]
     confirmed = conn.execute("SELECT COUNT(*) FROM market_kpi WHERE confirmed=1").fetchone()[0]
-    rows      = conn.execute(
-        "SELECT species, COUNT(*) c FROM market_kpi GROUP BY species ORDER BY species"
-    ).fetchall()
-    conn.close()
-
-    log.info("=" * 65)
-    log.info(f"Written={written} | Skipped={skipped} | Error={error}")
-    log.info(f"DB total={total} | confirmed={confirmed}")
-    log.info("Species in DB:")
-    for sp, cnt in rows:
-        log.info(f"  {sp:<32} {cnt}")
-
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--dry-run",  action="store_true")
-    parser.add_argument("--species",  default="")
-    parser.add_argument("--reset",    action="store_true",
-                        help="Delete all confirmed=1 rows first")
-    args = parser.parse_args()
-
-    if args.reset and not args.dry_run:
-        conn = sqlite3.connect(DB_PATH)
-        deleted = conn.execute("DELETE FROM market_kpi WHERE confirmed=1").rowcount
-        conn.commit()
-        conn.close()
-        log.info(f"Reset: deleted {deleted} seeded records")
-
-    seed(dry_run=args.dry_run, species_filter=args.species)
-
-
-if __name__ == "__main__":
-    main()
