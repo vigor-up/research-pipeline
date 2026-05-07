@@ -1,689 +1,348 @@
+# -*- coding: utf-8 -*-
 """
 roi_calculator.py
-ROI 計算工具 — 從 market_data.db 查基準值，自動算 1:X 比例
-用途：銷售工具 / 客戶提案 / Telegram 快查
-
-用法：
-  python local\roi_calculator.py --species layer_hen --region CN_south
-  python local\roi_calculator.py --species broiler --region SEA_thailand
-  python local\roi_calculator.py --species finisher_pig --region CN_north
-  python local\roi_calculator.py --list-species
-  python local\roi_calculator.py --all --format markdown
+ROI 計算器 - 從 DB 拉實時數據計算客戶願付價格
+支援：育肥豬 / 蛋雞 / 肉雞 / 乳牛 / 肉牛 / 蝦 / 魚
+呼叫方式：
+  python roi_calculator.py --species finisher_pig --improvement fcr:25
+  python roi_calculator.py --species layer_chicken --improvement peak_extension:14
 """
 
-import argparse
-import json
-import sqlite3
+import sqlite3, json, argparse, sys
 from datetime import datetime
-from pathlib import Path
 
-DB_PATH      = Path(r"D:\LLM\knowledge\market\market_data.db")
-METRICS_PATH = Path(r"D:\LLM\workflows\research-pipeline-v2\configs\species_metrics.yaml")
+DB_PATH = r'D:\LLM\knowledge\market\market_data.db'
 
-# ── 產品固定參數 ──────────────────────────────────────────────────────────────
-PRODUCT_DOSE_KG_PER_TON = 20      # 每噸飼料添加量（固定）
-ROI_RATIO_MIN           = 3       # 最低 1:3
-ROI_RATIO_MAX           = 8       # 最高 1:8
-
-# ── 各物種 FCR 改善預期（基於文獻/田間試驗）─────────────────────────────────
-# 格式：{species: {kpi_id: improvement_pct}}
-IMPROVEMENT_TABLE = {
-    # ── 家禽 ──────────────────────────────────────────────────────────────────
-    "broiler": {
-        "FCR":              0.05,   # 飼料轉化率 -5%
-        "breast_yield_pct": 0.03,   # 胸肉率 +3%
-        "carcass_rate_pct": 0.02,   # 屠體率 +2%
-        "mortality_rate":  -0.15,   # 死亡率 -15%
-    },
-    "layer_hen": {
-        # 料蛋比 + 產蛋率 = 蛋雞 ROI 兩個核心驅動
-        "egg_feed_ratio":       0.05,   # 料蛋比改善 5%（核心ROI指標1：節省飼料成本）
-        "laying_rate":          0.04,   # 產蛋率 +4%（核心ROI指標2：直接增加收入）
-        "peak_duration_weeks":  0.10,   # 高峰期延長 10%（長期收益）
-        "mortality_rate":      -0.15,   # 死亡率 -15%
-    },
-    "breeder_chicken": {
-        "fertility_rate":    0.02,
-        "hatchability":      0.03,
-        "healthy_chick_rate":0.02,
-    },
-    "duck": {
-        "FCR":           0.05,
-        "live_weight":   0.03,
-        "mortality_rate":-0.15,
-    },
-    # ── 豬 ────────────────────────────────────────────────────────────────────
-    "suckling_piglet": {
-        "pre_weaning_mortality": -0.20,  # 死亡率 -20%
-        "weaning_weight":         0.05,  # 斷奶體重 +5%
-        "litter_weaning_rate":    0.03,  # 存活率 +3%
-    },
-    "nursery_pig": {
-        "FCR":           0.05,
-        "ADG":           0.05,
-        "diarrhea_rate": -0.20,
-        "mortality_rate":-0.20,
-    },
-    "finisher_pig": {
-        "FCR":              0.05,
-        "carcass_rate":     0.02,
-        "ADG":              0.04,
-        "mortality_rate":  -0.15,
-    },
-    "pregnant_sow": {
-        "healthy_piglet_count":   0.05,  # 健仔數 +5%
-        "healthy_piglet_weight":  0.04,  # 健仔體重 +4%
-        "weak_piglet_rate":      -0.20,  # 弱仔率 -20%
-        "stillborn_rate":        -0.15,  # 死胎率 -15%
-        "farrowing_rate":         0.02,  # 分娩率 +2%
-    },
-    "lactating_sow": {
-        "grade_a_weaner_rate":       0.05,
-        "weaning_weight_uniformity": 0.04,
-        "sow_weight_loss":          -0.10,
-        "milk_yield_kg_day":         0.04,
-    },
-    "boar": {
-        "sperm_motility":   0.05,
-        "abnormality_rate":-0.15,
-    },
-    # ── 牛 ────────────────────────────────────────────────────────────────────
-    "beef_cattle": {
-        "FCR":    0.05,
-        "ADG":    0.05,
-        "carcass_dressing_pct": 0.02,
-    },
-    "dairy_cow": {
-        "milk_yield_kg_per_day": 0.04,
-        "fat_pct":               0.03,
-        "SCC":                  -0.15,  # 體細胞數 -15% = 乳房炎減少
-    },
-    # ── 羊 ────────────────────────────────────────────────────────────────────
-    "meat_sheep": {
-        "FCR":    0.05,
-        "ADG":    0.05,
-    },
-    "wool_sheep": {
-        "wool_yield_kg":     0.05,
-        "staple_strength_nkt":0.05,
-        "lambing_rate":      0.03,
-    },
-    "meat_goat": {
-        "FCR": 0.05,
-        "ADG": 0.05,
-    },
-    "dairy_goat": {
-        "milk_yield_kg_per_day": 0.04,
-    },
-    # ── 蝦 ────────────────────────────────────────────────────────────────────
-    "shrimp": {
-        "survival_rate":        0.08,
-        "FCR":                  0.05,
-        "vibrio_reduction_pct": 0.20,
-    },
-    "tiger_prawn": {
-        "survival_rate": 0.07,
-        "FCR":           0.05,
-    },
-    "giant_freshwater_prawn": {
-        "survival_rate": 0.07,
-        "FCR":           0.05,
-    },
-    # ── 魚 ────────────────────────────────────────────────────────────────────
-    "tilapia": {
-        "survival_rate":  0.06,
-        "FCR":            0.05,
-        "ADG":            0.05,
-    },
-    "milkfish": {
-        "survival_rate":  0.05,
-        "FCR":            0.05,
-    },
-    "grey_mullet": {
-        "survival_rate":  0.05,
-        "FCR":            0.05,
-        "roe_yield_pct":  0.05,
-    },
-    "pangasius_catfish": {
-        "survival_rate":  0.06,
-        "FCR":            0.05,
-    },
-    "channel_catfish": {
-        "survival_rate":  0.06,
-        "FCR":            0.05,
-    },
-    "largemouth_catfish": {
-        "survival_rate":  0.06,
-        "FCR":            0.05,
-    },
-    "largemouth_bass": {
-        "survival_rate":  0.06,
-        "FCR":            0.05,
-    },
-    "grass_carp": {
-        "survival_rate":  0.05,
-        "FCR":            0.05,
-    },
-    "grouper": {
-        "survival_rate":  0.07,
-        "FCR":            0.05,
-    },
-    "atlantic_salmon": {
-        "survival_rate":  0.05,
-        "FCR":            0.04,
-        "ADG":            0.05,
-    },
-    "seabass": {
-        "survival_rate":  0.05,
-        "FCR":            0.05,
-    },
-    "rice_field_eel": {
-        "survival_rate":  0.07,
-        "FCR":            0.05,
-    },
-    "pond_loach": {
-        "survival_rate":  0.06,
-        "FCR":            0.05,
-    },
-    # ── 毛皮 ──────────────────────────────────────────────────────────────────
-    "mink": {
-        "kit_survival_rate":       0.05,
-        "kits_per_female":         0.04,
-        "pelt_quality_grade_A_pct":0.05,
-    },
-    "fox": {
-        "kits_per_female":         0.04,
-        "pelt_quality_grade_A_pct":0.05,
-    },
-    "rabbit": {
-        "FCR":              0.05,
-        "ADG":              0.05,
-        "mortality_rate":  -0.15,
-        "kits_per_doe_year":0.04,
-    },
-    # ── 特種 ──────────────────────────────────────────────────────────────────
-    "deer": {
-        "velvet_yield_kg": 0.08,
-        "ADG":             0.05,
-    },
-    "crocodile": {
-        "survival_rate":            0.05,
-        "skin_quality_grade_A_pct": 0.05,
-    },
-    "wild_boar_hybrid": {
-        "FCR": 0.05,
-        "ADG": 0.05,
-    },
-}
-
-# ── KPI 顯示名稱 ──────────────────────────────────────────────────────────────
-KPI_LABELS = {
-    "FCR":                      "飼料轉化率 (FCR)",
-    "egg_feed_ratio":           "蛋料比",
-    "laying_rate":              "產蛋率",
-    "hen_day_production":       "當日產蛋率",
-    "peak_duration_weeks":      "產蛋高峰期",
-    "eggshell_strength":        "蛋殼強度",
-    "egg_weight_g":             "蛋重",
-    "mortality_rate":           "死亡率",
-    "breast_yield_pct":         "胸肉率",
-    "carcass_rate_pct":         "屠體率",
-    "carcass_rate":             "屠體率",
-    "carcass_dressing_pct":     "屠體率",
-    "slaughter_weight_kg":      "出欄體重",
-    "slaughter_weight":         "出欄體重",
-    "live_weight":              "出欄體重",
-    "ADG":                      "日增重",
-    "healthy_piglet_rate":      "健仔率",
-    "healthy_piglet_count":     "健仔數",
-    "healthy_piglet_weight":    "健仔體重",
-    "weak_piglet_rate":         "弱仔率",
-    "stillborn_rate":           "死胎率",
-    "birth_weight_uniformity":  "初生體重整齊度",
-    "litter_size":              "窩產仔數",
-    "farrowing_rate":           "分娩率",
-    "wean_to_estrus_days":      "斷奶至發情天數",
-    "npe_per_sow_year":         "每母豬年斷奶仔豬數",
-    "pre_weaning_mortality":    "哺乳期死亡率",
-    "weaning_weight":           "斷奶體重",
-    "litter_weaning_rate":      "哺乳期存活率",
-    "birth_weight":             "初生體重",
-    "grade_a_weaner_rate":      "優質斷奶仔豬率",
-    "weaning_weight_uniformity":"斷奶整齊度",
-    "sow_weight_loss":          "哺乳期母豬體重損失",
-    "milk_yield_kg_day":        "日產奶量",
-    "litter_gain_g_day":        "窩日增重",
-    "sperm_motility":           "精子活力",
-    "semen_volume":             "射精量",
-    "abnormality_rate":         "精子畸形率",
-    "milk_yield_kg_per_day":    "日產奶量",
-    "305d_milk_yield":          "305天泌乳量",
-    "fat_pct":                  "乳脂率",
-    "protein_pct":              "乳蛋白率",
-    "SCC":                      "體細胞數",
-    "conception_rate":          "受孕率",
-    "lambing_rate":             "產羔率",
-    "wool_yield_kg":            "羊毛產量",
-    "wool_fibre_diameter":      "羊毛纖維直徑",
-    "staple_length_mm":         "毛辮長度",
-    "staple_strength_nkt":      "毛辮強度",
-    "clean_fleece_pct":         "淨毛率",
-    "survival_rate":            "育成率/存活率",
-    "harvest_cycle_days":       "養殖週期",
-    "vibrio_reduction_pct":     "弧菌降低率",
-    "EMS_resistance":           "EMS抗性",
-    "stocking_density":         "放養密度",
-    "market_weight":            "收穫體重",
-    "roe_yield_pct":            "卵巢率（烏魚子）",
-    "streptococcus_survival_rate":"鏈球菌挑戰存活率",
-    "kit_survival_rate":        "仔獸存活率",
-    "kits_per_female":          "每母獸產仔數",
-    "kits_per_doe_year":        "每母兔年產仔數",
-    "pelt_quality_grade_A_pct": "頂級毛皮比例",
-    "grow_out_days":            "育成天數",
-    "velvet_yield_kg":          "鹿茸產量",
-    "skin_quality_grade_A_pct": "頂級皮革比例",
-    "fertility_rate":           "受精率",
-    "hatchability":             "孵化率",
-    "healthy_chick_rate":       "健雛率",
-    "chicks_per_hen_housed":    "每母雞產健雛數",
-    "marbling_score":           "大理石花紋評分",
-    "rearing_cycle_days":       "育肥週期",
-    "diarrhea_rate":            "腹瀉率",
-    "weaning_to_finish_days":   "保育天數",
-    "backfat_mm":               "背脂厚度",
-}
-
-SPECIES_LABELS = {
-    # 家禽
-    "broiler":              "肉雞",
-    "layer_hen":            "蛋雞",
-    "breeder_chicken":      "種雞",
-    "duck":                 "肉鴨",
-    "goose":                "鵝",
-    # 豬
-    "suckling_piglet":      "哺乳仔豬",
-    "nursery_pig":          "保育豬",
-    "finisher_pig":         "育肥豬",
-    "pregnant_sow":         "懷孕母豬",
-    "lactating_sow":        "哺乳母豬",
-    "boar":                 "公豬",
-    # 牛
-    "beef_cattle":          "肉牛",
-    "dairy_cow":            "奶牛",
-    # 羊
-    "meat_sheep":           "肉羊",
-    "wool_sheep":           "取毛綿羊",
-    "meat_goat":            "肉山羊",
-    "dairy_goat":           "乳山羊",
-    # 蝦
-    "shrimp":               "南美白對蝦",
-    "tiger_prawn":          "草蝦/斑節對蝦",
-    "giant_freshwater_prawn":"淡水長臂大蝦（泰國蝦）",
-    # 魚
-    "tilapia":              "吳郭魚/羅非魚",
-    "milkfish":             "虱目魚",
-    "grey_mullet":          "烏魚/鯔魚",
-    "pangasius_catfish":    "巴沙魚/越南鯰",
-    "channel_catfish":      "斑點叉尾鮰",
-    "largemouth_catfish":   "大口鯰",
-    "largemouth_bass":      "加州鱸",
-    "grass_carp":           "草魚",
-    "grouper":              "石斑魚",
-    "atlantic_salmon":      "大西洋鮭",
-    "seabass":              "海鱸",
-    "rice_field_eel":       "黃鱔",
-    "pond_loach":           "泥鰍",
-    # 毛皮
-    "mink":                 "水貂",
-    "fox":                  "狐",
-    "rabbit":               "兔",
-    # 特種
-    "deer":                 "鹿",
-    "crocodile":            "鱷魚",
-    "wild_boar_hybrid":     "野豬雜交",
-}
-
-REGION_LABELS = {
-    "CN_north":        "中國北方",
-    "CN_south":        "中國南方",
-    "CN_central":      "中國中部",
-    "CN_northwest":    "中國西北",
-    "CN_all":          "中國全區",
-    "TW_all":          "台灣",
-    "SEA_vietnam":     "越南",
-    "SEA_thailand":    "泰國",
-    "SEA_indonesia":   "印尼",
-    "SEA_malaysia":    "馬來西亞",
-    "SEA_philippines": "菲律賓",
-    "GLOBAL":          "全球均值",
-}
-
-
-# ── DB 查詢 ───────────────────────────────────────────────────────────────────
-
-def get_benchmark(conn, species: str, kpi_id: str, region: str) -> dict | None:
-    """查詢基準值，優先：指定地區 > CN_all > GLOBAL，credibility 優先"""
-    regions_priority = [region, "CN_all", "GLOBAL"]
-
-    for reg in regions_priority:
-        row = conn.execute("""
-            SELECT value, value_min, value_max, unit, year, credibility,
-                   source_title, source_url, region
+# ── DB 查詢工具 ────────────────────────────────────────
+def get_kpi(conn, species, kpi_pattern, region='CN_all'):
+    """從DB取最新最高可信度的KPI值"""
+    rows = conn.execute("""
+        SELECT value, value_min, value_max, unit, year, credibility, source_title
+        FROM market_kpi
+        WHERE species=? AND kpi_id LIKE ? AND region=?
+          AND value IS NOT NULL
+        ORDER BY credibility DESC, year DESC
+        LIMIT 1
+    """, (species, f'%{kpi_pattern}%', region)).fetchone()
+    if not rows:
+        # fallback: 不限區域
+        rows = conn.execute("""
+            SELECT value, value_min, value_max, unit, year, credibility, source_title
             FROM market_kpi
-            WHERE species=? AND kpi_id=? AND region=?
+            WHERE species=? AND kpi_id LIKE ?
               AND value IS NOT NULL
-              AND confirmed >= 0
             ORDER BY credibility DESC, year DESC
             LIMIT 1
-        """, (species, kpi_id, reg)).fetchone()
+        """, (species, f'%{kpi_pattern}%')).fetchone()
+    return rows
 
-        if row:
-            return dict(row)
+def get_price(conn, species, price_type='spot_price'):
+    """取最新現貨價格"""
+    rows = conn.execute("""
+        SELECT value, unit, year, source_title
+        FROM market_kpi
+        WHERE species=? AND kpi_id LIKE ?
+          AND value IS NOT NULL
+        ORDER BY year DESC, credibility DESC
+        LIMIT 1
+    """, (species, f'%{price_type}%')).fetchone()
+    return rows
 
-    return None
+def get_feed_cost(conn):
+    """取飼料成本（豆粕+玉米加權）"""
+    soy = conn.execute("""
+        SELECT value FROM market_kpi
+        WHERE kpi_id LIKE '%soybean_meal%' AND value IS NOT NULL
+        ORDER BY year DESC LIMIT 1""").fetchone()
+    corn = conn.execute("""
+        SELECT value FROM market_kpi
+        WHERE kpi_id LIKE '%corn%' AND value IS NOT NULL
+        ORDER BY year DESC LIMIT 1""").fetchone()
+    # 典型配方：豆粕20% + 玉米65% + 其他15%
+    soy_price  = soy[0] if soy else 3500   # CNY/ton fallback
+    corn_price = corn[0] if corn else 2400
+    feed_cost_per_ton = soy_price * 0.20 + corn_price * 0.65 + 2800 * 0.15
+    return feed_cost_per_ton / 1000  # CNY/kg
 
+# ── 物種計算模組 ───────────────────────────────────────
 
-def get_price_benchmark(conn, species: str, region: str) -> dict | None:
-    """查詢收益相關價格"""
-    price_kpis = {
-        "layer_hen":    "egg_price_per_500g",
-        "broiler":      "live_price_per_500g",
-        "finisher_pig": "slaughter_price_per_kg",
-    }
-    kpi_id = price_kpis.get(species)
-    if not kpi_id:
-        return None
-    return get_benchmark(conn, species, kpi_id, region)
+def calc_finisher_pig(conn, params):
+    """
+    育肥豬 ROI
+    params: fcr_improvement(%), body_weight(kg), price_override(CNY/kg)
+    """
+    fcr_improve_pct = float(params.get('fcr_improvement', 25))
+    body_weight     = float(params.get('body_weight', 115))  # 出欄體重
+    start_weight    = float(params.get('start_weight', 60))
+    gain            = body_weight - start_weight
 
+    # 從DB取數據
+    fcr_row   = get_kpi(conn, 'finisher_pig', 'fcr')
+    price_row = get_price(conn, 'finisher_pig', 'spot_price')
+    feed_cost = get_feed_cost(conn)
 
-# ── ROI 計算核心 ──────────────────────────────────────────────────────────────
+    fcr_base  = fcr_row[0] if fcr_row else 2.6
+    fcr_min   = fcr_row[1] if fcr_row and fcr_row[1] else 2.4
+    fcr_max   = fcr_row[2] if fcr_row and fcr_row[2] else 2.8
 
-def calculate_roi(species: str, region: str, conn) -> dict:
-    improvements = IMPROVEMENT_TABLE.get(species, {})
-    if not improvements:
-        return {"error": f"No improvement table for species: {species}"}
+    # 豬肉價格
+    if price_row:
+        pig_price = price_row[0]  # CNY/kg
+    else:
+        pig_price = float(params.get('price_override', 10.0))
 
-    results = []
-    roi_values = []
+    # 計算
+    fcr_improved     = fcr_base * (1 - fcr_improve_pct/100)
+    feed_saved_kg    = (fcr_base - fcr_improved) * gain      # kg/頭
+    feed_cost_saved  = feed_saved_kg * feed_cost              # CNY/頭
+    revenue_gain     = feed_cost_saved  # FCR改善=飼料節省
 
-    for kpi_id, improvement_pct in improvements.items():
-        bench = get_benchmark(conn, species, kpi_id, region)
-        if not bench or bench["value"] is None:
-            continue
+    # 客戶願付（每0.1 FCR改善 30-40 CNY/kg添加劑）
+    fcr_drop         = fcr_base - fcr_improved
+    units_of_01      = fcr_drop / 0.1
+    wtp_low          = units_of_01 * 30   # CNY/kg添加劑（低估）
+    wtp_high         = units_of_01 * 40   # CNY/kg添加劑（高估）
 
-        baseline = bench["value"]
-        improved = baseline * (1 + improvement_pct)
-        delta    = improved - baseline
-
-        # 計算收益（僅對有直接價格連結的 KPI）
-        revenue_per_ton = None
-        price_bench = get_price_benchmark(conn, species, region)
-
-        # ── ROI 金額估算（每噸飼料）────────────────────────────────────────
-        # 蛋雞：料蛋比是核心 — 改善5% = 同產出省5%飼料成本
-        # 蛋雞：產蛋率是核心 — +4% = 多產4顆蛋/百隻/天
-        # 無市場價格時用保守行業均值估算
-        FEED_COST_DEFAULTS = {
-            # 物種: 每噸飼料成本（CNY）
-            "layer_hen":      3200,   # 蛋雞料
-            "broiler":        3000,   # 肉雞料
-            "finisher_pig":   2800,   # 豬料
-            "nursery_pig":    3500,
-            "suckling_piglet":4500,
-            "beef_cattle":    2600,
-            "dairy_cow":      2800,
-            "shrimp":         7000,   # 蝦料高
-            "tilapia":        4500,
-            "default":        3000,
-        }
-        feed_cost_default = FEED_COST_DEFAULTS.get(species, FEED_COST_DEFAULTS["default"])
-        feed_cost_bench = get_benchmark(conn, species, "feed_cost_per_ton", region)
-        feed_cost = feed_cost_bench["value"] if feed_cost_bench else feed_cost_default
-
-        if kpi_id == "egg_feed_ratio":
-            # 料蛋比改善 X% → 每噸飼料省 X% 飼料成本
-            # 例：料蛋比 2.1→2.205，改善5% → 省 CNY 3200×5% = 160元/噸
-            revenue_per_ton = feed_cost * abs(improvement_pct)
-
-        elif kpi_id == "laying_rate":
-            # 產蛋率 +4% → 每噸飼料（養約180隻蛋雞）多 180×0.04=7.2顆蛋/天
-            # 每顆蛋重63g，蛋價 CNY 5.5/500g = 0.0693元/g
-            # 月多收益 = 7.2顆 × 63g × (5.5/500) × 30天 ≈ 150元/噸
-            birds_per_ton = 180
-            egg_price_per_500g = 5.5   # 中國南方均值，無市場數據時使用
-            if price_bench:
-                egg_price_per_500g = price_bench["value"]
-            extra_eggs_per_day = birds_per_ton * improvement_pct
-            revenue_per_day = extra_eggs_per_day * 63 / 500 * egg_price_per_500g
-            revenue_per_ton = revenue_per_day * 30  # 月收益換算
-
-        elif kpi_id in ("FCR",) and species != "layer_hen":
-            # 非蛋雞的 FCR 改善 = 省飼料成本
-            revenue_per_ton = feed_cost * abs(improvement_pct)
-
-        elif kpi_id == "survival_rate":
-            # 存活率提升 = 少損失動物
-            # 用飼料成本×改善幅度作保守估算
-            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.5
-
-        elif kpi_id in ("healthy_piglet_count", "kits_per_female", "kits_per_doe_year",
-                        "litter_size", "npe_per_sow_year"):
-            # 產仔數提升 = 直接增加收入（保守：飼料成本的倍數）
-            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.8
-
-        elif kpi_id in ("milk_yield_kg_per_day", "milk_yield_kg_day",
-                        "305d_milk_yield", "wool_yield_kg", "velvet_yield_kg",
-                        "roe_yield_pct"):
-            # 產品量提升 = 直接收益
-            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.6
-
-        elif kpi_id in ("mortality_rate", "pre_weaning_mortality", "diarrhea_rate",
-                        "weak_piglet_rate", "stillborn_rate"):
-            # 死亡率降低 = 少損失（以飼料成本的10%保守估算）
-            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.3
-
-        elif kpi_id in ("peak_duration_weeks", "harvest_cycle_days"):
-            # 週期延長/縮短 = 間接收益（保守）
-            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.2
-
-        elif kpi_id in ("pelt_quality_grade_A_pct", "skin_quality_grade_A_pct"):
-            # 皮毛品質提升 = 直接溢價
-            revenue_per_ton = feed_cost * abs(improvement_pct) * 0.8
-
-        if price_bench and kpi_id == "survival_rate":
-            price = price_bench["value"]
-            revenue_per_ton = abs(improvement_pct) * price * 50
-
-        results.append({
-            "kpi_id":           kpi_id,
-            "kpi_label":        KPI_LABELS.get(kpi_id, kpi_id),
-            "baseline":         round(baseline, 3),
-            "improved":         round(improved, 3),
-            "improvement_pct":  improvement_pct,
-            "unit":             bench["unit"] or "",
-            "revenue_per_ton":  round(revenue_per_ton, 1) if revenue_per_ton else None,
-            "data_source":      bench["source_title"] or "",
-            "data_year":        bench["year"],
-            "data_region":      bench["region"],
-            "credibility":      bench["credibility"],
-        })
-
-        if revenue_per_ton:
-            roi_values.append(revenue_per_ton)
-
-    # 計算 ROI 比例
-    product_cost_per_ton = PRODUCT_DOSE_KG_PER_TON  # 暫以 20 為基數（成本留空）
-    total_benefit = sum(roi_values)
-
-    # ROI 區間（保守/樂觀）
-    roi_conservative = max(ROI_RATIO_MIN, min(ROI_RATIO_MAX,
-                          total_benefit / max(product_cost_per_ton, 1)))
-    roi_optimistic   = min(ROI_RATIO_MAX, roi_conservative * 1.3)
+    # 添加劑用量假設 0.5kg/噸飼料
+    additive_per_pig = fcr_improved * gain * 0.0005  # kg/頭
 
     return {
-        "species":          species,
-        "species_label":    SPECIES_LABELS.get(species, species),
-        "region":           region,
-        "region_label":     REGION_LABELS.get(region, region),
-        "product_dose":     f"{PRODUCT_DOSE_KG_PER_TON}kg/噸飼料",
-        "kpi_details":      results,
-        "roi_conservative": round(roi_conservative, 1),
-        "roi_optimistic":   round(roi_optimistic, 1),
-        "roi_display":      f"1:{roi_conservative:.0f} ～ 1:{roi_optimistic:.0f}",
-        "data_coverage":    f"{len(results)}/{len(improvements)} KPIs 有基準值",
-        "calculated_at":    datetime.now().strftime("%Y-%m-%d %H:%M"),
-        "note":             "ROI 以飼料成本為基準，需填入實際產品成本後校正",
+        'species': '育肥豬',
+        'scenario': f'{start_weight}-{body_weight}kg（{gain}kg增重）',
+        'data_sources': {
+            'FCR基準': f'{fcr_base}（{fcr_min}-{fcr_max}）來源: {fcr_row[6] if fcr_row else "估算"}',
+            '豬肉價格': f'CNY {pig_price}/kg 來源: {price_row[3] if price_row else "估算"}',
+            '飼料成本': f'CNY {feed_cost:.2f}/kg（豆粕+玉米加權）',
+        },
+        'calculation': {
+            'FCR改善': f'{fcr_base} → {fcr_improved:.2f}（{fcr_improve_pct}%）',
+            '每頭節省飼料': f'{feed_saved_kg:.1f} kg',
+            '每頭節省成本': f'CNY {feed_cost_saved:.1f}',
+            '每頭添加劑用量': f'{additive_per_pig*1000:.1f}g',
+        },
+        'wtp': {
+            '客戶願付低': f'CNY {wtp_low:.0f}/kg 添加劑',
+            '客戶願付高': f'CNY {wtp_high:.0f}/kg 添加劑',
+            '建議報價區間': f'CNY {wtp_low*0.6:.0f} ~ {wtp_high*0.7:.0f}/kg',
+            '每頭ROI（客戶）': f'CNY {feed_cost_saved:.1f}/頭',
+        },
+        'scale_roi': {
+            '1000頭/批': f'CNY {feed_cost_saved*1000:,.0f}/批',
+            '10000頭/批': f'CNY {feed_cost_saved*10000:,.0f}/批',
+        }
     }
 
+def calc_layer_chicken(conn, params):
+    """
+    蛋雞 ROI
+    params: peak_extension_days(天), flock_size(隻), age(天), price_override
+    """
+    ext_days    = float(params.get('peak_extension_days', 14))
+    flock_size  = float(params.get('flock_size', 10000))
+    age         = int(params.get('age', 500))
 
-# ── 輸出格式 ──────────────────────────────────────────────────────────────────
+    # 從DB取數據
+    egg_rate_row  = get_kpi(conn, 'layer_chicken', 'egg_rate')
+    price_row     = get_price(conn, 'layer_chicken', 'spot_price_egg')
+    feed_cost     = get_feed_cost(conn)
 
-def format_markdown(roi: dict) -> str:
+    egg_rate  = (egg_rate_row[0]/100) if egg_rate_row else 0.92
+    egg_price = price_row[0] if price_row else 8.0  # CNY/kg
+
+    # 蛋雞參數
+    egg_weight_g    = 63      # g/顆
+    daily_feed_g    = 115     # g/隻/天
+    daily_egg_kg    = egg_weight_g * egg_rate / 1000  # kg/隻/天
+
+    # 計算
+    extra_egg_kg     = daily_egg_kg * ext_days          # kg/隻
+    extra_revenue    = extra_egg_kg * egg_price          # CNY/隻
+    extra_feed_cost  = (daily_feed_g/1000) * ext_days * feed_cost
+    net_gain_per_hen = extra_revenue - extra_feed_cost
+
+    # 添加劑用量假設 0.3kg/噸飼料
+    additive_per_hen = (daily_feed_g/1000) * ext_days * 0.0003  # kg/隻
+
+    wtp_per_hen  = net_gain_per_hen * 0.5   # 客戶願付淨增收50%
+    wtp_per_kg   = wtp_per_hen / additive_per_hen if additive_per_hen > 0 else 0
+
+    return {
+        'species': '蛋雞',
+        'scenario': f'{age}日齡，延長產蛋峰值 {ext_days} 天',
+        'data_sources': {
+            '產蛋率': f'{egg_rate*100:.1f}% 來源: {egg_rate_row[6] if egg_rate_row else "估算"}',
+            '雞蛋價格': f'CNY {egg_price}/kg 來源: {price_row[3] if price_row else "估算"}',
+            '飼料成本': f'CNY {feed_cost:.2f}/kg',
+        },
+        'calculation': {
+            '每日產蛋': f'{daily_egg_kg*1000:.1f}g/隻',
+            f'延長{ext_days}天額外產蛋': f'{extra_egg_kg*1000:.1f}g/隻',
+            '額外蛋收入/隻': f'CNY {extra_revenue:.2f}',
+            '額外飼料成本/隻': f'CNY {extra_feed_cost:.2f}',
+            '淨增收/隻': f'CNY {net_gain_per_hen:.2f}',
+        },
+        'wtp': {
+            '客戶願付（50%分潤）': f'CNY {wtp_per_hen:.2f}/隻',
+            '換算添加劑價格': f'CNY {wtp_per_kg:,.0f}/kg',
+            '建議報價區間': f'CNY {wtp_per_kg*0.4:,.0f} ~ {wtp_per_kg*0.6:,.0f}/kg',
+        },
+        'scale_roi': {
+            f'{int(flock_size):,}隻雞場': f'CNY {net_gain_per_hen*flock_size:,.0f}',
+            '10萬隻雞場': f'CNY {net_gain_per_hen*100000:,.0f}',
+        }
+    }
+
+def calc_broiler(conn, params):
+    """肉雞 ROI"""
+    fcr_improve_pct = float(params.get('fcr_improvement', 10))
+    body_weight     = float(params.get('body_weight', 2.5))
+    start_weight    = 0.04
+
+    fcr_row   = get_kpi(conn, 'broiler', 'fcr')
+    price_row = get_price(conn, 'broiler', 'spot_price')
+    feed_cost = get_feed_cost(conn)
+
+    fcr_base  = fcr_row[0] if fcr_row else 1.75
+    gain      = body_weight - start_weight
+    fcr_impr  = fcr_base * (1 - fcr_improve_pct/100)
+    feed_saved = (fcr_base - fcr_impr) * gain
+    cost_saved = feed_saved * feed_cost
+
+    chicken_price = price_row[0] if price_row else 14.0
+    additive_per_bird = fcr_impr * gain * 0.0005
+
+    wtp_low  = cost_saved / additive_per_bird * 0.4 if additive_per_bird else 0
+    wtp_high = cost_saved / additive_per_bird * 0.6 if additive_per_bird else 0
+
+    return {
+        'species': '肉雞',
+        'scenario': f'出欄 {body_weight}kg，FCR改善 {fcr_improve_pct}%',
+        'data_sources': {
+            'FCR基準': f'{fcr_base} 來源: {fcr_row[6] if fcr_row else "估算"}',
+            '肉雞價格': f'CNY {chicken_price}/kg',
+            '飼料成本': f'CNY {feed_cost:.2f}/kg',
+        },
+        'calculation': {
+            'FCR改善': f'{fcr_base} → {fcr_impr:.2f}',
+            '每隻節省飼料': f'{feed_saved*1000:.1f}g',
+            '每隻節省成本': f'CNY {cost_saved:.2f}',
+        },
+        'wtp': {
+            '客戶願付區間': f'CNY {wtp_low:,.0f} ~ {wtp_high:,.0f}/kg 添加劑',
+        },
+        'scale_roi': {
+            '10萬隻/批': f'CNY {cost_saved*100000:,.0f}',
+        }
+    }
+
+def calc_shrimp(conn, params):
+    """蝦 ROI"""
+    survival_improve = float(params.get('survival_improvement', 10))  # %
+    pond_area_mu     = float(params.get('pond_area', 10))  # 畝
+
+    survival_row = get_kpi(conn, 'shrimp', 'survival')
+    price_row    = get_price(conn, 'shrimp', 'spot_price')
+    feed_cost    = get_feed_cost(conn)
+
+    survival_base = (survival_row[0]/100) if survival_row else 0.80
+    shrimp_price  = price_row[0] if price_row else 50.0  # CNY/kg
+    density       = 60000  # 尾/畝
+    harvest_wt_g  = 20     # g/尾
+
+    extra_survive = density * pond_area_mu * (survival_improve/100)
+    extra_kg      = extra_survive * harvest_wt_g / 1000
+    extra_revenue = extra_kg * shrimp_price
+
+    feed_per_mu   = 300    # kg/畝/季 估算
+    additive_total = feed_per_mu * pond_area_mu * 0.0005
+
+    net_gain = extra_revenue * 0.8
+    wtp      = net_gain / additive_total if additive_total else 0
+
+    return {
+        'species': '白蝦',
+        'scenario': f'{pond_area_mu}畝，存活率提升 {survival_improve}%',
+        'data_sources': {
+            '基準存活率': f'{survival_base*100:.0f}% 來源: {survival_row[6] if survival_row else "估算"}',
+            '蝦現貨價': f'CNY {shrimp_price}/kg',
+        },
+        'calculation': {
+            '額外存活尾數': f'{extra_survive:,.0f} 尾',
+            '額外收穫': f'{extra_kg:.1f} kg',
+            '額外收入': f'CNY {extra_revenue:,.0f}',
+        },
+        'wtp': {
+            '客戶願付': f'CNY {wtp:,.0f}/kg 添加劑',
+            '建議報價': f'CNY {wtp*0.4:,.0f} ~ {wtp*0.6:,.0f}/kg',
+        }
+    }
+
+# ── 統一入口 ───────────────────────────────────────────
+CALC_MAP = {
+    'finisher_pig':    calc_finisher_pig,
+    'layer_chicken':   calc_layer_chicken,
+    'broiler':         calc_broiler,
+    'shrimp':          calc_shrimp,
+}
+
+def calculate_roi(species, params, db_path=DB_PATH):
+    conn = sqlite3.connect(db_path)
+    calc_fn = CALC_MAP.get(species)
+    if not calc_fn:
+        return {'error': f'物種 {species} 尚未支援，可用: {list(CALC_MAP.keys())}'}
+    result = calc_fn(conn, params)
+    conn.close()
+    return result
+
+def format_telegram(result):
+    """格式化為 Telegram 友好訊息"""
+    if 'error' in result:
+        return f'❌ {result["error"]}'
+
     lines = [
-        f"## ROI 估算｜{roi['species_label']} × {roi['region_label']}",
-        f"",
-        f"**添加量**：{roi['product_dose']}",
-        f"**ROI 區間**：{roi['roi_display']}",
-        f"**資料覆蓋**：{roi['data_coverage']}",
-        f"",
-        f"### KPI 改善明細",
-        f"",
-        f"| 指標 | 基準值 | 添加後 | 改善 | 單位 | 來源年份 |",
-        f"|------|--------|--------|------|------|----------|",
+        f'📊 <b>ROI 計算報告</b>',
+        f'物種：{result["species"]}',
+        f'場景：{result["scenario"]}',
+        '',
+        '📌 <b>數據來源</b>',
     ]
+    for k, v in result.get('data_sources', {}).items():
+        lines.append(f'  {k}: {v}')
 
-    for kpi in roi["kpi_details"]:
-        pct = kpi["improvement_pct"]
-        pct_str = f"+{pct*100:.0f}%" if pct > 0 else f"{pct*100:.0f}%"
-        lines.append(
-            f"| {kpi['kpi_label']} | {kpi['baseline']} | {kpi['improved']} "
-            f"| {pct_str} | {kpi['unit']} | {kpi['data_year'] or 'N/A'} |"
-        )
+    lines += ['', '🔢 <b>計算結果</b>']
+    for k, v in result.get('calculation', {}).items():
+        lines.append(f'  {k}: {v}')
 
-    lines += [
-        f"",
-        f"> 計算時間：{roi['calculated_at']}",
-        f"> {roi['note']}",
-    ]
-    return "\n".join(lines)
+    lines += ['', '💰 <b>客戶願付價格</b>']
+    for k, v in result.get('wtp', {}).items():
+        lines.append(f'  {k}: {v}')
 
+    lines += ['', '📈 <b>規模效益</b>']
+    for k, v in result.get('scale_roi', {}).items():
+        lines.append(f'  {k}: {v}')
 
-def format_telegram(roi: dict) -> str:
-    lines = [
-        f"📊 *ROI 估算*",
-        f"物種：{roi['species_label']}",
-        f"地區：{roi['region_label']}",
-        f"添加量：{roi['product_dose']}",
-        f"",
-        f"💰 *預期 ROI：{roi['roi_display']}*",
-        f"",
-        f"主要改善：",
-    ]
-    for kpi in roi["kpi_details"][:4]:
-        pct = kpi["improvement_pct"]
-        arrow = "📈" if pct > 0 else "📉"
-        pct_str = f"+{pct*100:.0f}%" if pct > 0 else f"{pct*100:.0f}%"
-        lines.append(f"  {arrow} {kpi['kpi_label']} {pct_str}")
+    lines += ['', f'⏱ {datetime.now().strftime("%Y-%m-%d %H:%M")} | 數據來自本機DB']
+    return '\n'.join(lines)
 
-    lines.append(f"\n資料覆蓋：{roi['data_coverage']}")
-    return "\n".join(lines)
-
-
-# ── 主程式 ────────────────────────────────────────────────────────────────────
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--species",      default="",     help="物種 ID")
-    parser.add_argument("--region",       default="CN_south", help="地區 ID")
-    parser.add_argument("--format",       default="text",
-                        choices=["text","markdown","telegram","json"],
-                        help="輸出格式")
-    parser.add_argument("--all",          action="store_true", help="輸出所有物種")
-    parser.add_argument("--list-species", action="store_true", help="列出可用物種")
-    parser.add_argument("--output",       default="",     help="輸出到檔案")
+# ── CLI / Telegram 呼叫入口 ────────────────────────────
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='ROI Calculator')
+    parser.add_argument('--species', required=True,
+        help='finisher_pig | layer_chicken | broiler | shrimp')
+    parser.add_argument('--params', default='{}',
+        help='JSON格式參數，例如 {"fcr_improvement":25,"body_weight":115}')
+    parser.add_argument('--telegram', action='store_true',
+        help='輸出Telegram格式')
     args = parser.parse_args()
 
-    if args.list_species:
-        print("可用物種：")
-        for sid, label in SPECIES_LABELS.items():
-            has_table = sid in IMPROVEMENT_TABLE
-            print(f"  {sid:<20} {label}  {'✓' if has_table else '（無改善表）'}")
-        print("\n可用地區：")
-        for rid, label in REGION_LABELS.items():
-            print(f"  {rid:<20} {label}")
-        return
+    try:
+        params = json.loads(args.params)
+    except Exception:
+        params = {}
 
-    if not DB_PATH.exists():
-        print(f"DB not found: {DB_PATH}")
-        print("先執行：python local\\download_market.py")
-        return
+    result = calculate_roi(args.species, params)
 
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-
-    # 檢查 DB 有無數據
-    count = conn.execute("SELECT COUNT(*) FROM market_kpi WHERE value IS NOT NULL").fetchone()[0]
-    if count == 0:
-        print("market_kpi 尚無數據，先執行：python local\\download_market.py")
-        print("（GitHub Actions 跑完後才有數據）")
-        print()
-        print("--- 使用預設改善參數輸出估算框架 ---")
-
-    species_list = list(IMPROVEMENT_TABLE.keys()) if args.all else [args.species]
-
-    if not args.species and not args.all:
-        parser.print_help()
-        return
-
-    output_lines = []
-
-    for species in species_list:
-        if species not in IMPROVEMENT_TABLE:
-            print(f"Unknown species: {species}")
-            continue
-
-        roi = calculate_roi(species, args.region, conn)
-
-        if "error" in roi:
-            print(f"Error: {roi['error']}")
-            continue
-
-        if args.format == "json":
-            out = json.dumps(roi, ensure_ascii=False, indent=2)
-        elif args.format == "markdown":
-            out = format_markdown(roi)
-        elif args.format == "telegram":
-            out = format_telegram(roi)
-        else:
-            # text
-            out = (
-                f"\n{'='*50}\n"
-                f"物種：{roi['species_label']} | 地區：{roi['region_label']}\n"
-                f"添加量：{roi['product_dose']}\n"
-                f"ROI：{roi['roi_display']}\n"
-                f"資料覆蓋：{roi['data_coverage']}\n"
-                f"\nKPI 明細：\n"
-            )
-            for kpi in roi["kpi_details"]:
-                pct = kpi["improvement_pct"]
-                pct_str = f"+{pct*100:.0f}%" if pct > 0 else f"{pct*100:.0f}%"
-                out += (
-                    f"  {kpi['kpi_label']:<20} "
-                    f"{kpi['baseline']} → {kpi['improved']} {kpi['unit']} "
-                    f"({pct_str})\n"
-                )
-            out += f"\n{roi['note']}\n"
-
-        output_lines.append(out)
-        print(out)
-
-    conn.close()
-
-    if args.output and output_lines:
-        Path(args.output).write_text("\n".join(output_lines), encoding="utf-8")
-        print(f"\nSaved: {args.output}")
-
-
-if __name__ == "__main__":
-    main()
+    if args.telegram:
+        print(format_telegram(result))
+    else:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
