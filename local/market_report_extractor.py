@@ -19,6 +19,7 @@ QWEN_URL       = 'http://localhost:1234/v1/chat/completions'
 QWEN_MODEL     = 'qwen3.6-35b'
 TELEGRAM_TOKEN = '8703702788:AAFKEiGmLYTAuFVG9GX-gRtVTUUyi-f_5mM'
 TELEGRAM_CHAT  = 897274134
+FIRECRAWL_API_KEY = 'fc-f1b23a25854a4c96aa56acb89c65e930'
 MCP_URL        = 'http://localhost:8765/call'
 RAGFLOW_API_KEY = 'ragflow-fcCq8K0sVcefhVHboEmBOOzt5S2cQ7jCcHT5cCwhWRM'
 RAGFLOW_BASE_URL = 'http://localhost'
@@ -103,6 +104,21 @@ def scrape_url(url):
         return r.text[:5000]
     except Exception as e:
         logging.error(f'Scrape failed: {e}')
+    # Firecrawl fallback (JS dynamic pages)
+    try:
+        fc_resp = requests.post(
+            'https://api.firecrawl.dev/v0/scrape',
+            headers={'Authorization': f'Bearer {FIRECRAWL_API_KEY}'},
+            json={'url': url, 'pageOptions': {'onlyMainContent': True}},
+            timeout=30)
+        if fc_resp.ok:
+            data = fc_resp.json()
+            content = data.get('data', {}).get('content', '')
+            if content:
+                logging.info(f'[Firecrawl] OK: {url}')
+                return content[:8000]
+    except Exception as e:
+        logging.warning(f'[Firecrawl] Failed: {e}')
     return ''
 
 def write_to_db(conn, extracted, source_url, source_title):
