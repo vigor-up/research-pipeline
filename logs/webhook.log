@@ -9,3 +9,9 @@
 2026-05-07 16:34:10,082 [INFO] Running: C:\Users\Richtrong\AppData\Local\Programs\Python\Python311\python.exe local/formula_advisor.py --species 肉牛 --product bacillus_protease --telegram
 2026-05-07 16:34:10,082 [INFO] TG msg: /formula 肉牛 bacillus_protease
 2026-05-07 16:34:10,110 [INFO] Running: C:\Users\Richtrong\AppData\Local\Programs\Python\Python311\python.exe local/formula_advisor.py --species 肉牛 --product bacillus_protease --telegram
+2026-05-07 16:36:58,455 [INFO] Local webhook on port 8766
+2026-05-07 16:36:58,456 [INFO] Telegram polling started
+2026-05-07 16:37:03,555 [INFO] Local webhook on port 8766
+2026-05-07 16:37:03,555 [INFO] Telegram polling started
+2026-05-07 16:37:26,767 [INFO] TG msg: /formula 肉牛 蛋白酶
+2026-05-07 16:37:26,767 [INFO] Running: C:\Users\Richtrong\AppData\Local\Programs\Python\Python311\python.exe local/formula_advisor.py --species beef_cattle --product bacillus_protease --telegram
