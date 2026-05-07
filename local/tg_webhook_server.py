@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """
 tg_webhook_server.py
 EVO-X2 常駐服務：接收 GitHub Actions / Telegram 指令
@@ -6,7 +6,7 @@ EVO-X2 常駐服務：接收 GitHub Actions / Telegram 指令
 port: 8766
 """
 
-import json, logging, subprocess, threading, requests
+import html, json, logging, re, subprocess, threading, requests
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from datetime import datetime
 import sys, os
@@ -86,6 +86,12 @@ COMMANDS = {
     'db_quality':   lambda: run_script('db_quality_fix.py',  [], 'DB品質修正'),
 
     # Telegram Bot 指令
+    '/v5':          lambda args: run_script(
+                        'auto_collect_v5.py',
+                        ['--mode', 'single',
+                         '--species', args[0] if args else 'finisher_pig',
+                         '--region',  args[1] if len(args)>1 else 'CN_northeast'],
+                        'v5單物種收集'),
     '/roi':         lambda args: run_script(
                         'pricing_matrix_v2.py',
                         ['--region', args[0] if args else 'CN_northeast', '--telegram'],
@@ -209,6 +215,24 @@ class WebhookHandler(BaseHTTPRequestHandler):
                 tg(f'❓ 未知指令: {cmd}\n輸入 /help 查看說明')
                 self.send_json({'status': 'unknown_command'})
 
+        elif self.path == '/webhook':
+            title = html.escape(data.get('title', 'ChangeDetection通知'))
+            raw = re.sub(r'<[^>]+>', '', str(data.get('message', ''))).strip()
+            diff = html.escape(raw[:400])
+            msg = f'🔔 <b>頁面變更</b>\n<b>{title}</b>\n\n{diff}'
+            tg(msg)
+            self.send_json({'status': 'ok'})
+            logging.info(f'ChangeDetection: {title}')
+
+        elif self.path == '/webhook':
+            title = html.escape(data.get('title', 'ChangeDetection通知'))
+            raw = re.sub(r'<[^>]+>', '', str(data.get('message', ''))).strip()
+            diff = html.escape(raw[:400])
+            msg = f'🔔 <b>頁面變更</b>\n<b>{title}</b>\n\n{diff}'
+            tg(msg)
+            self.send_json({'status': 'ok'})
+            logging.info(f'ChangeDetection: {title}')
+
         else:
             self.send_json({'error': 'unknown path'}, 404)
 
@@ -280,3 +304,4 @@ if __name__ == '__main__':
         server_thread.start()
         logging.info(f'Local webhook on port {args.port}')
         telegram_polling()
+

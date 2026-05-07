@@ -14,8 +14,8 @@ from pathlib import Path
 TAVILY_KEY           = os.environ.get('TAVILY_API_KEY', '')
 FIRECRAWL_KEY        = os.environ.get('FIRECRAWL_API_KEY', 'fc-f1b23a25854a4c96aa56acb89c65e930')
 SEMANTIC_SCHOLAR_KEY = os.environ.get('SEMANTIC_SCHOLAR_KEY', 's2k-8Zr1tg8DeqJiJKwD7U5ip0QK9pijy04E7lHXIKfc')
-TELEGRAM_TOKEN       = os.environ.get('TELEGRAM_BOT_TOKEN', '8703702788:AAFKEiGmLYTAuFVG9GX-gRtVTUUyi-f_5mM')
-TELEGRAM_CHAT        = int(os.environ.get('TG_OWNER_CHAT_ID', '897274134'))
+TELEGRAM_TOKEN       = os.environ.get('TELEGRAM_TOKEN', '8703702788:AAFKEiGmLYTAuFVG9GX-gRtVTUUyi-f_5mM')
+TELEGRAM_CHAT        = int(os.environ.get('TELEGRAM_CHAT_ID', '897274134'))
 R2_ENDPOINT          = 'https://adb1040c847f4ae4a7d6bfedcccd7b77.r2.cloudflarestorage.com'
 R2_ACCESS_KEY        = os.environ.get('R2_ACCESS_KEY_ID', 'f443b2e5acc77dd1af6a83a5d548b35b')
 R2_SECRET_KEY        = os.environ.get('R2_SECRET_ACCESS_KEY', 'da1c377ffbc03b865504e292480e0e2806ddb84a61bf87b7e6a2066632a4a357')
