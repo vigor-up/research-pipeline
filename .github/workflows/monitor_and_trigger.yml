@@ -1,0 +1,99 @@
+name: Monitor & Trigger EVO-X2
+
+on:
+  schedule:
+    # 每天 03:00 UTC+8 = 19:00 UTC
+    - cron: '0 19 * * *'
+    # 每週六 09:00 UTC+8 = 01:00 UTC（深度收集）
+    - cron: '0 1 * * 6'
+  workflow_dispatch:
+    inputs:
+      action:
+        description: '觸發動作'
+        required: true
+        default: 'collect'
+        type: choice
+        options:
+          - collect
+          - price_update
+          - db_quality
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check target websites
+        id: check
+        run: |
+          # 檢查農業部價格監測是否更新
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "http://zdscxx.moa.gov.cn:8080/misportal/public/publicationViewRedirect.do" \
+            --max-time 10 || echo "000")
+          echo "moa_status=$HTTP_CODE" >> $GITHUB_OUTPUT
+
+          # 檢查搜豬網
+          HTTP_CODE2=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://www.soozhu.com/market/price/" \
+            --max-time 10 || echo "000")
+          echo "pig_status=$HTTP_CODE2" >> $GITHUB_OUTPUT
+
+          echo "trigger_time=$(date '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_OUTPUT
+
+      - name: Notify Telegram - Status
+        run: |
+          MSG="🔍 GitHub Actions 監控\n時間: ${{ steps.check.outputs.trigger_time }}\n農業部: ${{ steps.check.outputs.moa_status }}\n搜豬網: ${{ steps.check.outputs.pig_status }}"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=$MSG" \
+            -d "parse_mode=HTML"
+
+      - name: Trigger EVO-X2 via Telegram
+        run: |
+          ACTION="${{ github.event.inputs.action || 'collect' }}"
+
+          # 透過 Telegram Bot 發指令給 EVO-X2
+          # EVO-X2 的 tg_webhook_server.py 在輪詢，會收到並執行
+          if [ "$ACTION" = "collect" ]; then
+            MSG="/collect"
+          elif [ "$ACTION" = "price_update" ]; then
+            MSG="/price_update"
+          else
+            MSG="/db_quality"
+          fi
+
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=$MSG"
+
+          echo "Triggered: $MSG"
+
+      - name: Run Firecrawl for public ag data
+        env:
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+        run: |
+          # 用 Firecrawl 抓公開農業數據（不需要中國IP）
+          if [ -n "$FIRECRAWL_API_KEY" ]; then
+            # FAO 最新數據
+            curl -s -X POST "https://api.firecrawl.dev/v1/scrape" \
+              -H "Authorization: Bearer $FIRECRAWL_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{"url":"https://www.fao.org/faostat/en/#data/QL","formats":["markdown"]}' \
+              -o /tmp/fao_data.json || true
+
+            echo "Firecrawl done"
+          else
+            echo "No Firecrawl key, skipping"
+          fi
+
+      - name: Upload results to R2
+        env:
+          R2_ACCESS_KEY: ${{ secrets.R2_ACCESS_KEY }}
+          R2_SECRET_KEY: ${{ secrets.R2_SECRET_KEY }}
+          R2_ACCOUNT_ID: adb1040c847f4ae4a7d6bfedcccd7b77
+        run: |
+          # 把抓到的數據上傳 R2，EVO-X2 下次同步時會拉取
+          if [ -f /tmp/fao_data.json ]; then
+            echo "Would upload fao_data.json to R2"
+            # aws s3 cp /tmp/fao_data.json s3://market-data/fao/latest.json ...
+          fi
+          echo "Pipeline complete: $(date)"
