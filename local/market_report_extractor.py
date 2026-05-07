@@ -25,6 +25,10 @@ RAGFLOW_API_KEY = 'ragflow-fcCq8K0sVcefhVHboEmBOOzt5S2cQ7jCcHT5cCwhWRM'
 RAGFLOW_BASE_URL = 'http://localhost'
 RAGFLOW_DATASET_ID = '5a68aa6e49ba11f190c657ee8852d812'
 
+RAGFLOW_API_KEY = 'ragflow-fcCq8K0sVcefhVHboEmBOOzt5S2cQ7jCcHT5cCwhWRM'
+RAGFLOW_BASE_URL = 'http://localhost'
+RAGFLOW_DATASET_ID = '5a68aa6e49ba11f190c657ee8852d812'
+
 
 logging.basicConfig(level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s')
@@ -37,19 +41,21 @@ EXTRACT_PROMPT = """你是中國畜牧市場數據分析師。
 {{
   "report_date": "YYYY-MM-DD或null",
   "report_title": "報告標題",
-  "species": "主要物種（finisher_pig/layer_chicken/beef_cattle/meat_sheep/shrimp等）",
+  "species": "整篇報告主要物種（finisher_pig/layer_chicken/beef_cattle/meat_sheep/broiler/duck/dairy_cow等）",
   "prices": [
     {{
       "item": "品項名稱",
+      "species": "該價格對應物種（finisher_pig/beef_cattle/meat_sheep/broiler/layer_chicken/duck/dairy_cow/shrimp/nursery_pig）",
       "value": 數字,
       "unit": "元/斤|元/kg|元/噸|元/頭",
       "region": "地區或CN_all",
-      "price_type": "live|carcass|egg|feed|piglet"
+      "price_type": "live|carcass|egg|feed|piglet|slaughter"
     }}
   ],
   "market_indicators": [
     {{
       "metric": "指標名稱",
+      "species": "對應物種（同上列表）",
       "value": 數字或null,
       "unit": "單位",
       "trend": "up|down|stable|null",
@@ -62,8 +68,11 @@ EXTRACT_PROMPT = """你是中國畜牧市場數據分析師。
   "summary": "100字內市場摘要"
 }}
 
-只提取文中明確出現的數字，不推測。
-如果某欄位無法確定，填null。
+重要規則：
+1. 每筆price和indicator必須有正確species，不得用報告主物種覆蓋其他物種
+2. 豬肉/白條豬=finisher_pig，仔豬=nursery_pig，雞蛋=layer_chicken，毛雞=broiler
+3. 只提取文中明確出現的數字，不推測
+4. 如果某欄位無法確定，填null
 
 文字：
 {text}"""
@@ -148,7 +157,8 @@ def write_to_db(conn, extracted, source_url, source_title):
         region   = p.get('region','CN_all')
         ptype    = p.get('price_type','spot')
         safe_item = p.get('item','').replace(' ','_')[:20]
-        kpi_id   = f"spot_price_{species_main}_{ptype}_{safe_item}_{region.lower()}"
+        species_price = p.get('species', species_main)
+        kpi_id   = f"spot_price_{species_price}_{ptype}_{safe_item}_{region.lower()}"
 
         if not cur.execute(
             "SELECT id FROM market_kpi WHERE kpi_id=? AND year=?",
@@ -159,7 +169,7 @@ def write_to_db(conn, extracted, source_url, source_title):
                  source_url,source_title,raw_text,language,confirmed,updated_at)
                 VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
                 str(uuid.uuid4()), region, 'CN',
-                species_main, 'market_price', kpi_id,
+                species_price, 'market_price', kpi_id,
                 val_kg, unit_std, year, 4, 'industry_media',
                 source_url, source_title,
                 f"{p.get('item')} {val}{unit} → {val_kg}CNY/kg",
@@ -170,7 +180,8 @@ def write_to_db(conn, extracted, source_url, source_title):
     for m in extracted.get('market_indicators', []):
         val = m.get('value')
         metric = m.get('metric','').replace(' ','_')[:30]
-        kpi_id = f"market_indicator_{species_main}_{metric}_{year}"
+        species_ind = m.get('species', species_main)
+        kpi_id = f"market_indicator_{species_ind}_{metric}_{year}"
         if val is not None and not cur.execute(
             "SELECT id FROM market_kpi WHERE kpi_id=?", (kpi_id,)).fetchone():
             cur.execute("""INSERT INTO market_kpi
@@ -179,7 +190,7 @@ def write_to_db(conn, extracted, source_url, source_title):
                  source_url,source_title,raw_text,language,confirmed,updated_at)
                 VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
                 str(uuid.uuid4()), 'CN_all', 'CN',
-                species_main, 'market_indicator', kpi_id,
+                species_ind, 'market_indicator', kpi_id,
                 float(val), m.get('unit',''), year,
                 3, 'industry_media',
                 source_url, source_title,
@@ -242,6 +253,34 @@ def upload_to_ragflow(text, doc_name):
         os.unlink(tmp.name)
     return False
 
+
+def upload_to_ragflow(text, doc_name):
+    import tempfile, os
+    headers = {'Authorization': f'Bearer {RAGFLOW_API_KEY}'}
+    tmp = tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False, encoding='utf-8')
+    tmp.write(text); tmp.close()
+    try:
+        with open(tmp.name, 'rb') as f:
+            resp = requests.post(
+                f'{RAGFLOW_BASE_URL}/api/v1/datasets/{RAGFLOW_DATASET_ID}/documents',
+                headers=headers,
+                files={'file': (doc_name, f, 'text/plain')}
+            )
+        if resp.status_code == 200 and resp.json().get('code') == 0:
+            doc_id = resp.json()['data'][0]['id']
+            requests.post(
+                f'{RAGFLOW_BASE_URL}/api/v1/datasets/{RAGFLOW_DATASET_ID}/chunks',
+                headers=headers,
+                json={'document_ids': [doc_id]}
+            )
+            logging.info(f'[RAGFlow] 上傳成功: {doc_name}')
+            return True
+    except Exception as e:
+        logging.error(f'[RAGFlow] 上傳失敗: {e}')
+    finally:
+        os.unlink(tmp.name)
+    return False
+
 def tg(msg):
     try:
         requests.post(
@@ -278,6 +317,8 @@ def process_report(text, source_url='', source_title=''):
         f'💡 ROI洞察:\n' +
         '\n'.join(f'• {i}' for i in extracted.get('roi_insights',[])[:3])
     )
+    doc_name = f"market_{extracted.get('report_date','unknown')}_{extracted.get('species','unknown')}.txt"
+    upload_to_ragflow(text, doc_name)
     doc_name = f"market_{extracted.get('report_date','unknown')}_{extracted.get('species','unknown')}.txt"
     upload_to_ragflow(text, doc_name)
     return n, report

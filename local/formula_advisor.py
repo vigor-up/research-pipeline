@@ -251,7 +251,7 @@ def calculate(species, product_key, region='CN_northeast',
             'beef_cattle':  300,   # 架子牛350kg→出欄650kg
             'meat_sheep':   45,    # 斷奶25kg→出欄70kg
             'broiler':      2.5,   # 全程2.5kg
-            'layer_chicken':1.5,   # 產蛋期體重維持，用年產蛋量kg
+            'layer_chicken':18.0,  # 年產蛋量18kg（500天産蛋18-20kg/只均值）
             'duck':         3.0,   # 出欄3kg
             'breeding_sow': 66,    # 25天斷奶窩總增重
         }
