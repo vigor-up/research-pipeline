@@ -60,6 +60,25 @@ def run_script(script, args=[], label=''):
     threading.Thread(target=_run, daemon=True).start()
 
 # ── 指令路由 ────────────────────────────────────────────
+
+SPECIES_MAP = {
+    '肉牛': 'beef_cattle', '牛': 'beef_cattle',
+    '育肥豬': 'finisher_pig', '豬': 'finisher_pig', '肉豬': 'finisher_pig',
+    '肉羊': 'meat_sheep', '羊': 'meat_sheep',
+    '肉雞': 'broiler', '雞': 'broiler',
+    '蛋雞': 'layer_chicken', '蛋': 'layer_chicken',
+    '肉鴨': 'duck', '鴨': 'duck',
+    '母豬': 'lactating_sow', '哺乳母豬': 'lactating_sow',
+    '奶牛': 'dairy_cow',
+    '白蝦': 'shrimp', '蝦': 'shrimp',
+}
+PRODUCT_MAP = {
+    '蛋白酶': 'bacillus_protease', '枯草菌': 'bacillus_protease', '活力得': 'bacillus_protease',
+    '蝦青素': 'astaxanthin', '二十八烷醇': 'octacosanol', '八烷醇': 'octacosanol',
+}
+def translate_args(args):
+    return [SPECIES_MAP.get(a, PRODUCT_MAP.get(a, a)) for a in args]
+
 COMMANDS = {
     # GitHub Actions 觸發
     'collect':      lambda: run_script('auto_collect_v4.py', [], '自動收集v4'),
@@ -223,7 +242,7 @@ def telegram_polling():
                     handler = COMMANDS.get(cmd)
                     if handler:
                         try:
-                            handler(args)
+                            handler(translate_args(args))
                         except TypeError:
                             handler()
                     else:
