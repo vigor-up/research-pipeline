@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """
 pricing_matrix_v2.py
 市場反推定價矩陣 v2
@@ -55,8 +55,8 @@ SPECIES_PARAMS = {
         'dosage_kg_ton':  1.0,
         'fcr_improve_pct': 15.0,
         'adg_improve_pct': 8.0,   # 同期飼料重量增加8%體重
-        'wtp_per_01fcr_low':  8,
-        'wtp_per_01fcr_high': 12,
+        'wtp_per_01fcr_low':  25,
+        'wtp_per_01fcr_high': 35,
         'gain_kg':        2.4,
         'calc_type':      'fcr_adg',
     },
@@ -320,18 +320,18 @@ def calc_roi(conn, species, sp, region):
         mkt_p    = mkt_row[0] if mkt_row else 50.0
         fcr_row  = get_kpi(conn, species, 'fcr', 'CN_south')
         fcr_base = fcr_row[0] if fcr_row else 1.4
-
         fcr_new  = fcr_base * (1 - sp['fcr_improve_pct']/100)
+        # 每噸飼料產出水產kg數
+        output_base    = 1000 / fcr_base
+        output_new     = 1000 / fcr_new
+        extra_output   = output_new - output_base
+        saving_per_ton = extra_output * mkt_p
+        survival_gain  = output_base * mkt_p * sp.get('survival_improve',0)/100
+        saving_per_ton += survival_gain
+        wtp_mid  = saving_per_ton * 0.5
+        wtp_low  = wtp_mid * 0.8
+        wtp_high = wtp_mid * 1.2
         gain_kg  = sp['gain_kg']
-        feed_saved = (fcr_base - fcr_new) * gain_kg
-        cost_saved = feed_saved * feed_cost
-        price_gain = mkt_p * gain_kg * sp.get('survival_improve',0)/100/10
-
-        saving_per_head = cost_saved + price_gain
-        feed_per_head   = fcr_new * gain_kg
-        units_per_ton   = 1000 / (feed_per_head * dosage * 1000)
-        saving_per_ton  = saving_per_head * units_per_ton
-
         wtp_mid  = saving_per_ton * 0.5
         wtp_low  = wtp_mid * 0.8
         wtp_high = wtp_mid * 1.2

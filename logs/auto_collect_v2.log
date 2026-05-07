@@ -1,0 +1,27 @@
+2026-05-06 17:48:54,049 [INFO] ============================================================
+2026-05-06 17:48:54,049 [INFO] auto_collect_v2.py START
+2026-05-06 17:48:54,050 [INFO] Tavily key: tvly-dev...
+2026-05-06 17:48:55,727 [INFO] --- Round 1 | 0.0h | inserted: 0 ---
+2026-05-06 17:48:57,626 [INFO] dairy_goat: 1✅ 0⏳
+2026-05-06 17:49:02,184 [INFO] Tavily [5] "dairy goat FCR feed conversion ratio ADG daily wei"
+2026-05-06 17:49:34,192 [INFO] Tavily [5] "dairy goat milk yield lactation performance Guanzh"
+2026-05-06 17:50:03,215 [INFO] Tavily [5] "dairy goat mortality disease loss China commercial"
+2026-05-06 17:50:29,710 [INFO] Tavily [5] "奶山羊 饲料转化率 日增重 产奶量 规模化 基准值 2023"
+2026-05-06 17:50:45,244 [INFO]   ✅ dairy_goat +1 from https://www.hkexnews.hk/listedco/listconews/sehk/2026/0424/2
+2026-05-06 17:51:24,725 [INFO] channel_catfish: 3✅ 7⏳
+2026-05-06 17:51:34,887 [INFO] Tavily [5] "channel catfish Ictalurus punctatus FCR ADG surviv"
+2026-05-06 17:51:58,827 [INFO]   ✅ channel_catfish +4 from https://www.sciencedirect.com/science/article/pii/S235251342
+2026-05-06 17:52:18,015 [INFO] Tavily [5] "channel catfish production performance benchmark m"
+2026-05-06 17:52:52,927 [INFO] Tavily [5] "斑点叉尾鮰 饲料系数 日增重 成活率 中国 池塘 2022 2023"
+2026-05-06 17:53:40,619 [INFO] dairy_cow: 7✅ 0⏳
+2026-05-06 17:53:48,927 [INFO] Tavily [5] "Holstein dairy cow milk yield per day FCR China co"
+2026-05-06 17:54:06,379 [INFO]   ✅ dairy_cow +1 from https://apps.fas.usda.gov/newgainapi/api/Report/DownloadRepo
+2026-05-06 17:54:12,020 [INFO]   ✅ dairy_cow +1 from https://www.thebullvine.com/dairy-industry/chinas-500000-cow
+2026-05-06 17:54:29,318 [INFO] Tavily [5] "dairy cow mastitis lameness mortality China farm d"
+2026-05-06 17:54:58,763 [INFO] Tavily [5] "奶牛 产奶量 饲料转化效率 死亡率 中国规模化牧场 2023"
+2026-05-06 17:55:15,762 [INFO]   ✅ dairy_cow +1 from http://rdi.cass.cn/yjcg/202409/P020240920454687676356.pdf
+2026-05-06 17:55:25,074 [INFO]   ✅ dairy_cow +1 from http://www.hkexnews.hk/listedco/listconews/sehk/2024/0428/20
+2026-05-06 17:55:38,962 [INFO]   ✅ dairy_cow +1 from https://pdf.dfcfw.com/pdf/H3_AP202504081653225125_1.pdf
+2026-05-06 17:56:24,697 [INFO] layer_chicken: 8✅ 0⏳
+2026-05-06 17:56:33,865 [INFO] Tavily [5] "layer chicken feed conversion ratio egg production"
+2026-05-06 17:56:34,884 [INFO] Interrupted.

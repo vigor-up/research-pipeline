@@ -1,0 +1,47 @@
+2026-05-06 17:15:33,527 [INFO] ============================================================
+2026-05-06 17:15:33,527 [INFO] auto_collect.py START
+2026-05-06 17:15:33,527 [INFO] ============================================================
+2026-05-06 17:15:33,528 [INFO] Tavily key loaded: tvly-dev...
+2026-05-06 17:15:33,528 [INFO] --- Round 1 | Elapsed 0.0h | Total inserted: 0 ---
+2026-05-06 17:15:33,529 [INFO] dairy_goat: 1 confirmed, 0 unconfirmed
+2026-05-06 17:15:41,685 [INFO] Tavily: "dairy goat FCR feed conversion ratio ADG daily gai" → 5 results
+2026-05-06 17:15:53,819 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:15:56,664 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:16:00,103 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:16:03,390 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:16:06,468 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:16:22,952 [INFO] Tavily: "奶山羊 饲料报酬 日增重 规模化养殖 生产性能 2022 2023" → 5 results
+2026-05-06 17:16:35,711 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:16:39,508 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:16:43,883 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:16:49,595 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:16:54,235 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:17:08,287 [INFO] Tavily: "dairy goat milk yield lactation performance China " → 5 results
+2026-05-06 17:17:19,787 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:17:23,313 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:17:27,094 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:17:30,658 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:17:33,939 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:17:37,953 [INFO] Tavily: "dairy goat mortality disease loss China farm stati" → 5 results
+2026-05-06 17:17:49,108 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:17:52,168 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:17:55,212 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:17:58,308 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:18:01,384 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:18:31,385 [INFO] channel_catfish: 3 confirmed, 0 unconfirmed
+2026-05-06 17:18:38,695 [INFO] Tavily: "channel catfish FCR ADG survival rate China pond a" → 5 results
+2026-05-06 17:19:06,175 [INFO] Qwen extracted 8 KPIs
+2026-05-06 17:19:06,215 [INFO]   ✅ channel_catfish +4 rows from https://www.sciencedirect.com/science/article/pii/S235251342
+2026-05-06 17:19:09,814 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:19:13,044 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:19:16,608 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:19:19,691 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:19:27,204 [INFO] Tavily: "斑点叉尾鮰 饲料系数 日增重 成活率 池塘养殖 2022 2023" → 5 results
+2026-05-06 17:19:39,701 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:19:43,298 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:19:58,032 [INFO] Qwen extracted 5 KPIs
+2026-05-06 17:19:59,284 [INFO]   ✅ channel_catfish +3 rows from http://tcsae.org/cn/article/pdf/preview/10.11975/j.issn.1002
+2026-05-06 17:20:24,112 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:20:28,840 [INFO] Tavily: "channel catfish production performance benchmark C" → 5 results
+2026-05-06 17:20:39,961 [INFO] Qwen extracted 0 KPIs
+2026-05-06 17:20:58,118 [INFO] Interrupted by user.

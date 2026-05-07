@@ -1,0 +1,128 @@
+2026-05-07 07:28:27,294 [INFO] ============================================================
+2026-05-07 07:28:27,294 [INFO] auto_collect_v4 START (FAO+二次驗證+參考追蹤)
+2026-05-07 07:28:27,295 [INFO] Tavily (utf-8-sig): tvly-dev...
+2026-05-07 07:28:28,519 [INFO] === Round 1 | 0.0h ===
+2026-05-07 07:28:28,523 [INFO] === Price Collection Start ===
+2026-05-07 07:28:28,523 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:28,620 [WARNING] Attempt 1 failed: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:29,650 [WARNING] Attempt 2 failed: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:30,653 [ERROR] Failed after 3 attempts: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-05-07 07:28:30,655 [WARNING]   No content: https://www.xumuwang.com/pigprice/
+2026-05-07 07:28:30,655 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:31,073 [INFO] Fetched (404) <GET https://www.soozhu.com/market/price/> (referer: https://www.google.com/)
+2026-05-07 07:28:31,075 [INFO]   No prices extracted: 搜豬網行情
+2026-05-07 07:28:31,075 [INFO] Price finisher_pig: +0
+2026-05-07 07:28:31,075 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:31,077 [WARNING] Attempt 1 failed: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:32,079 [WARNING] Attempt 2 failed: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:33,171 [ERROR] Failed after 3 attempts: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-05-07 07:28:33,173 [WARNING]   No content: https://www.xumuwang.com/eggprice/
+2026-05-07 07:28:33,173 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:33,513 [WARNING] Attempt 1 failed: Failed to perform, curl: (60) SSL certificate problem: unable to get local issuer certificate. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:34,672 [WARNING] Attempt 2 failed: Failed to perform, curl: (60) SSL certificate problem: unable to get local issuer certificate. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:35,823 [ERROR] Failed after 3 attempts: Failed to perform, curl: (60) SSL certificate problem: unable to get local issuer certificate. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-05-07 07:28:36,141 [WARNING]   No content: https://www.caaa.cn/market/egg/
+2026-05-07 07:28:36,141 [INFO] Price layer_chicken: +0
+2026-05-07 07:28:36,142 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:36,144 [WARNING] Attempt 1 failed: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:37,146 [WARNING] Attempt 2 failed: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:38,159 [ERROR] Failed after 3 attempts: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-05-07 07:28:38,162 [WARNING]   No content: https://www.xumuwang.com/broilerprice/
+2026-05-07 07:28:38,162 [INFO] Price broiler: +0
+2026-05-07 07:28:38,162 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:38,164 [WARNING] Attempt 1 failed: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:39,168 [WARNING] Attempt 2 failed: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:40,174 [ERROR] Failed after 3 attempts: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-05-07 07:28:40,176 [WARNING]   No content: https://www.xumuwang.com/cattleprice/
+2026-05-07 07:28:40,176 [INFO] Price beef_cattle: +0
+2026-05-07 07:28:40,176 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:40,177 [WARNING] Attempt 1 failed: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:41,180 [WARNING] Attempt 2 failed: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-07 07:28:42,182 [ERROR] Failed after 3 attempts: Failed to perform, curl: (6) Could not resolve host: www.xumuwang.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-05-07 07:28:42,183 [WARNING]   No content: https://www.xumuwang.com/sheepprice/
+2026-05-07 07:28:42,183 [INFO] Price meat_sheep: +0
+2026-05-07 07:28:42,184 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:42,500 [INFO] Fetched (404) <GET https://www.shuichan.cc/price_list-0-4.html> (referer: https://www.google.com/)
+2026-05-07 07:28:42,835 [WARNING]   No content: https://www.shuichan.cc/price_list-0-4.html
+2026-05-07 07:28:42,836 [INFO] Price shrimp: +0
+2026-05-07 07:28:42,836 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:43,158 [INFO] Fetched (404) <GET https://www.shuichan.cc/price_list-0-2.html> (referer: https://www.google.com/)
+2026-05-07 07:28:43,487 [WARNING]   No content: https://www.shuichan.cc/price_list-0-2.html
+2026-05-07 07:28:43,487 [INFO] Price tilapia: +0
+2026-05-07 07:28:43,487 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:43,605 [INFO] Fetched (404) <GET https://www.shuichan.cc/price_list-0-1.html> (referer: https://www.google.com/)
+2026-05-07 07:28:43,950 [WARNING]   No content: https://www.shuichan.cc/price_list-0-1.html
+2026-05-07 07:28:43,951 [INFO] Price largemouth_bass: +0
+2026-05-07 07:28:43,951 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:44,287 [INFO] Fetched (404) <GET https://www.shuichan.cc/price_list-0-3.html> (referer: https://www.google.com/)
+2026-05-07 07:28:44,613 [WARNING]   No content: https://www.shuichan.cc/price_list-0-3.html
+2026-05-07 07:28:44,613 [INFO] Price grouper: +0
+2026-05-07 07:28:44,613 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:45,105 [INFO] Fetched (404) <GET https://www.feedtrade.com.cn/market/soybean_meal.html> (referer: https://www.google.com/)
+2026-05-07 07:28:47,910 [INFO]   No prices extracted: 飼料網豆粕
+2026-05-07 07:28:47,911 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:48,429 [INFO] Fetched (200) <GET https://www.dbn.com.cn/price/soybean/> (referer: https://www.google.com/)
+2026-05-07 07:28:50,970 [INFO]   No prices extracted: 大北農豆粕
+2026-05-07 07:28:50,971 [INFO] Price feed_ingredient: +0
+2026-05-07 07:28:50,971 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:51,557 [INFO] Fetched (404) <GET https://www.feedtrade.com.cn/market/corn.html> (referer: https://www.google.com/)
+2026-05-07 07:28:54,311 [INFO]   No prices extracted: 飼料網玉米
+2026-05-07 07:28:54,311 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-07 07:28:55,169 [INFO] Fetched (200) <GET https://www.dbn.com.cn/price/corn/> (referer: https://www.google.com/)
+2026-05-07 07:28:57,708 [INFO]   No prices extracted: 大北農玉米
+2026-05-07 07:28:57,708 [INFO] Price feed_ingredient: +0
+2026-05-07 07:28:57,709 [INFO] === Price Collection Done: +0 ===
+2026-05-07 07:28:57,709 [INFO] dairy_goat/CN_all: have=['other', 'mortality', 'litter', 'milk', 'adg', 'fcr'], missing=['milk_yield']
+2026-05-07 07:29:17,994 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:29:38,214 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:29:44,776 [INFO] Qwen queries dairy_goat: ['dairy goat milk yield performance in China 2023', '中国奶山羊产奶量数据 2022-2023', 'dairy goat milk production statistics China 2024', '中国地区奶山羊单产水平调研 2023']
+2026-05-07 07:33:27,045 [INFO] dairy_goat done: +0 confirmed=0
+2026-05-07 07:33:42,046 [INFO] channel_catfish/CN_all: have=['other', 'mortality', 'FCR', 'survival', 'slaughter', 'adg', 'harvest', 'fcr'], missing=[]
+2026-05-07 07:33:42,047 [INFO]   → channel_catfish 足夠，跳Tavily
+2026-05-07 07:33:57,048 [INFO] largemouth_catfish/CN_all: have=['other', 'FCR', 'slaughter', 'survival', 'adg', 'fcr'], missing=[]
+2026-05-07 07:33:57,048 [INFO]   → largemouth_catfish 足夠，跳Tavily
+2026-05-07 07:34:12,049 [INFO] dairy_cow/CN_all: have=['mastitis', 'mortality', 'other', 'market', 'milk', 'fcr'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 07:34:32,357 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:34:52,564 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:34:59,167 [INFO] Qwen queries dairy_cow: ['2023 dairy cow milk yield statistics China', '2023 dairy cow mastitis loss data China', '2023年中国奶牛单产数据', '2023年中国奶牛乳房炎损失统计']
+2026-05-07 07:38:40,772 [INFO] dairy_cow done: +0 confirmed=0
+2026-05-07 07:38:55,773 [INFO] layer_chicken/CN_all: have=['mortality', 'other', 'AI', 'market', 'litter', 'survival', 'slaughter', 'egg', 'fcr'], missing=['egg_rate']
+2026-05-07 07:39:16,012 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:39:42,717 [INFO] Qwen queries layer_chicken: ['layer chicken egg rate market size and growth rate in China 2023', 'China layer poultry egg production rate statistics 2024', '中国蛋鸡养殖蛋率市场分析及预测2023年', '2024年中国蛋鸡产业鸡蛋率及市场规模研究报告']
+2026-05-07 07:43:24,379 [INFO] layer_chicken done: +0 confirmed=0
+2026-05-07 07:43:39,381 [INFO] broiler/CN_all: have=['other', 'mortality', 'FCR', 'slaughter', 'disease', 'fcr'], missing=['ADG']
+2026-05-07 07:43:59,607 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:44:19,839 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:44:26,914 [INFO] Qwen queries broiler: ['"broiler" "average daily gain" ADG "United States" 2023', '"broiler" "ADG" performance "China" 2024', '"肉雞" "平均日增重" ADG "美國" 2023', '"肉雞" "ADG" 生產性能 "中國" 2024']
+2026-05-07 07:48:09,862 [INFO] broiler done: +0 confirmed=0
+2026-05-07 07:48:24,863 [INFO] shrimp/CN_south: have=['mortality', 'FCR', 'survival', 'EMS', 'fcr'], missing=[]
+2026-05-07 07:48:54,384 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:48:57,385 [INFO]   → shrimp 足夠，跳Tavily
+2026-05-07 07:49:12,386 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 07:49:32,603 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:49:52,817 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:49:59,994 [INFO] Qwen queries beef_cattle: ['"beef cattle" FCR ADG mortality CN_north 2023', '"beef cattle" feed conversion ratio average daily gain mortality rate CN_north 2024', '"肉牛" 料肉比 日增重 死亡率 CN_north 2023', '"肉牛" 饲料转化率 平均日增重 存活率 CN_north 2024']
+2026-05-07 07:53:41,735 [INFO] beef_cattle done: +0 confirmed=0
+2026-05-07 07:53:56,736 [INFO] beef_cattle/CN_south: have=['adg', 'slaughter', 'fcr'], missing=['mortality']
+2026-05-07 07:54:26,425 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:54:33,157 [INFO] Qwen queries beef_cattle: ['"beef cattle" mortality rate South China 2023', '"beef cattle" mortality statistics South China 2022', '南方肉牛死亡率 2023年 数据', '南方肉牛养殖死亡率 2022年 统计']
+2026-05-07 07:58:16,020 [INFO] beef_cattle done: +0 confirmed=0
+2026-05-07 07:58:31,020 [INFO] finisher_pig/CN_north: have=['spot', 'mortality', 'adg', 'slaughter', 'fcr'], missing=[]
+2026-05-07 07:58:51,244 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:59:11,441 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 07:59:14,442 [INFO]   → finisher_pig 足夠，跳Tavily
+2026-05-07 07:59:29,471 [INFO] meat_sheep/CN_north: have=['mortality', 'other', 'adg', 'slaughter', 'survival'], missing=['FCR']
+2026-05-07 07:59:59,206 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 08:00:06,103 [INFO] Qwen queries meat_sheep: ['2023 CN_north meat_sheep FCR performance data', '2022 CN_north meat_sheep feed conversion ratio statistics', '2023年 北方肉羊 FCR 数据', '2022年 中国北方 肉羊 料肉比 统计']
+2026-05-07 08:03:47,729 [INFO] meat_sheep done: +0 confirmed=0
+2026-05-07 08:04:02,730 [INFO] tilapia/CN_south: have=['mortality', 'strep', 'adg', 'survival', 'fcr'], missing=[]
+2026-05-07 08:04:22,957 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 08:04:43,197 [WARNING] FAO API error: HTTPSConnectionPool(host='fenixservices.fao.org', port=443): Read timed out. (read timeout=20)
+2026-05-07 08:04:46,198 [INFO]   → tilapia 足夠，跳Tavily
+2026-05-07 08:05:01,198 [INFO] grouper/CN_south: have=['other', 'mortality', 'vibrio', 'adg', 'survival', 'fcr'], missing=[]
+2026-05-07 08:05:01,199 [INFO]   → grouper 足夠，跳Tavily
+2026-05-07 08:05:16,199 [INFO] largemouth_bass/CN_south: have=['adg', 'edwardsiella', 'survival', 'fcr'], missing=[]
+2026-05-07 08:05:16,199 [INFO]   → largemouth_bass 足夠，跳Tavily
+2026-05-07 08:05:32,379 [INFO] Round 1 done. DB=628 +0 confirmed=0
+2026-05-07 08:05:32,379 [INFO] Sleeping 1800s...
+2026-05-07 08:20:31,025 [INFO] Interrupted.

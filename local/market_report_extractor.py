@@ -20,6 +20,10 @@ QWEN_MODEL     = 'qwen3.6-35b'
 TELEGRAM_TOKEN = '8703702788:AAFKEiGmLYTAuFVG9GX-gRtVTUUyi-f_5mM'
 TELEGRAM_CHAT  = 897274134
 MCP_URL        = 'http://localhost:8765/call'
+RAGFLOW_API_KEY = 'ragflow-fcCq8K0sVcefhVHboEmBOOzt5S2cQ7jCcHT5cCwhWRM'
+RAGFLOW_BASE_URL = 'http://localhost'
+RAGFLOW_DATASET_ID = '5a68aa6e49ba11f190c657ee8852d812'
+
 
 logging.basicConfig(level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s')
@@ -194,6 +198,34 @@ def write_to_db(conn, extracted, source_url, source_title):
     conn.commit()
     return n
 
+
+def upload_to_ragflow(text, doc_name):
+    import tempfile, os, requests, logging
+    headers = {'Authorization': f'Bearer {RAGFLOW_API_KEY}'}
+    tmp = tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False, encoding='utf-8')
+    tmp.write(text); tmp.close()
+    try:
+        with open(tmp.name, 'rb') as f:
+            resp = requests.post(
+                f'{RAGFLOW_BASE_URL}/api/v1/datasets/{RAGFLOW_DATASET_ID}/documents',
+                headers=headers,
+                files={'file': (doc_name, f, 'text/plain')}
+            )
+        if resp.status_code == 200 and resp.json().get('code') == 0:
+            doc_id = resp.json()['data'][0]['id']
+            requests.post(
+                f'{RAGFLOW_BASE_URL}/api/v1/datasets/{RAGFLOW_DATASET_ID}/chunks',
+                headers=headers,
+                json={'document_ids': [doc_id]}
+            )
+            logging.info(f'[RAGFlow] 上傳成功: {doc_name}')
+            return True
+    except Exception as e:
+        logging.error(f'[RAGFlow] 上傳失敗: {e}')
+    finally:
+        os.unlink(tmp.name)
+    return False
+
 def tg(msg):
     try:
         requests.post(
@@ -230,6 +262,8 @@ def process_report(text, source_url='', source_title=''):
         f'💡 ROI洞察:\n' +
         '\n'.join(f'• {i}' for i in extracted.get('roi_insights',[])[:3])
     )
+    doc_name = f"market_{extracted.get('report_date','unknown')}_{extracted.get('species','unknown')}.txt"
+    upload_to_ragflow(text, doc_name)
     return n, report
 
 if __name__ == '__main__':

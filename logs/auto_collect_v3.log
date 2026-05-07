@@ -1,0 +1,1589 @@
+2026-05-06 17:57:21,620 [INFO] ============================================================
+2026-05-06 17:57:21,620 [INFO] auto_collect_v3 START (智慧追蹤版)
+2026-05-06 17:57:21,621 [INFO] Tavily key (utf-8-sig): tvly-dev...
+2026-05-06 17:57:23,445 [INFO] === Round 1 | 0.0h | total: 0 ===
+2026-05-06 17:57:23,447 [INFO] dairy_goat/CN_all: have=['milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 17:57:27,387 [INFO] Qwen queries for dairy_goat: ['dairy goat FCR feed conversion ratio 2023', 'dairy goat milk yield per lactation statistics 2022', '奶山羊 饲料转化率 FCR 2023', '奶山羊 产奶量 milk yield 统计 2022']
+2026-05-06 17:57:34,430 [INFO] Tavily [5] "dairy goat FCR feed conversion ratio 2023"
+2026-05-06 17:58:03,424 [INFO] Tavily [5] "dairy goat milk yield per lactation statistics 2022"
+2026-05-06 17:58:34,654 [INFO] Tavily [5] "奶山羊 饲料转化率 FCR 2023"
+2026-05-06 17:59:31,805 [INFO] Tavily [5] "奶山羊 产奶量 milk yield 统计 2022"
+2026-05-06 17:59:59,538 [INFO] dairy_goat done: +0
+2026-05-06 18:00:14,540 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other'], missing=['ADG']
+2026-05-06 18:00:18,358 [INFO] Qwen queries for channel_catfish: ['channel catfish average daily gain ADG production statistics USA 2023', 'channel catfish ADG growth performance data China 2022', '鲶鱼平均日增重 ADG 养殖数据 美国 2023', '斑点叉尾鮰平均日增重 生产性能 中国 2022']
+2026-05-06 18:00:24,921 [INFO] Tavily [5] "channel catfish average daily gain ADG production stati"
+2026-05-06 18:00:32,924 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 18:00:35,081 [INFO] Fetched (200) <GET https://esmis.nal.usda.gov/sites/default/release-files/bg257f046/gh93jb451/rf560m06c/cfpd0223.pdf> (referer: https://www.google.com/)
+2026-05-06 18:00:48,399 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 18:00:54,700 [INFO] Fetched (200) <GET https://www.facebook.com/groups/526224829210009/posts/1101259818373171/> (referer: https://www.google.com/)
+2026-05-06 18:01:01,579 [INFO] Tavily [5] "channel catfish ADG growth performance data China 2022"
+2026-05-06 18:01:32,561 [INFO] Tavily [5] "鲶鱼平均日增重 ADG 养殖数据 美国 2023"
+2026-05-06 18:02:04,394 [INFO] Tavily [5] "斑点叉尾鮰平均日增重 生产性能 中国 2022"
+2026-05-06 18:02:33,651 [INFO] channel_catfish done: +0
+2026-05-06 18:02:48,652 [INFO] largemouth_catfish/CN_all: have=['survival', 'FCR'], missing=['FCR', 'ADG']
+2026-05-06 18:02:52,435 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish FCR feed conversion ratio 2023', '大口鲶 饲料转化率 FCR 2022', 'largemouth catfish ADG average daily gain 2023', '大口鲶 日增重 ADG 2022']
+2026-05-06 18:02:55,754 [INFO] Tavily [5] "largemouth catfish FCR feed conversion ratio 2023"
+2026-05-06 18:03:08,142 [INFO]   ✅ largemouth_catfish +1 | https://www.mafes.msstate.edu/publications/information-sheet
+2026-05-06 18:03:24,798 [INFO] Tavily [5] "大口鲶 饲料转化率 FCR 2022"
+2026-05-06 18:03:57,942 [INFO] Tavily [5] "largemouth catfish ADG average daily gain 2023"
+2026-05-06 18:04:18,916 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 18:04:21,051 [INFO] Fetched (200) <GET https://www.facebook.com/groups/436301903187257/posts/2859493320868091/> (referer: https://www.google.com/)
+2026-05-06 18:04:32,375 [INFO] Tavily [5] "大口鲶 日增重 ADG 2022"
+2026-05-06 18:05:04,838 [INFO] largemouth_catfish done: +1
+2026-05-06 18:05:19,839 [INFO] dairy_cow/CN_all: have=['milk', 'other', 'mortality', 'market'], missing=['milk_yield', 'FCR', 'mastitis_loss']
+2026-05-06 18:05:23,751 [INFO] Qwen queries for dairy_cow: ['2023年中國荷斯坦奶牛平均產奶量數據', 'China dairy cow average milk yield statistics 2023', '2022年中國奶牛飼料轉化率(FCR)平均值', 'China dairy cattle feed conversion ratio FCR data 2022']
+2026-05-06 18:05:27,939 [INFO] Tavily [5] "2023年中國荷斯坦奶牛平均產奶量數據"
+2026-05-06 18:06:09,072 [INFO] Tavily [5] "China dairy cow average milk yield statistics 2023"
+2026-05-06 18:06:37,880 [INFO] Tavily [5] "2022年中國奶牛飼料轉化率(FCR)平均值"
+2026-05-06 18:07:05,118 [INFO] Tavily [5] "China dairy cattle feed conversion ratio FCR data 2022"
+2026-05-06 18:07:25,219 [INFO] dairy_cow done: +0
+2026-05-06 18:07:40,221 [INFO] layer_chicken/CN_all: have=['market'], missing=['FCR', 'egg_rate', 'mortality', 'AI_loss']
+2026-05-06 18:07:44,053 [INFO] Qwen queries for layer_chicken: ['layer chicken FCR mortality rate China 2023', 'layer chicken egg production rate AI loss China 2022', '蛋雞 料肉比 死亡率 中國 2023', '蛋雞 產蛋率 人工授精損失率 中國 2022']
+2026-05-06 18:07:48,350 [INFO] Tavily [5] "layer chicken FCR mortality rate China 2023"
+2026-05-06 18:08:21,576 [INFO] Tavily [5] "layer chicken egg production rate AI loss China 2022"
+2026-05-06 18:08:56,325 [INFO] Tavily [5] "蛋雞 料肉比 死亡率 中國 2023"
+2026-05-06 18:09:31,904 [INFO] Tavily [5] "蛋雞 產蛋率 人工授精損失率 中國 2022"
+2026-05-06 18:10:01,211 [INFO] layer_chicken done: +0
+2026-05-06 18:10:16,213 [INFO] broiler/CN_all: have=['FCR'], missing=['FCR', 'ADG', 'mortality', 'disease_loss']
+2026-05-06 18:10:20,373 [INFO] Qwen queries for broiler: ['2023 China broiler FCR average feed conversion ratio statistics', '2022-2023 中國肉雞平均料肉比 FCR 數據統計', 'China broiler ADG average daily gain performance benchmark 2023', '2023年中國肉雞平均日增重 ADG 及死亡率 mortality 數據']
+2026-05-06 18:10:27,315 [INFO] Tavily [5] "2023 China broiler FCR average feed conversion ratio st"
+2026-05-06 18:10:49,229 [INFO]   ✅ broiler +1 | https://www.andersonintl.com/understanding-and-optimizing-th
+2026-05-06 18:10:56,679 [INFO] Tavily [5] "2022-2023 中國肉雞平均料肉比 FCR 數據統計"
+2026-05-06 18:11:31,682 [INFO] Tavily [5] "China broiler ADG average daily gain performance benchm"
+2026-05-06 18:11:59,872 [INFO] Tavily [5] "2023年中國肉雞平均日增重 ADG 及死亡率 mortality 數據"
+2026-05-06 18:12:20,036 [INFO] broiler done: +1
+2026-05-06 18:12:35,038 [INFO] shrimp/CN_south: have=['survival', 'FCR'], missing=['FCR', 'mortality', 'EMS_loss']
+2026-05-06 18:12:39,153 [INFO] Qwen queries for shrimp: ['2023年中國南方對蝦養殖 EMS損失率及死亡率統計數據', 'China South shrimp farming 2023 EMS loss mortality rate statistics', '2022-2024年中國南方南美白對蝦飼料轉化率(FCR)市場報告', 'Feed conversion ratio FCR China South whiteleg shrimp farming 2024 report']
+2026-05-06 18:12:44,379 [INFO] Tavily [5] "2023年中國南方對蝦養殖 EMS損失率及死亡率統計數據"
+2026-05-06 18:12:57,978 [INFO]   ✅ shrimp +1 | https://pdf.hanspub.org/ojfr2024114_81030284.pdf
+2026-05-06 18:13:21,448 [INFO] Tavily [5] "China South shrimp farming 2023 EMS loss mortality rate"
+2026-05-06 18:13:53,710 [INFO] Tavily [5] "2022-2024年中國南方南美白對蝦飼料轉化率(FCR)市場報告"
+2026-05-06 18:14:13,094 [INFO]   ✅ shrimp +2 | https://richtrong.com
+2026-05-06 18:14:32,206 [INFO] Tavily [5] "Feed conversion ratio FCR China South whiteleg shrimp f"
+2026-05-06 18:14:55,728 [INFO] shrimp done: +3
+2026-05-06 18:15:10,730 [INFO] beef_cattle/CN_north: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 18:15:15,080 [INFO] Qwen queries for beef_cattle: ['beef cattle feed conversion ratio (FCR) average daily gain (ADG) mortality rate North China 2023', '中国北方肉牛料肉比 FCR 日增重 ADG 死亡率 2023', 'North China beef cattle production performance FCR ADG mortality statistics 2022-2024', '华北地区肉牛养殖生产性能 FCR ADG 死亡率 数据 2023']
+2026-05-06 18:15:20,448 [INFO] Tavily [5] "beef cattle feed conversion ratio (FCR) average daily g"
+2026-05-06 18:15:50,811 [INFO] Tavily [5] "中国北方肉牛料肉比 FCR 日增重 ADG 死亡率 2023"
+2026-05-06 18:16:12,312 [INFO] Tavily [5] "North China beef cattle production performance FCR ADG "
+2026-05-06 18:16:40,251 [INFO] Tavily [5] "华北地区肉牛养殖生产性能 FCR ADG 死亡率 数据 2023"
+2026-05-06 18:17:02,808 [INFO] beef_cattle done: +0
+2026-05-06 18:17:17,810 [INFO] beef_cattle/CN_south: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 18:17:21,737 [INFO] Qwen queries for beef_cattle: ['beef cattle feed conversion ratio FCR growth performance South China 2023', '肉牛料肉比 FCR 生长性能 华南地区 2023', 'beef cattle average daily gain ADG mortality rate South China statistics', '肉牛日增重 ADG 死亡率 华南地区 统计数据']
+2026-05-06 18:17:29,050 [INFO] Tavily [5] "beef cattle feed conversion ratio FCR growth performanc"
+2026-05-06 18:17:54,475 [INFO] Tavily [5] "肉牛料肉比 FCR 生长性能 华南地区 2023"
+2026-05-06 18:18:15,284 [INFO] Tavily [5] "beef cattle average daily gain ADG mortality rate South"
+2026-05-06 18:18:42,679 [INFO] Tavily [5] "肉牛日增重 ADG 死亡率 华南地区 统计数据"
+2026-05-06 18:19:03,722 [INFO] beef_cattle done: +0
+2026-05-06 18:19:18,723 [INFO] finisher_pig/CN_north: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 18:19:23,002 [INFO] Qwen queries for finisher_pig: ['finisher pig FCR ADG mortality performance data North China 2023', 'finisher pig feed conversion ratio average daily gain mortality rate Northern China 2022-2024', '华北地区育肥猪料肉比日增重死亡率数据 2023', '中国北方育肥猪FCR ADG mortality 生产性能指标 2022-2024']
+2026-05-06 18:19:28,425 [INFO] Tavily [5] "finisher pig FCR ADG mortality performance data North C"
+2026-05-06 18:19:57,591 [INFO] Tavily [5] "finisher pig feed conversion ratio average daily gain m"
+2026-05-06 18:20:30,436 [INFO] Tavily [5] "华北地区育肥猪料肉比日增重死亡率数据 2023"
+2026-05-06 18:21:05,125 [INFO] Tavily [5] "中国北方育肥猪FCR ADG mortality 生产性能指标 2022-2024"
+2026-05-06 18:21:32,758 [INFO] finisher_pig done: +0
+2026-05-06 18:21:47,759 [INFO] meat_sheep/CN_north: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 18:21:52,272 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR ADG mortality performance data North China 2023', '肉羊 北方 料肉比 日增重 死亡率 生產性能 2023', 'North China meat sheep feed conversion ratio growth rate statistics 2022-2024', '中國北方肉羊 飼料轉化率 平均日增重 成活率 數據 2022']
+2026-05-06 18:22:01,945 [INFO] Tavily [5] "meat sheep FCR ADG mortality performance data North Chi"
+2026-05-06 18:22:30,618 [INFO] Tavily [5] "肉羊 北方 料肉比 日增重 死亡率 生產性能 2023"
+2026-05-06 18:23:06,257 [INFO] Tavily [5] "North China meat sheep feed conversion ratio growth rat"
+2026-05-06 18:23:34,234 [INFO] Tavily [5] "中國北方肉羊 飼料轉化率 平均日增重 成活率 數據 2022"
+2026-05-06 18:23:55,936 [INFO] meat_sheep done: +0
+2026-05-06 18:24:10,937 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'adg', 'strep'], missing=['strep_loss']
+2026-05-06 18:24:15,046 [INFO] Qwen queries for tilapia: ['2023 tilapia streptococcus disease mortality rate South China', '2022-2024 南美白对虾 链球菌病 死亡率 华南地区', 'tilapia streptococcosis loss percentage South China 2023', '2023年 华南地区 罗非鱼 链球菌感染 经济损失 比例']
+2026-05-06 18:24:22,049 [INFO] Tavily [5] "2023 tilapia streptococcus disease mortality rate South"
+2026-05-06 18:24:33,199 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 18:24:33,754 [INFO] Fetched (200) <GET https://pmc.ncbi.nlm.nih.gov/articles/PMC12665324/> (referer: https://www.google.com/)
+2026-05-06 18:25:02,503 [INFO] Tavily [5] "2022-2024 南美白对虾 链球菌病 死亡率 华南地区"
+2026-05-06 18:25:37,198 [INFO] Tavily [5] "tilapia streptococcosis loss percentage South China 202"
+2026-05-06 18:25:51,556 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 18:25:52,266 [INFO] Fetched (200) <GET https://pmc.ncbi.nlm.nih.gov/articles/PMC11591708/> (referer: https://www.google.com/)
+2026-05-06 18:26:04,010 [INFO] Tavily [5] "2023年 华南地区 罗非鱼 链球菌感染 经济损失 比例"
+2026-05-06 18:26:12,013 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 18:26:13,901 [INFO] Fetched (200) <GET https://rdswxb.hainanu.edu.cn/en/article/doi/10.15886/j.cnki.rdswxb.20230027> (referer: https://www.google.com/)
+2026-05-06 18:26:35,157 [INFO] tilapia done: +0
+2026-05-06 18:26:50,158 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'adg'], missing=['vibrio_loss']
+2026-05-06 18:26:54,061 [INFO] Qwen queries for grouper: ['2023年中国南方石斑鱼弧菌病死亡率统计', '2022-2024 South China grouper vibrio mortality rate data', '中国南方养殖石斑鱼弧菌感染损失率', 'vibrio-induced loss percentage grouper aquaculture South China 2023']
+2026-05-06 18:27:00,227 [INFO] Tavily [5] "2023年中国南方石斑鱼弧菌病死亡率统计"
+2026-05-06 18:27:38,923 [INFO] Tavily [5] "2022-2024 South China grouper vibrio mortality rate dat"
+2026-05-06 18:28:10,022 [INFO] Tavily [4] "中国南方养殖石斑鱼弧菌感染损失率"
+2026-05-06 18:28:38,721 [INFO] Tavily [5] "vibrio-induced loss percentage grouper aquaculture Sout"
+2026-05-06 18:29:04,191 [INFO]   ✅ grouper +1 | https://www.seafoodsource.com/news/aquaculture/grouper-enjoy
+2026-05-06 18:29:07,222 [INFO] grouper done: +1
+2026-05-06 18:29:22,222 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-06 18:29:22,224 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-06 18:29:23,527 [INFO] Round 1 done. DB=273 +6
+2026-05-06 18:29:23,528 [INFO] Sleeping 1800s...
+2026-05-06 18:59:23,529 [INFO] === Round 2 | 1.0h | total: 6 ===
+2026-05-06 18:59:23,530 [INFO] dairy_goat/CN_all: have=['milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 18:59:27,775 [INFO] Qwen queries for dairy_goat: ['2023年中国奶山羊饲料转化率(FCR)及日增重(ADG)统计数据', 'China dairy goat milk yield per lactation and mortality rate statistics 2022-2023', '中国规模化奶山羊养殖场饲料报酬(FCR)与产奶量(milk_yield)平均值', 'China dairy goat production performance: daily gain, milk yield, and mortality rates']
+2026-05-06 18:59:32,197 [INFO] Tavily [5] "2023年中国奶山羊饲料转化率(FCR)及日增重(ADG)统计数据"
+2026-05-06 18:59:58,009 [INFO] Tavily [5] "China dairy goat milk yield per lactation and mortality"
+2026-05-06 19:00:34,925 [INFO] Tavily [1] "中国规模化奶山羊养殖场饲料报酬(FCR)与产奶量(milk_yield)平均值"
+2026-05-06 19:00:47,525 [INFO]   ✅ dairy_goat +1 | http://gs.news.cn/20241126/1a67500b6fab4c928a719f17e904286e/
+2026-05-06 19:00:53,854 [INFO] Tavily [5] "China dairy goat production performance: daily gain, mi"
+2026-05-06 19:01:14,405 [INFO] dairy_goat done: +1
+2026-05-06 19:01:29,407 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other'], missing=['ADG']
+2026-05-06 19:01:33,176 [INFO] Qwen queries for channel_catfish: ['channel catfish average daily gain ADG production statistics USA 2023', 'channel catfish growth performance ADG data China 2022', '鲶鱼平均日增重 ADG 产量数据 美国 2023', '鲶鱼生长性能 ADG 指标 中国 2022']
+2026-05-06 19:01:40,706 [INFO] Tavily [5] "channel catfish average daily gain ADG production stati"
+2026-05-06 19:02:05,369 [INFO] Tavily [5] "channel catfish growth performance ADG data China 2022"
+2026-05-06 19:02:31,203 [INFO] Tavily [5] "鲶鱼平均日增重 ADG 产量数据 美国 2023"
+2026-05-06 19:03:05,565 [INFO] Tavily [5] "鲶鱼生长性能 ADG 指标 中国 2022"
+2026-05-06 19:03:17,062 [INFO] channel_catfish done: +0
+2026-05-06 19:03:32,064 [INFO] largemouth_catfish/CN_all: have=['survival', 'fcr', 'FCR'], missing=['ADG']
+2026-05-06 19:03:36,266 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain ADG performance 2023', '大口鲇 平均日增重 ADG 生长性能 2023', 'average daily gain (ADG) of largemouth catfish in China 2022-2024', '中国大口鲇养殖 平均日增重数据 2022-2024']
+2026-05-06 19:03:44,342 [INFO] Tavily [5] "largemouth catfish average daily gain ADG performance 2"
+2026-05-06 19:03:58,514 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 19:04:00,652 [INFO] Fetched (200) <GET https://esmis.nal.usda.gov/sites/default/release-files/795763/cfpd0226.pdf> (referer: https://www.google.com/)
+2026-05-06 19:04:15,299 [INFO] Tavily [5] "大口鲇 平均日增重 ADG 生长性能 2023"
+2026-05-06 19:04:46,748 [INFO] Tavily [5] "average daily gain (ADG) of largemouth catfish in China"
+2026-05-06 19:05:10,144 [INFO] Tavily [5] "中国大口鲇养殖 平均日增重数据 2022-2024"
+2026-05-06 19:05:33,811 [INFO] largemouth_catfish done: +0
+2026-05-06 19:05:48,812 [INFO] dairy_cow/CN_all: have=['milk', 'other', 'mortality', 'market'], missing=['milk_yield', 'FCR', 'mastitis_loss']
+2026-05-06 19:05:53,110 [INFO] Qwen queries for dairy_cow: ['2023年中國荷斯坦奶牛平均產奶量（kg/頭/年）統計數據', 'China Holstein dairy cow average milk yield per head per year 2023', '2022-2023年中國奶牛場全群料奶比（FCR）行業平均值', 'China dairy farm herd feed to milk ratio FCR average 2022-2023']
+2026-05-06 19:05:56,289 [INFO] Tavily [5] "2023年中國荷斯坦奶牛平均產奶量（kg/頭/年）統計數據"
+2026-05-06 19:06:10,704 [INFO]   ✅ dairy_cow +1 | https://www.163.com/dy/article/J88LOUOH0518H9Q1.html
+2026-05-06 19:06:30,124 [INFO] Tavily [5] "China Holstein dairy cow average milk yield per head pe"
+2026-05-06 19:06:49,054 [INFO] Tavily [5] "2022-2023年中國奶牛場全群料奶比（FCR）行業平均值"
+2026-05-06 19:07:10,187 [INFO] Tavily [5] "China dairy farm herd feed to milk ratio FCR average 20"
+2026-05-06 19:07:25,518 [INFO] dairy_cow done: +1
+2026-05-06 19:07:40,518 [INFO] layer_chicken/CN_all: have=['market'], missing=['FCR', 'egg_rate', 'mortality', 'AI_loss']
+2026-05-06 19:07:44,357 [INFO] Qwen queries for layer_chicken: ['layer chicken FCR mortality egg rate statistics China 2023', '中国蛋鸡饲料转化率死亡率产蛋率数据 2023', 'China layer chicken AI loss mortality rate industry report 2024', '中国蛋鸡人工授精损失率死亡率行业报告 2024']
+2026-05-06 19:07:49,361 [INFO] Tavily [5] "layer chicken FCR mortality egg rate statistics China 2"
+2026-05-06 19:08:08,283 [INFO] Tavily [5] "中国蛋鸡饲料转化率死亡率产蛋率数据 2023"
+2026-05-06 19:08:31,718 [INFO] Tavily [5] "China layer chicken AI loss mortality rate industry rep"
+2026-05-06 19:08:58,519 [INFO] Tavily [5] "中国蛋鸡人工授精损失率死亡率行业报告 2024"
+2026-05-06 19:09:19,763 [INFO] layer_chicken done: +0
+2026-05-06 19:09:34,764 [INFO] broiler/CN_all: have=['fcr', 'FCR'], missing=['ADG', 'mortality', 'disease_loss']
+2026-05-06 19:09:38,790 [INFO] Qwen queries for broiler: ['broiler average daily gain (ADG) performance standards 2023', '肉雞平均日增重（ADG）行業標準 2023', 'broiler mortality rate statistics by region 2022-2024', '家禽養殖肉雞死亡率統計數據 2022-2024']
+2026-05-06 19:09:42,272 [INFO] Tavily [5] "broiler average daily gain (ADG) performance standards "
+2026-05-06 19:10:15,324 [INFO]   ✅ broiler +2 | https://www.nationalchickencouncil.org/about-the-industry/st
+2026-05-06 19:10:22,736 [INFO] Tavily [5] "肉雞平均日增重（ADG）行業標準 2023"
+2026-05-06 19:10:48,839 [INFO] Tavily [5] "broiler mortality rate statistics by region 2022-2024"
+2026-05-06 19:11:12,419 [INFO] Tavily [5] "家禽養殖肉雞死亡率統計數據 2022-2024"
+2026-05-06 19:11:37,380 [INFO] broiler done: +2
+2026-05-06 19:11:52,381 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-06 19:11:56,029 [INFO] Qwen queries for shrimp: ['2023 South China shrimp EMS disease mortality rate statistics', '2022-2024 Southern China shrimp farming EMS loss data', '2023年中国南方对虾EMS死亡率统计', '2022-2024年华南地区对虾EMS损失数据']
+2026-05-06 19:12:03,377 [INFO] Tavily [5] "2023 South China shrimp EMS disease mortality rate stat"
+2026-05-06 19:12:27,912 [INFO] Tavily [5] "2022-2024 Southern China shrimp farming EMS loss data"
+2026-05-06 19:12:50,081 [INFO] Tavily [5] "2023年中国南方对虾EMS死亡率统计"
+2026-05-06 19:13:33,786 [INFO] Tavily [5] "2022-2024年华南地区对虾EMS损失数据"
+2026-05-06 19:13:54,192 [INFO] shrimp done: +0
+2026-05-06 19:14:09,193 [INFO] beef_cattle/CN_north: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 19:14:13,756 [INFO] Qwen queries for beef_cattle: ['beef cattle feed conversion ratio (FCR) average daily gain (ADG) mortality rate North China 2023', 'North China beef cattle production performance FCR ADG mortality statistics 2022-2024', '华北地区肉牛饲料转化率(FCR)日增重(ADG)死亡率数据 2023', '中国北方肉牛养殖效率指标 FCR ADG 死亡率 统计报告 2022-2023']
+2026-05-06 19:14:17,860 [INFO] Tavily [5] "beef cattle feed conversion ratio (FCR) average daily g"
+2026-05-06 19:14:38,079 [INFO] Tavily [5] "North China beef cattle production performance FCR ADG "
+2026-05-06 19:15:03,988 [INFO] Tavily [4] "华北地区肉牛饲料转化率(FCR)日增重(ADG)死亡率数据 2023"
+2026-05-06 19:15:11,992 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 19:15:17,065 [INFO] Fetched (200) <GET https://www.tgfdf.org.tw/uploadfiles/l/20260306160227_IUcr1.pdf> (referer: https://www.google.com/)
+2026-05-06 19:15:30,131 [INFO] Tavily [5] "中国北方肉牛养殖效率指标 FCR ADG 死亡率 统计报告 2022-2023"
+2026-05-06 19:15:45,989 [INFO] beef_cattle done: +0
+2026-05-06 19:16:00,990 [INFO] beef_cattle/CN_south: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 19:16:05,314 [INFO] Qwen queries for beef_cattle: ['2023年中國南方地區肉牛平均日增重（ADG）具體數值', 'China southern region beef cattle average daily gain (ADG) statistics 2023', '2022-2024年中國南方養殖場肉牛料肉比（FCR）數據', 'Feed conversion ratio (FCR) and mortality rate of beef cattle in South China 2023']
+2026-05-06 19:16:10,252 [INFO] Tavily [5] "2023年中國南方地區肉牛平均日增重（ADG）具體數值"
+2026-05-06 19:16:35,435 [INFO] Tavily [5] "China southern region beef cattle average daily gain (A"
+2026-05-06 19:17:01,577 [INFO] Tavily [5] "2022-2024年中國南方養殖場肉牛料肉比（FCR）數據"
+2026-05-06 19:17:26,556 [INFO] Tavily [5] "Feed conversion ratio (FCR) and mortality rate of beef "
+2026-05-06 19:17:40,862 [INFO] beef_cattle done: +0
+2026-05-06 19:17:55,862 [INFO] finisher_pig/CN_north: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 19:17:59,787 [INFO] Qwen queries for finisher_pig: ['finisher pig FCR ADG mortality performance data North China 2023', 'finisher pig growth performance mortality rate North China 2022-2023', '北方育肥猪料肉比日增重死亡率 2023', '华北地区育肥猪生产性能数据 FCR ADG 死亡率 2022']
+2026-05-06 19:18:03,578 [INFO] Tavily [5] "finisher pig FCR ADG mortality performance data North C"
+2026-05-06 19:18:21,962 [INFO] Tavily [5] "finisher pig growth performance mortality rate North Ch"
+2026-05-06 19:18:39,999 [INFO] Tavily [5] "北方育肥猪料肉比日增重死亡率 2023"
+2026-05-06 19:19:06,707 [INFO] Tavily [4] "华北地区育肥猪生产性能数据 FCR ADG 死亡率 2022"
+2026-05-06 19:19:14,710 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 19:19:34,723 [WARNING] Attempt 1 failed: Failed to perform, curl: (28) Operation timed out after 20010 milliseconds with 696336 out of 6668090 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-06 19:19:55,735 [WARNING] Attempt 2 failed: Failed to perform, curl: (28) Operation timed out after 20008 milliseconds with 2452128 out of 6668090 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-06 19:20:16,752 [ERROR] Failed after 3 attempts: Failed to perform, curl: (28) Operation timed out after 20013 milliseconds with 2655760 out of 6668090 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-05-06 19:20:36,406 [INFO] finisher_pig done: +0
+2026-05-06 19:20:51,408 [INFO] meat_sheep/CN_north: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 19:20:55,500 [INFO] Qwen queries for meat_sheep: ['"meat sheep" "FCR" "growth rate" "China" 2023', '肉羊 "料肉比" "日增重" "中国" 2023', '"meat sheep" "mortality rate" "North China" 2022', '肉羊 "死亡率" "华北地区" 2022']
+2026-05-06 19:20:59,755 [INFO] Tavily [5] ""meat sheep" "FCR" "growth rate" "China" 2023"
+2026-05-06 19:21:17,459 [INFO] Tavily [5] "肉羊 "料肉比" "日增重" "中国" 2023"
+2026-05-06 19:21:34,460 [INFO]   ✅ meat_sheep +1 | https://www.purinafeed.com.cn/news/191112%E8%82%89%E7%BE%8A%
+2026-05-06 19:21:41,914 [INFO] Tavily [5] ""meat sheep" "mortality rate" "North China" 2022"
+2026-05-06 19:22:04,016 [INFO] Tavily [5] "肉羊 "死亡率" "华北地区" 2022"
+2026-05-06 19:22:19,031 [INFO] meat_sheep done: +1
+2026-05-06 19:22:34,032 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'adg', 'strep'], missing=['strep_loss']
+2026-05-06 19:22:38,119 [INFO] Qwen queries for tilapia: ['2023年中國南方罗非鱼链球菌病死亡率统计', '2022-2024 South China tilapia streptococcosis mortality rate data', '2023年广东广西罗非鱼链球菌损失率', '2023-2024 tilapia strep loss percentage South China aquaculture report']
+2026-05-06 19:22:44,545 [INFO] Tavily [5] "2023年中國南方罗非鱼链球菌病死亡率统计"
+2026-05-06 19:23:02,140 [INFO]   ✅ tilapia +1 | https://www.schinafish.cn/article/doi/10.3969/j.issn.1673-22
+2026-05-06 19:23:06,905 [INFO]   ✅ tilapia +1 | https://www.gzbnzw.com/article-305-1.html
+2026-05-06 19:23:15,589 [INFO] Tavily [5] "2022-2024 South China tilapia streptococcosis mortality"
+2026-05-06 19:23:37,024 [INFO] Tavily [5] "2023年广东广西罗非鱼链球菌损失率"
+2026-05-06 19:24:10,362 [INFO] Tavily [5] "2023-2024 tilapia strep loss percentage South China aqu"
+2026-05-06 19:24:21,423 [INFO] tilapia done: +2
+2026-05-06 19:24:36,424 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-06 19:24:40,152 [INFO] Qwen queries for grouper: ['2023年南中国石斑鱼弧菌病死亡率统计', '2022-2023 South China grouper vibrio disease mortality rate data', '2023年广东石斑鱼养殖弧菌损失率', '2022 South China grouper aquaculture vibrio loss percentage statistics']
+2026-05-06 19:24:43,314 [INFO] Tavily [5] "2023年南中国石斑鱼弧菌病死亡率统计"
+2026-05-06 19:25:09,137 [INFO] Tavily [5] "2022-2023 South China grouper vibrio disease mortality "
+2026-05-06 19:25:34,512 [INFO] Tavily [5] "2023年广东石斑鱼养殖弧菌损失率"
+2026-05-06 19:26:03,007 [INFO] Tavily [5] "2022 South China grouper aquaculture vibrio loss percen"
+2026-05-06 19:26:20,683 [INFO] grouper done: +0
+2026-05-06 19:26:35,684 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-06 19:26:35,685 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-06 19:26:36,892 [INFO] Round 2 done. DB=280 +7
+2026-05-06 19:26:36,893 [INFO] Sleeping 1800s...
+2026-05-06 19:56:36,895 [INFO] === Round 3 | 2.0h | total: 13 ===
+2026-05-06 19:56:36,895 [INFO] dairy_goat/CN_all: have=['milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 19:56:41,025 [INFO] Qwen queries for dairy_goat: ['dairy goat feed conversion ratio FCR statistics 2023', '乳山羊 饲料转化率 FCR 数据 2023', 'dairy goat milk yield per lactation average 2022-2024', '乳山羊 产奶量 平均 数据 2022-2024']
+2026-05-06 19:56:45,698 [INFO] Tavily [5] "dairy goat feed conversion ratio FCR statistics 2023"
+2026-05-06 19:57:04,449 [INFO] Tavily [5] "乳山羊 饲料转化率 FCR 数据 2023"
+2026-05-06 19:57:24,221 [INFO] Tavily [5] "dairy goat milk yield per lactation average 2022-2024"
+2026-05-06 19:57:41,611 [INFO]   ✅ dairy_goat +1 | https://cals.cornell.edu/nys-4-h-animal-science-programs/liv
+2026-05-06 19:57:51,202 [INFO] Tavily [5] "乳山羊 产奶量 平均 数据 2022-2024"
+2026-05-06 19:58:23,671 [INFO] dairy_goat done: +1
+2026-05-06 19:58:38,672 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other'], missing=['ADG']
+2026-05-06 19:58:42,514 [INFO] Qwen queries for channel_catfish: ['channel catfish average daily gain ADG production statistics USA 2023', 'channel catfish average daily gain growth performance data China 2022', '鲶鱼平均日增重 ADG 养殖数据 美国 2023', '斑点叉尾鮰平均日增重 生长性能 中国 2022']
+2026-05-06 19:58:47,618 [INFO] Tavily [5] "channel catfish average daily gain ADG production stati"
+2026-05-06 19:59:09,530 [INFO] Tavily [5] "channel catfish average daily gain growth performance d"
+2026-05-06 19:59:27,134 [INFO] Tavily [5] "鲶鱼平均日增重 ADG 养殖数据 美国 2023"
+2026-05-06 19:59:50,164 [INFO]   ✅ channel_catfish +2 | https://www.gzbnzw.com/article-25876-1.html
+2026-05-06 19:59:59,345 [INFO] Tavily [5] "斑点叉尾鮰平均日增重 生长性能 中国 2022"
+2026-05-06 20:00:17,262 [INFO] channel_catfish done: +2
+2026-05-06 20:00:32,264 [INFO] largemouth_catfish/CN_all: have=['survival', 'fcr', 'FCR'], missing=['ADG']
+2026-05-06 20:00:36,359 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain ADG growth performance 2023', '大口鲶平均日增重 ADG 生长性能 2023', 'average daily gain (ADG) of largemouth catfish in China 2022-2024', '中国大口鲶平均日增重数据 2022-2024']
+2026-05-06 20:00:44,030 [INFO] Tavily [5] "largemouth catfish average daily gain ADG growth perfor"
+2026-05-06 20:01:08,291 [INFO] Tavily [5] "大口鲶平均日增重 ADG 生长性能 2023"
+2026-05-06 20:01:29,713 [INFO] Tavily [4] "average daily gain (ADG) of largemouth catfish in China"
+2026-05-06 20:01:40,802 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 20:01:41,078 [INFO] Fetched (403) <GET https://www.sciencedirect.com/science/article/pii/S2667071224000048> (referer: https://www.google.com/)
+2026-05-06 20:01:54,852 [INFO] Tavily [5] "中国大口鲶平均日增重数据 2022-2024"
+2026-05-06 20:02:23,770 [INFO] largemouth_catfish done: +0
+2026-05-06 20:02:38,771 [INFO] dairy_cow/CN_all: have=['milk', 'other', 'mortality', 'market'], missing=['milk_yield', 'FCR', 'mastitis_loss']
+2026-05-06 20:02:42,605 [INFO] Qwen queries for dairy_cow: ['2023年中國荷斯坦奶牛平均產奶量數據', 'China dairy cow average milk yield statistics 2023', '2022年中國奶牛飼料轉化率(FCR)平均值', 'China dairy cattle feed conversion ratio FCR data 2022']
+2026-05-06 20:02:45,919 [INFO] Tavily [5] "2023年中國荷斯坦奶牛平均產奶量數據"
+2026-05-06 20:03:09,737 [INFO] Tavily [5] "China dairy cow average milk yield statistics 2023"
+2026-05-06 20:03:35,460 [INFO] Tavily [5] "2022年中國奶牛飼料轉化率(FCR)平均值"
+2026-05-06 20:03:59,643 [INFO] Tavily [5] "China dairy cattle feed conversion ratio FCR data 2022"
+2026-05-06 20:04:10,870 [INFO] dairy_cow done: +0
+2026-05-06 20:04:25,871 [INFO] layer_chicken/CN_all: have=['market'], missing=['FCR', 'egg_rate', 'mortality', 'AI_loss']
+2026-05-06 20:04:29,650 [INFO] Qwen queries for layer_chicken: ['2023 China layer chicken FCR feed conversion ratio statistics', '2023年中國蛋雞料肉比 FCR 數據統計', 'China layer egg production rate mortality rate 2023', '2023年中國蛋雞蛋產率 死亡率 行業報告']
+2026-05-06 20:04:34,446 [INFO] Tavily [5] "2023 China layer chicken FCR feed conversion ratio stat"
+2026-05-06 20:04:55,480 [INFO] Tavily [5] "2023年中國蛋雞料肉比 FCR 數據統計"
+2026-05-06 20:05:16,007 [INFO] Tavily [5] "China layer egg production rate mortality rate 2023"
+2026-05-06 20:05:37,494 [INFO] Tavily [5] "2023年中國蛋雞蛋產率 死亡率 行業報告"
+2026-05-06 20:06:05,513 [INFO] layer_chicken done: +0
+2026-05-06 20:06:20,514 [INFO] broiler/CN_all: have=['mortality', 'fcr', 'slaughter', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-06 20:06:24,646 [INFO] Qwen queries for broiler: ['broiler chicken average daily gain (ADG) performance data China 2023', '肉雞平均日增重（ADG）生產性能數據 中國 2023', 'broiler disease loss mortality rate statistics China 2022-2023', '中國肉雞疾病損失死亡率統計數據 2022-2023']
+2026-05-06 20:06:28,120 [INFO] Tavily [5] "broiler chicken average daily gain (ADG) performance da"
+2026-05-06 20:06:55,239 [INFO] Tavily [5] "肉雞平均日增重（ADG）生產性能數據 中國 2023"
+2026-05-06 20:07:26,139 [INFO] Tavily [5] "broiler disease loss mortality rate statistics China 20"
+2026-05-06 20:07:50,393 [INFO] Tavily [5] "中國肉雞疾病損失死亡率統計數據 2022-2023"
+2026-05-06 20:08:11,066 [INFO] broiler done: +0
+2026-05-06 20:08:26,067 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-06 20:08:29,616 [INFO] Qwen queries for shrimp: ['2023 China South shrimp EMS loss rate statistics', '2022 中国南方对虾EMS综合征损失率数据', 'Shrimp EMS mortality rate South China 2023', '2021年中国南部对虾早期死亡综合征EMS死亡率统计']
+2026-05-06 20:08:36,617 [INFO] Tavily [5] "2023 China South shrimp EMS loss rate statistics"
+2026-05-06 20:09:02,601 [INFO] Tavily [5] "2022 中国南方对虾EMS综合征损失率数据"
+2026-05-06 20:09:25,900 [INFO] Tavily [5] "Shrimp EMS mortality rate South China 2023"
+2026-05-06 20:09:44,544 [INFO] Tavily [5] "2021年中国南部对虾早期死亡综合征EMS死亡率统计"
+2026-05-06 20:09:56,873 [INFO] shrimp done: +0
+2026-05-06 20:10:11,874 [INFO] beef_cattle/CN_north: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 20:10:16,140 [INFO] Qwen queries for beef_cattle: ['beef cattle average daily gain FCR mortality rate North China 2023', 'North China beef cattle production performance ADG FCR statistics 2022-2024', '华北地区肉牛平均日增重饲料转化率死亡率 2023年数据', '中国北方肉牛养殖效率指标 ADG FCR 死亡率 2022-2024']
+2026-05-06 20:10:19,838 [INFO] Tavily [5] "beef cattle average daily gain FCR mortality rate North"
+2026-05-06 20:10:35,059 [INFO] Tavily [5] "North China beef cattle production performance ADG FCR "
+2026-05-06 20:11:00,287 [INFO] Tavily [5] "华北地区肉牛平均日增重饲料转化率死亡率 2023年数据"
+2026-05-06 20:11:25,608 [INFO] Tavily [5] "中国北方肉牛养殖效率指标 ADG FCR 死亡率 2022-2024"
+2026-05-06 20:11:52,024 [INFO]   ✅ beef_cattle +1 | https://cfc108.com/zxjtqh/attachDir/2024/05/2024052315001572
+2026-05-06 20:12:00,696 [INFO] beef_cattle done: +1
+2026-05-06 20:12:15,698 [INFO] beef_cattle/CN_south: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 20:12:20,180 [INFO] Qwen queries for beef_cattle: ['beef cattle feed conversion ratio (FCR) average daily gain (ADG) mortality rate South China 2023', '中国南方肉牛料肉比(FCR)日增重(ADG)死亡率统计数据 2023', 'South China beef cattle production performance FCR ADG mortality statistics 2022-2024', '华南地区肉牛养殖性能指标 FCR ADG 死亡率 行业报告 2023']
+2026-05-06 20:12:25,100 [INFO] Tavily [5] "beef cattle feed conversion ratio (FCR) average daily g"
+2026-05-06 20:12:46,473 [INFO] Tavily [5] "中国南方肉牛料肉比(FCR)日增重(ADG)死亡率统计数据 2023"
+2026-05-06 20:13:08,294 [INFO] Tavily [5] "South China beef cattle production performance FCR ADG "
+2026-05-06 20:13:22,784 [INFO] Tavily [5] "华南地区肉牛养殖性能指标 FCR ADG 死亡率 行业报告 2023"
+2026-05-06 20:13:43,198 [INFO] beef_cattle done: +0
+2026-05-06 20:13:58,199 [INFO] finisher_pig/CN_north: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 20:14:02,514 [INFO] Qwen queries for finisher_pig: ['finisher pig FCR ADG mortality performance data North China 2023', 'finisher pig feed conversion ratio average daily gain mortality rate Northern China 2022-2024', '北方育肥猪料肉比 日增重 死亡率 数据 2023', '华北地区育肥猪 FCR ADG 死亡率 生产性能指标 2022-2023']
+2026-05-06 20:14:07,132 [INFO] Tavily [5] "finisher pig FCR ADG mortality performance data North C"
+2026-05-06 20:14:26,213 [INFO] Tavily [5] "finisher pig feed conversion ratio average daily gain m"
+2026-05-06 20:14:53,821 [INFO] Tavily [5] "北方育肥猪料肉比 日增重 死亡率 数据 2023"
+2026-05-06 20:15:01,824 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 20:15:02,293 [INFO] Fetched (200) <GET https://mob.nxin.com/article/1408154> (referer: https://www.google.com/)
+2026-05-06 20:15:04,686 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 20:15:05,612 [INFO] Fetched (200) <GET https://mob.nxin.com/article/1157108> (referer: https://www.google.com/)
+2026-05-06 20:15:07,954 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 20:15:08,362 [INFO] Fetched (200) <GET https://mob.nxin.com/article/1176193> (referer: https://www.google.com/)
+2026-05-06 20:15:15,075 [INFO] Tavily [3] "华北地区育肥猪 FCR ADG 死亡率 生产性能指标 2022-2023"
+2026-05-06 20:15:23,077 [INFO] finisher_pig done: +0
+2026-05-06 20:15:38,077 [INFO] meat_sheep/CN_north: have=['adg'], missing=['FCR', 'mortality']
+2026-05-06 20:15:42,355 [INFO] Qwen queries for meat_sheep: ['2023年中国北方肉羊平均日增重(ADG)与料肉比(FCR)数据', 'China North meat sheep FCR mortality statistics 2023', '中国北方绵羊养殖效率：料肉比(FCR)与死亡率(mortality)报告', 'Meat sheep production efficiency: FCR and mortality rates in Northern China 2022-2023']
+2026-05-06 20:15:46,663 [INFO] Tavily [5] "2023年中国北方肉羊平均日增重(ADG)与料肉比(FCR)数据"
+2026-05-06 20:16:01,240 [INFO] Tavily [5] "China North meat sheep FCR mortality statistics 2023"
+2026-05-06 20:16:21,906 [INFO] Tavily [5] "中国北方绵羊养殖效率：料肉比(FCR)与死亡率(mortality)报告"
+2026-05-06 20:16:42,039 [INFO] Tavily [5] "Meat sheep production efficiency: FCR and mortality rat"
+2026-05-06 20:16:56,355 [INFO] meat_sheep done: +0
+2026-05-06 20:17:11,357 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-06 20:17:15,564 [INFO] Qwen queries for tilapia: ['2023年 中国南方 罗非鱼 链球菌病 死亡率 数据', '2022-2023 South China tilapia streptococcosis mortality rate statistics', '2023 华南 罗非鱼养殖 链球菌损失 经济损失 分析', '2022 South China tilapia farming strep loss economic impact report']
+2026-05-06 20:17:21,138 [INFO] Tavily [5] "2023年 中国南方 罗非鱼 链球菌病 死亡率 数据"
+2026-05-06 20:17:42,616 [INFO] Tavily [5] "2022-2023 South China tilapia streptococcosis mortality"
+2026-05-06 20:17:59,673 [INFO] Tavily [5] "2023 华南 罗非鱼养殖 链球菌损失 经济损失 分析"
+2026-05-06 20:18:19,679 [INFO] Tavily [5] "2022 South China tilapia farming strep loss economic im"
+2026-05-06 20:18:30,844 [INFO] tilapia done: +0
+2026-05-06 20:18:45,844 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-06 20:18:49,789 [INFO] Qwen queries for grouper: ['2023年中国南方石斑鱼弧菌病死亡率统计', 'Grouper vibrio disease mortality rate South China 2023', '2022-2024 South China grouper farming vibrio loss percentage', '中国南方养殖石斑鱼弧菌感染损失率数据 2023']
+2026-05-06 20:18:53,084 [INFO] Tavily [5] "2023年中国南方石斑鱼弧菌病死亡率统计"
+2026-05-06 20:19:10,020 [INFO] Tavily [5] "Grouper vibrio disease mortality rate South China 2023"
+2026-05-06 20:19:33,545 [INFO] Tavily [5] "2022-2024 South China grouper farming vibrio loss perce"
+2026-05-06 20:19:49,320 [INFO] Tavily [5] "中国南方养殖石斑鱼弧菌感染损失率数据 2023"
+2026-05-06 20:20:09,607 [INFO] grouper done: +0
+2026-05-06 20:20:24,609 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-06 20:20:24,609 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-06 20:20:25,806 [INFO] Round 3 done. DB=284 +4
+2026-05-06 20:20:25,806 [INFO] Sleeping 1800s...
+2026-05-06 20:50:25,808 [INFO] === Round 4 | 2.9h | total: 17 ===
+2026-05-06 20:50:25,808 [INFO] dairy_goat/CN_all: have=['milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 20:50:29,677 [INFO] Qwen queries for dairy_goat: ['dairy goat FCR feed conversion ratio 2023 statistics', '奶山羊 饲料转化率 FCR 数据 2023', 'dairy goat milk yield per lactation average 2022', '奶山羊 产奶量 平均 统计 2022']
+2026-05-06 20:50:32,689 [INFO] Tavily [5] "dairy goat FCR feed conversion ratio 2023 statistics"
+2026-05-06 20:50:47,763 [INFO] Tavily [5] "奶山羊 饲料转化率 FCR 数据 2023"
+2026-05-06 20:51:08,691 [INFO] Tavily [5] "dairy goat milk yield per lactation average 2022"
+2026-05-06 20:51:31,417 [INFO] Tavily [5] "奶山羊 产奶量 平均 统计 2022"
+2026-05-06 20:51:44,262 [INFO]   ✅ dairy_goat +1 | https://html.rhhz.net/XMSYXB/html/2021/1/1611018748235-15203
+2026-05-06 20:52:19,860 [INFO] dairy_goat done: +1
+2026-05-06 20:52:34,861 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other'], missing=['ADG']
+2026-05-06 20:52:38,859 [INFO] Qwen queries for channel_catfish: ['channel catfish average daily gain ADG growth performance 2023', '大口鲶鱼平均日增重 ADG 生长性能 2023', 'channel catfish production statistics ADG harvest mortality 2022', '大口鲶鱼养殖统计 平均日增重 ADG 存活率 2022']
+2026-05-06 20:52:42,590 [INFO] Tavily [5] "channel catfish average daily gain ADG growth performan"
+2026-05-06 20:53:00,077 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 20:53:00,334 [INFO] Fetched (403) <GET https://www.sciencedirect.com/science/article/pii/S2352513425003722> (referer: https://www.google.com/)
+2026-05-06 20:53:18,757 [INFO] Tavily [4] "大口鲶鱼平均日增重 ADG 生长性能 2023"
+2026-05-06 20:53:39,497 [INFO] Tavily [5] "channel catfish production statistics ADG harvest morta"
+2026-05-06 20:54:03,314 [INFO] Tavily [1] "大口鲶鱼养殖统计 平均日增重 ADG 存活率 2022"
+2026-05-06 20:54:11,318 [INFO] channel_catfish done: +0
+2026-05-06 20:54:26,319 [INFO] largemouth_catfish/CN_all: have=['survival', 'fcr', 'FCR'], missing=['ADG']
+2026-05-06 20:54:30,219 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish ADG growth performance 2023', '大口鲇 平均日增重 ADG 养殖 2022', 'average daily gain largemouth catfish production 2024', '大口鲇 饲料转化率 平均日增重 数据 2023']
+2026-05-06 20:54:34,867 [INFO] Tavily [5] "largemouth catfish ADG growth performance 2023"
+2026-05-06 20:55:01,423 [INFO] Tavily [5] "大口鲇 平均日增重 ADG 养殖 2022"
+2026-05-06 20:55:32,811 [INFO] Tavily [5] "average daily gain largemouth catfish production 2024"
+2026-05-06 20:55:53,331 [INFO] Tavily [5] "大口鲇 饲料转化率 平均日增重 数据 2023"
+2026-05-06 20:56:21,340 [INFO] largemouth_catfish done: +0
+2026-05-06 20:56:36,341 [INFO] dairy_cow/CN_all: have=['milk', 'other', 'mortality', 'market'], missing=['milk_yield', 'FCR', 'mastitis_loss']
+2026-05-06 20:56:40,226 [INFO] Qwen queries for dairy_cow: ['2023年中國奶牛平均產奶量統計數據', 'China dairy cow average milk yield per cow 2023 statistics', '2022年中國奶牛料奶比(FCR)行業平均值', 'China dairy feed conversion ratio FCR average 2022']
+2026-05-06 20:56:43,636 [INFO] Tavily [5] "2023年中國奶牛平均產奶量統計數據"
+2026-05-06 20:57:14,055 [INFO]   ✅ dairy_cow +1 | http://www.ade-asian.com/article/show_article.php?id=366
+2026-05-06 20:57:17,146 [INFO] Tavily [5] "China dairy cow average milk yield per cow 2023 statist"
+2026-05-06 20:57:46,761 [INFO] Tavily [5] "2022年中國奶牛料奶比(FCR)行業平均值"
+2026-05-06 20:58:10,805 [INFO] Tavily [5] "China dairy feed conversion ratio FCR average 2022"
+2026-05-06 20:58:29,242 [INFO] dairy_cow done: +1
+2026-05-06 20:58:44,243 [INFO] layer_chicken/CN_all: have=['market'], missing=['FCR', 'egg_rate', 'mortality', 'AI_loss']
+2026-05-06 20:58:48,320 [INFO] Qwen queries for layer_chicken: ['2023年中國蛋雞料肉比(FCR)行業平均數據統計', 'China layer chicken feed conversion ratio FCR statistics 2023', '2023年中國商品代蛋雞產蛋率(egg_rate)及死淘率(mortality)報告', 'China layer chicken egg production rate and mortality rate data 2023']
+2026-05-06 20:58:54,285 [INFO] Tavily [5] "2023年中國蛋雞料肉比(FCR)行業平均數據統計"
+2026-05-06 20:59:19,567 [INFO] Tavily [5] "China layer chicken feed conversion ratio FCR statistic"
+2026-05-06 20:59:36,921 [INFO]   ✅ layer_chicken +2 | https://wifitalents.com/global-poultry-industry-statistics/
+2026-05-06 20:59:45,013 [INFO] Tavily [5] "2023年中國商品代蛋雞產蛋率(egg_rate)及死淘率(mortality)報告"
+2026-05-06 21:00:08,560 [INFO] Tavily [5] "China layer chicken egg production rate and mortality r"
+2026-05-06 21:00:19,800 [INFO] layer_chicken done: +2
+2026-05-06 21:00:34,801 [INFO] broiler/CN_all: have=['mortality', 'fcr', 'slaughter', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-06 21:00:38,835 [INFO] Qwen queries for broiler: ['2023年全球肉雞平均日增重（ADG）數據統計', '2022-2023年中國白羽肉雞平均日增重指標報告', '2023年全球肉雞行業疾病損失（disease loss）比例統計', '2022年中國家禽產業疾病損失率與經濟影響分析']
+2026-05-06 21:00:42,759 [INFO] Tavily [5] "2023年全球肉雞平均日增重（ADG）數據統計"
+2026-05-06 21:01:09,894 [INFO] Tavily [5] "2022-2023年中國白羽肉雞平均日增重指標報告"
+2026-05-06 21:01:35,489 [INFO] Tavily [5] "2023年全球肉雞行業疾病損失（disease loss）比例統計"
+2026-05-06 21:01:57,664 [INFO] Tavily [5] "2022年中國家禽產業疾病損失率與經濟影響分析"
+2026-05-06 21:02:20,703 [INFO] broiler done: +0
+2026-05-06 21:02:35,703 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-06 21:02:39,583 [INFO] Qwen queries for shrimp: ['2023年中國南部對蝦EMS綜合症死亡率統計', 'China South shrimp EMS disease mortality rate 2023', '2022-2024 Chinese Southern Penaeus vannamei EMS loss data', '中国南美白对虾EMS综合征经济损失及死亡率数据 2023']
+2026-05-06 21:02:43,831 [INFO] Tavily [5] "2023年中國南部對蝦EMS綜合症死亡率統計"
+2026-05-06 21:02:59,116 [INFO] Tavily [5] "China South shrimp EMS disease mortality rate 2023"
+2026-05-06 21:03:14,464 [INFO] Tavily [5] "2022-2024 Chinese Southern Penaeus vannamei EMS loss da"
+2026-05-06 21:03:41,583 [INFO] Tavily [5] "中国南美白对虾EMS综合征经济损失及死亡率数据 2023"
+2026-05-06 21:03:57,316 [INFO] shrimp done: +0
+2026-05-06 21:04:12,317 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 21:04:16,675 [INFO] Qwen queries for beef_cattle: ['China North beef cattle average daily gain (ADG) and feed conversion ratio (FCR) statistics 2023', '中国北方肉牛平均日增重(ADG)和料肉比(FCR)数据 2023', 'beef cattle mortality rate in Northern China production systems 2022-2024', '中国北方地区肉牛养殖死亡率(mortality)统计报告 2023']
+2026-05-06 21:04:19,924 [INFO] Tavily [5] "China North beef cattle average daily gain (ADG) and fe"
+2026-05-06 21:04:46,782 [INFO] Tavily [5] "中国北方肉牛平均日增重(ADG)和料肉比(FCR)数据 2023"
+2026-05-06 21:05:06,446 [INFO] Tavily [5] "beef cattle mortality rate in Northern China production"
+2026-05-06 21:05:25,104 [INFO] Tavily [5] "中国北方地区肉牛养殖死亡率(mortality)统计报告 2023"
+2026-05-06 21:05:37,218 [INFO] beef_cattle done: +0
+2026-05-06 21:05:52,220 [INFO] beef_cattle/CN_south: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 21:05:56,287 [INFO] Qwen queries for beef_cattle: ['2023年中國南方地區肉牛平均日增重（ADG）數據', 'China South beef cattle average daily gain ADG statistics 2023', '2022-2024年中國南方肉牛料肉比（FCR）研究報告', 'Feed conversion ratio FCR beef cattle South China 2023']
+2026-05-06 21:06:00,143 [INFO] Tavily [5] "2023年中國南方地區肉牛平均日增重（ADG）數據"
+2026-05-06 21:06:18,415 [INFO] Tavily [5] "China South beef cattle average daily gain ADG statisti"
+2026-05-06 21:06:44,680 [INFO] Tavily [5] "2022-2024年中國南方肉牛料肉比（FCR）研究報告"
+2026-05-06 21:07:05,854 [INFO] Tavily [5] "Feed conversion ratio FCR beef cattle South China 2023"
+2026-05-06 21:07:16,872 [INFO] beef_cattle done: +0
+2026-05-06 21:07:31,873 [INFO] finisher_pig/CN_north: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 21:07:36,092 [INFO] Qwen queries for finisher_pig: ['finisher pig FCR ADG mortality performance data North China 2023', 'finisher pig feed conversion ratio average daily gain mortality rate northern China 2022-2023', '育肥猪 料肉比 日增重 死亡率 华北地区 2023年', '华北地区 育肥猪 生产性能 饲料转化率 日增重 成活率 2022-2023']
+2026-05-06 21:07:42,026 [INFO] Tavily [5] "finisher pig FCR ADG mortality performance data North C"
+2026-05-06 21:08:00,623 [INFO] Tavily [5] "finisher pig feed conversion ratio average daily gain m"
+2026-05-06 21:08:20,309 [INFO] Tavily [5] "育肥猪 料肉比 日增重 死亡率 华北地区 2023年"
+2026-05-06 21:08:42,424 [INFO] Tavily [5] "华北地区 育肥猪 生产性能 饲料转化率 日增重 成活率 2022-2023"
+2026-05-06 21:09:02,949 [INFO] finisher_pig done: +0
+2026-05-06 21:09:17,951 [INFO] meat_sheep/CN_north: have=['adg'], missing=['FCR', 'mortality']
+2026-05-06 21:09:21,746 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR CN_north 2023', 'meat sheep mortality rate CN_north 2022', '肉羊 料肉比 CN_north 2023', '肉羊 死亡率 CN_north 2022']
+2026-05-06 21:09:26,830 [INFO] Tavily [5] "meat sheep FCR CN_north 2023"
+2026-05-06 21:09:52,965 [INFO] Tavily [5] "meat sheep mortality rate CN_north 2022"
+2026-05-06 21:10:20,073 [INFO] Tavily [5] "肉羊 料肉比 CN_north 2023"
+2026-05-06 21:10:53,347 [INFO] Tavily [5] "肉羊 死亡率 CN_north 2022"
+2026-05-06 21:11:20,244 [INFO] meat_sheep done: +0
+2026-05-06 21:11:35,244 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-06 21:11:38,941 [INFO] Qwen queries for tilapia: ['tilapia streptococcus loss rate CN_south 2023', '南美白对虾 链球菌 损失率 2023', 'tilapia strep infection mortality CN_south 2022', '罗非鱼 链球菌病 死亡率 损失 2023']
+2026-05-06 21:11:45,979 [INFO] Tavily [5] "tilapia streptococcus loss rate CN_south 2023"
+2026-05-06 21:12:04,669 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 21:12:04,897 [INFO] Fetched (200) <GET https://www.preprints.org/manuscript/202604.2007> (referer: https://www.google.com/)
+2026-05-06 21:12:12,880 [INFO] Tavily [5] "南美白对虾 链球菌 损失率 2023"
+2026-05-06 21:12:32,885 [INFO] Tavily [5] "tilapia strep infection mortality CN_south 2022"
+2026-05-06 21:12:51,659 [INFO] Tavily [5] "罗非鱼 链球菌病 死亡率 损失 2023"
+2026-05-06 21:13:01,597 [INFO] ============================================================
+2026-05-06 21:13:01,597 [INFO] auto_collect_v3 START (智慧追蹤版)
+2026-05-06 21:13:01,598 [INFO] Tavily key (utf-8-sig): tvly-dev...
+2026-05-06 21:13:02,804 [INFO] === Round 1 | 0.0h | total: 0 ===
+2026-05-06 21:13:02,805 [INFO] dairy_goat/CN_all: have=['milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 21:13:06,510 [INFO] Qwen queries for dairy_goat: ['dairy goat milk yield per lactation 2023', '奶山羊单产乳量 2023', 'dairy goat feed conversion ratio FCR statistics', '奶山羊料奶比 FCR 数据']
+2026-05-06 21:13:08,627 [INFO] tilapia done: +0
+2026-05-06 21:13:10,828 [INFO] Tavily [5] "dairy goat milk yield per lactation 2023"
+2026-05-06 21:13:23,629 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-06 21:13:27,886 [INFO] Qwen queries for grouper: ['2023 grouper vibrio loss rate South China aquaculture statistics', '2022 石斑魚 弧菌 死亡率 华南 养殖数据', 'grouper vibrio alginolyticus mortality loss South China 2023', '2024 华南地区 石斑鱼 弧菌病 损失率 调查报告']
+2026-05-06 21:13:31,764 [INFO] Tavily [5] "2023 grouper vibrio loss rate South China aquaculture s"
+2026-05-06 21:13:41,874 [INFO] Tavily [5] "奶山羊单产乳量 2023"
+2026-05-06 21:14:01,673 [INFO] Tavily [5] "2022 石斑魚 弧菌 死亡率 华南 养殖数据"
+2026-05-06 21:14:14,882 [INFO]   ✅ grouper +1 | https://b2bwiki.baidu.com/article/d0iokg1ftjspasp48ai0
+2026-05-06 21:14:15,755 [INFO] Tavily [5] "dairy goat feed conversion ratio FCR statistics"
+2026-05-06 21:14:38,852 [INFO] Tavily [5] "grouper vibrio alginolyticus mortality loss South China"
+2026-05-06 21:14:46,587 [INFO] Tavily [5] "奶山羊料奶比 FCR 数据"
+2026-05-06 21:15:08,218 [INFO] Tavily [5] "2024 华南地区 石斑鱼 弧菌病 损失率 调查报告"
+2026-05-06 21:15:11,521 [INFO] dairy_goat done: +0
+2026-05-06 21:15:26,523 [INFO] channel_catfish/CN_all: have=['mortality', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=['ADG']
+2026-05-06 21:15:31,193 [INFO] Qwen queries for channel_catfish: ['channel catfish average daily gain ADG production statistics 2023 USA', '美国 斑点叉尾鮰 平均日增重 ADG 统计数据 2023', 'channel catfish growth performance ADG kg/day 2022-2024', '中国 斑点叉尾鮰 养殖 平均日增重 数据 2023']
+2026-05-06 21:15:35,105 [INFO] Tavily [5] "channel catfish average daily gain ADG production stati"
+2026-05-06 21:15:36,848 [INFO] grouper done: +1
+2026-05-06 21:15:51,850 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-06 21:15:51,850 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-06 21:15:53,102 [INFO] Round 4 done. DB=289 +5
+2026-05-06 21:15:53,103 [INFO] Sleeping 1800s...
+2026-05-06 21:16:04,698 [INFO] Tavily [5] "美国 斑点叉尾鮰 平均日增重 ADG 统计数据 2023"
+2026-05-06 21:16:35,112 [INFO]   ✅ channel_catfish +4 | https://www.ussecinchina.com/wp-content/uploads/2014/08/%E5%
+2026-05-06 21:16:47,964 [INFO] Tavily [5] "channel catfish growth performance ADG kg/day 2022-2024"
+2026-05-06 21:17:12,278 [INFO] Tavily [5] "中国 斑点叉尾鮰 养殖 平均日增重 数据 2023"
+2026-05-06 21:17:37,351 [INFO] channel_catfish done: +4
+2026-05-06 21:17:52,352 [INFO] largemouth_catfish/CN_all: have=['fcr', 'FCR', 'survival'], missing=['ADG']
+2026-05-06 21:17:56,626 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain (ADG) growth performance 2023', '大口鲇 平均日增重 (ADG) 生长性能 2023', 'average daily gain of largemouth catfish in China 2022-2024', '中国大口鲇养殖 平均日增重 数据 2022-2024']
+2026-05-06 21:18:04,359 [INFO] Tavily [5] "largemouth catfish average daily gain (ADG) growth perf"
+2026-05-06 21:18:32,750 [INFO]   ✅ largemouth_catfish +2 | https://www.was.org/Meeting/Program/PaperDetail/166247
+2026-05-06 21:18:44,424 [INFO] Tavily [5] "大口鲇 平均日增重 (ADG) 生长性能 2023"
+2026-05-06 21:19:15,903 [INFO] Tavily [5] "average daily gain of largemouth catfish in China 2022-"
+2026-05-06 21:19:48,310 [INFO] Tavily [5] "中国大口鲇养殖 平均日增重 数据 2022-2024"
+2026-05-06 21:20:16,499 [INFO] largemouth_catfish done: +2
+2026-05-06 21:20:31,501 [INFO] dairy_cow/CN_all: have=['mortality', 'market', 'other', 'milk'], missing=['milk_yield', 'FCR', 'mastitis_loss']
+2026-05-06 21:20:35,713 [INFO] Qwen queries for dairy_cow: ['2023年中国奶牛平均产奶量（kg/头/年）统计数据', '2023 China dairy cow average milk yield per head per year statistics', '2022年中国奶牛全混合日粮饲料转化率（FCR）或料奶比数据', '2022 China dairy cow feed conversion ratio (FCR) or feed-to-milk ratio data']
+2026-05-06 21:20:38,358 [INFO] Tavily [5] "2023年中国奶牛平均产奶量（kg/头/年）统计数据"
+2026-05-06 21:20:55,673 [INFO]   ✅ dairy_cow +1 | https://finance.sina.cn/2023-07-29/detail-imzeixss4252247.d.
+2026-05-06 21:21:16,842 [INFO]   ✅ dairy_cow +1 | https://m.boyar.cn/article/1225680.html
+2026-05-06 21:21:25,529 [INFO] Tavily [5] "2023 China dairy cow average milk yield per head per ye"
+2026-05-06 21:21:54,124 [INFO] Tavily [5] "2022年中国奶牛全混合日粮饲料转化率（FCR）或料奶比数据"
+2026-05-06 21:22:24,085 [INFO]   ✅ dairy_cow +2 | http://www.nahs.org.cn/xxcm/zlbz/202510/P0202510206261105865
+2026-05-06 21:22:38,503 [INFO] Tavily [5] "2022 China dairy cow feed conversion ratio (FCR) or fee"
+2026-05-06 21:22:58,456 [INFO] dairy_cow done: +4
+2026-05-06 21:23:13,457 [INFO] layer_chicken/CN_all: have=['fcr', 'slaughter', 'market'], missing=['egg_rate', 'mortality', 'AI_loss']
+2026-05-06 21:23:17,197 [INFO] Qwen queries for layer_chicken: ['layer chicken egg production rate statistics China 2023', '中國 蛋雞 產蛋率 統計數據 2023', 'layer chicken mortality rate per 1000 hens China annual report', '中國 蛋雞 死亡率 數據 行業報告']
+2026-05-06 21:23:21,590 [INFO] Tavily [5] "layer chicken egg production rate statistics China 2023"
+2026-05-06 21:23:48,858 [INFO] Tavily [5] "中國 蛋雞 產蛋率 統計數據 2023"
+2026-05-06 21:24:22,119 [INFO] Tavily [5] "layer chicken mortality rate per 1000 hens China annual"
+2026-05-06 21:24:47,164 [INFO]   ✅ layer_chicken +1 | https://www.champrix.com/articles/mortality-in-broilers-and-
+2026-05-06 21:24:59,686 [INFO] Tavily [5] "中國 蛋雞 死亡率 數據 行業報告"
+2026-05-06 21:25:28,769 [INFO] layer_chicken done: +1
+2026-05-06 21:25:43,769 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'fcr', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-06 21:25:47,675 [INFO] Qwen queries for broiler: ['2023年中國肉雞平均日增重(ADG)數據', 'China broiler average daily gain ADG statistics 2023', '中國肉雞疾病損失率 disease loss rate 2022-2023', 'broiler disease loss rate China 2023']
+2026-05-06 21:25:54,864 [INFO] Tavily [5] "2023年中國肉雞平均日增重(ADG)數據"
+2026-05-06 21:26:24,811 [INFO] Tavily [5] "China broiler average daily gain ADG statistics 2023"
+2026-05-06 21:26:55,499 [INFO] Tavily [5] "中國肉雞疾病損失率 disease loss rate 2022-2023"
+2026-05-06 21:27:28,154 [INFO] Tavily [5] "broiler disease loss rate China 2023"
+2026-05-06 21:27:52,868 [INFO] broiler done: +0
+2026-05-06 21:28:07,869 [INFO] shrimp/CN_south: have=['mortality', 'fcr', 'FCR', 'survival'], missing=['EMS_loss']
+2026-05-06 21:28:11,627 [INFO] Qwen queries for shrimp: ['EMS loss rate in Penaeus vannamei shrimp farming in South China 2023', '南美白对虾 EMS 损失率 华南 2022', 'EMS mortality in shrimp aquaculture Guangdong Guangxi 2024', '华南地区对虾 EMS 发病率 具体数值 2023']
+2026-05-06 21:28:15,584 [INFO] Tavily [5] "EMS loss rate in Penaeus vannamei shrimp farming in Sou"
+2026-05-06 21:28:46,020 [INFO] Tavily [5] "南美白对虾 EMS 损失率 华南 2022"
+2026-05-06 21:29:15,860 [INFO] Tavily [5] "EMS mortality in shrimp aquaculture Guangdong Guangxi 2"
+2026-05-06 21:29:36,336 [INFO] Tavily [5] "华南地区对虾 EMS 发病率 具体数值 2023"
+2026-05-06 21:30:06,174 [INFO] shrimp done: +0
+2026-05-06 21:30:21,175 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 21:30:25,326 [INFO] Qwen queries for beef_cattle: ['2023年中国北方地区肉牛平均日增重(ADG)统计数据', 'China North beef cattle feed conversion ratio (FCR) 2023', '2022-2023中国北方肉牛养殖死亡率(mortality)行业报告', 'Average daily gain (ADG) and mortality rate of beef cattle in Northern China 2023']
+2026-05-06 21:30:29,114 [INFO] Tavily [5] "2023年中国北方地区肉牛平均日增重(ADG)统计数据"
+2026-05-06 21:30:58,974 [INFO] Tavily [5] "China North beef cattle feed conversion ratio (FCR) 202"
+2026-05-06 21:31:31,280 [INFO] Tavily [5] "2022-2023中国北方肉牛养殖死亡率(mortality)行业报告"
+2026-05-06 21:32:04,819 [INFO] Tavily [5] "Average daily gain (ADG) and mortality rate of beef cat"
+2026-05-06 21:32:28,688 [INFO] beef_cattle done: +0
+2026-05-06 21:32:43,688 [INFO] beef_cattle/CN_south: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 21:32:47,803 [INFO] Qwen queries for beef_cattle: ['2023年中國南方地區肉牛平均日增重(ADG)數據', 'China South beef cattle average daily gain ADG statistics 2023', '2022-2024年中國南方肉牛料肉比(FCR)參考值', 'China South beef cattle feed conversion ratio FCR mortality rate 2023']
+2026-05-06 21:32:54,563 [INFO] Tavily [5] "2023年中國南方地區肉牛平均日增重(ADG)數據"
+2026-05-06 21:33:13,309 [INFO]   ✅ beef_cattle +1 | https://www.crnews.net/cy/cm/956480_20230724015522.html
+2026-05-06 21:33:43,481 [INFO] Tavily [5] "China South beef cattle average daily gain ADG statisti"
+2026-05-06 21:34:05,621 [INFO] Tavily [5] "2022-2024年中國南方肉牛料肉比(FCR)參考值"
+2026-05-06 21:34:36,507 [INFO] Tavily [5] "China South beef cattle feed conversion ratio FCR morta"
+2026-05-06 21:34:59,682 [INFO] beef_cattle done: +1
+2026-05-06 21:35:14,683 [INFO] finisher_pig/CN_north: have=[], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 21:35:18,908 [INFO] Qwen queries for finisher_pig: ['finisher pig FCR ADG mortality performance data North China 2023', 'finisher pig growth performance FCR mortality rates Northern China 2022-2024', '北方育肥猪 料肉比 日增重 死亡率 2023年数据', '中国北方地区育肥猪生产性能 FCR ADG 死亡率 统计报告']
+2026-05-06 21:35:20,492 [INFO] Tavily [5] "finisher pig FCR ADG mortality performance data North C"
+2026-05-06 21:35:49,816 [INFO] Tavily [5] "finisher pig growth performance FCR mortality rates Nor"
+2026-05-06 21:36:17,512 [INFO] Tavily [5] "北方育肥猪 料肉比 日增重 死亡率 2023年数据"
+2026-05-06 21:36:52,141 [INFO]   ✅ finisher_pig +2 | https://b2bwiki.baidu.com/article/d0nb6i9ftjsrsein0k60
+2026-05-06 21:36:52,141 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 21:36:52,580 [INFO] Fetched (200) <GET https://mob.nxin.com/article/1157108> (referer: https://www.google.com/)
+2026-05-06 21:36:59,817 [INFO] Tavily [5] "中国北方地区育肥猪生产性能 FCR ADG 死亡率 统计报告"
+2026-05-06 21:37:25,907 [INFO] finisher_pig done: +2
+2026-05-06 21:37:40,908 [INFO] meat_sheep/CN_north: have=['adg'], missing=['FCR', 'mortality']
+2026-05-06 21:37:44,768 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR feed conversion ratio CN north China 2023', '肉羊 料肉比 中国北方 2023 数据', 'meat sheep mortality rate CN north China 2022', '肉羊 死亡率 中国北方 2022 统计']
+2026-05-06 21:37:49,404 [INFO] Tavily [5] "meat sheep FCR feed conversion ratio CN north China 202"
+2026-05-06 21:38:20,766 [INFO] Tavily [5] "肉羊 料肉比 中国北方 2023 数据"
+2026-05-06 21:38:54,175 [INFO] Tavily [5] "meat sheep mortality rate CN north China 2022"
+2026-05-06 21:39:18,983 [INFO] Tavily [5] "肉羊 死亡率 中国北方 2022 统计"
+2026-05-06 21:39:49,109 [INFO] meat_sheep done: +0
+2026-05-06 21:40:04,110 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival'], missing=['strep_loss']
+2026-05-06 21:40:08,187 [INFO] Qwen queries for tilapia: ['2023年 中國南方 羅非魚 鏈球菌病 損失率 數據', '2022-2024 South China tilapia streptococcosis economic loss statistics', '中國南方養殖羅非魚鏈球菌病死亡率及經濟損失分析', 'South China tilapia farming strep loss mortality rate 2023']
+2026-05-06 21:40:12,157 [INFO] Tavily [5] "2023年 中國南方 羅非魚 鏈球菌病 損失率 數據"
+2026-05-06 21:40:48,643 [INFO] Tavily [5] "2022-2024 South China tilapia streptococcosis economic "
+2026-05-06 21:41:16,720 [INFO] Tavily [5] "中國南方養殖羅非魚鏈球菌病死亡率及經濟損失分析"
+2026-05-06 21:41:45,879 [INFO] Tavily [5] "South China tilapia farming strep loss mortality rate 2"
+2026-05-06 21:42:07,576 [INFO] tilapia done: +0
+2026-05-06 21:42:22,577 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-06 21:42:26,934 [INFO] Qwen queries for grouper: ['2023 South China grouper farming vibrio loss mortality rate statistics', '2022-2024 中国南方 石斑鱼 养殖 弧菌 死亡率 损失 数据', 'Grouper aquaculture in South China vibrio infection economic loss 2023', '2023年 华南地区 石斑鱼 弧菌病 发病率 死亡率 经济损失 调研']
+2026-05-06 21:42:30,717 [INFO] Tavily [5] "2023 South China grouper farming vibrio loss mortality "
+2026-05-06 21:43:04,775 [INFO] Tavily [5] "2022-2024 中国南方 石斑鱼 养殖 弧菌 死亡率 损失 数据"
+2026-05-06 21:43:42,380 [INFO] Tavily [5] "Grouper aquaculture in South China vibrio infection eco"
+2026-05-06 21:44:12,530 [INFO] Tavily [5] "2023年 华南地区 石斑鱼 弧菌病 发病率 死亡率 经济损失 调研"
+2026-05-06 21:44:40,392 [INFO] grouper done: +0
+2026-05-06 21:44:55,393 [INFO] largemouth_bass/CN_south: have=['edwardsiella', 'fcr', 'survival', 'adg'], missing=[]
+2026-05-06 21:44:55,393 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-06 21:44:56,625 [INFO] Round 1 done. DB=303 +14
+2026-05-06 21:44:56,625 [INFO] Sleeping 1800s...
+2026-05-06 21:45:53,104 [INFO] === Round 5 | 3.8h | total: 22 ===
+2026-05-06 21:45:53,105 [INFO] dairy_goat/CN_all: have=['milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 21:45:56,963 [INFO] Qwen queries for dairy_goat: ['dairy goat FCR feed conversion ratio 2023', '奶山羊 饲料转化率 FCR 2023', 'dairy goat milk yield per lactation kg 2022', '奶山羊 产奶量 每胎 公斤 2022']
+2026-05-06 21:46:00,037 [INFO] Tavily [5] "dairy goat FCR feed conversion ratio 2023"
+2026-05-06 21:46:13,864 [INFO] Tavily [5] "奶山羊 饲料转化率 FCR 2023"
+2026-05-06 21:46:32,835 [INFO] Tavily [5] "dairy goat milk yield per lactation kg 2022"
+2026-05-06 21:46:40,838 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 21:46:42,129 [INFO] Fetched (200) <GET https://idele.fr/detail-article/milk-recording-results-of-cattle-goats-and-sheep-france-2022> (referer: https://www.google.com/)
+2026-05-06 21:47:02,079 [INFO]   ✅ dairy_goat +1 | https://epa-dccs.ornl.gov/documents/Goat_Guidelines.pdf
+2026-05-06 21:47:13,337 [INFO]   ✅ dairy_goat +1 | https://www.dairygoatfarmingnz.com/dairy-goat-kpis
+2026-05-06 21:47:13,338 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 21:47:13,949 [INFO] Fetched (200) <GET https://pmc.ncbi.nlm.nih.gov/articles/PMC12807819/> (referer: https://www.google.com/)
+2026-05-06 21:47:23,852 [INFO] Tavily [5] "奶山羊 产奶量 每胎 公斤 2022"
+2026-05-06 21:47:36,053 [INFO] dairy_goat done: +2
+2026-05-06 21:47:51,054 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other', 'adg'], missing=[]
+2026-05-06 21:47:51,054 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-06 21:47:51,056 [INFO] largemouth_catfish/CN_all: have=['survival', 'fcr', 'other', 'FCR'], missing=['ADG']
+2026-05-06 21:47:54,972 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain ADG growth rate 2023', '大口鲇 平均日增重 ADG 生长性能 2023', 'largemouth catfish (Clarias macrocephalus) ADG kg/day 2022-2024', '大口鲇 日增重 养殖数据 2023']
+2026-05-06 21:48:01,876 [INFO] Tavily [5] "largemouth catfish average daily gain ADG growth rate 2"
+2026-05-06 21:48:20,411 [INFO] Tavily [5] "大口鲇 平均日增重 ADG 生长性能 2023"
+2026-05-06 21:48:40,452 [INFO] Tavily [5] "largemouth catfish (Clarias macrocephalus) ADG kg/day 2"
+2026-05-06 21:49:05,937 [INFO] Tavily [5] "大口鲇 日增重 养殖数据 2023"
+2026-05-06 21:49:33,707 [INFO] largemouth_catfish done: +0
+2026-05-06 21:49:48,708 [INFO] dairy_cow/CN_all: have=['milk', 'other', 'mortality', 'market'], missing=['milk_yield', 'FCR', 'mastitis_loss']
+2026-05-06 21:49:52,528 [INFO] Qwen queries for dairy_cow: ['2023年中國荷斯坦奶牛平均產奶量數據', 'China dairy cow milk yield per cow 2023 statistics', '2023年中國奶牛料奶比(FCR)行業平均值', 'China dairy cattle feed conversion ratio FCR 2023 data']
+2026-05-06 21:49:55,900 [INFO] Tavily [5] "2023年中國荷斯坦奶牛平均產奶量數據"
+2026-05-06 21:50:10,911 [INFO] Tavily [5] "China dairy cow milk yield per cow 2023 statistics"
+2026-05-06 21:50:34,481 [INFO] Tavily [5] "2023年中國奶牛料奶比(FCR)行業平均值"
+2026-05-06 21:50:56,940 [INFO]   ✅ dairy_cow +3 | https://www.renrendoc.com/paper/516705217.html
+2026-05-06 21:51:02,740 [INFO] Tavily [5] "China dairy cattle feed conversion ratio FCR 2023 data"
+2026-05-06 21:51:13,857 [INFO] dairy_cow done: +3
+2026-05-06 21:51:28,858 [INFO] layer_chicken/CN_all: have=['mortality', 'fcr', 'slaughter', 'market'], missing=['egg_rate', 'AI_loss']
+2026-05-06 21:51:32,652 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中國蛋雞產蛋率統計數據 2023', 'China layer hen egg production rate per bird annual report', '中國養殖業蛋雞平均產蛋率行業報告 2022-2023']
+2026-05-06 21:51:39,131 [INFO] Tavily [5] "layer chicken egg rate statistics China 2023"
+2026-05-06 21:51:57,185 [INFO] Tavily [5] "中國蛋雞產蛋率統計數據 2023"
+2026-05-06 21:52:14,758 [INFO] Tavily [5] "China layer hen egg production rate per bird annual rep"
+2026-05-06 21:52:43,453 [INFO] Tavily [5] "中國養殖業蛋雞平均產蛋率行業報告 2022-2023"
+2026-05-06 21:52:59,821 [INFO] layer_chicken done: +0
+2026-05-06 21:53:14,822 [INFO] broiler/CN_all: have=['mortality', 'fcr', 'slaughter', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-06 21:53:18,763 [INFO] Qwen queries for broiler: ['2023 China broiler average daily gain ADG kg per bird', '2023 中國 肉雞 平均日增重 ADG 數據', 'China broiler disease loss mortality rate percentage 2023', '2023 中國 肉雞 疾病損失率 死亡率 統計']
+2026-05-06 21:53:22,244 [INFO] Tavily [5] "2023 China broiler average daily gain ADG kg per bird"
+2026-05-06 21:53:43,766 [INFO] Tavily [5] "2023 中國 肉雞 平均日增重 ADG 數據"
+2026-05-06 21:54:08,935 [INFO] Tavily [5] "China broiler disease loss mortality rate percentage 20"
+2026-05-06 21:54:30,023 [INFO] Tavily [5] "2023 中國 肉雞 疾病損失率 死亡率 統計"
+2026-05-06 21:54:42,444 [INFO] broiler done: +0
+2026-05-06 21:54:57,444 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-06 21:55:01,406 [INFO] Qwen queries for shrimp: ['2020-2023 EMS mortality rate in southern China shrimp farming', 'EMS loss percentage in Penaeus vannamei production South China 2021-2022', '2020-2022年中国南方对虾EMS死亡率统计', '2021-2023年南美白对虾EMS损失率数据']
+2026-05-06 21:55:05,002 [INFO] Tavily [5] "2020-2023 EMS mortality rate in southern China shrimp f"
+2026-05-06 21:55:20,002 [INFO] Tavily [5] "EMS loss percentage in Penaeus vannamei production Sout"
+2026-05-06 21:55:42,809 [INFO] Tavily [5] "2020-2022年中国南方对虾EMS死亡率统计"
+2026-05-06 21:56:11,287 [INFO] Tavily [5] "2021-2023年南美白对虾EMS损失率数据"
+2026-05-06 21:56:27,209 [INFO] shrimp done: +0
+2026-05-06 21:56:42,210 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 21:56:46,557 [INFO] Qwen queries for beef_cattle: ['beef cattle feed conversion ratio (FCR) average daily gain (ADG) mortality rate North China 2023', 'North China beef cattle production efficiency FCR ADG mortality statistics 2022-2023', '中國北方肉牛飼料轉化率(FCR) 日增重(ADG) 死亡率 2023', '中國北方地區肉牛養殖效率指標 FCR ADG 死亡率 數據 2022']
+2026-05-06 21:56:51,052 [INFO] Tavily [5] "beef cattle feed conversion ratio (FCR) average daily g"
+2026-05-06 21:57:10,419 [INFO] Tavily [5] "North China beef cattle production efficiency FCR ADG m"
+2026-05-06 21:57:34,554 [INFO] Tavily [5] "中國北方肉牛飼料轉化率(FCR) 日增重(ADG) 死亡率 2023"
+2026-05-06 21:57:54,560 [INFO] Tavily [5] "中國北方地區肉牛養殖效率指標 FCR ADG 死亡率 數據 2022"
+2026-05-06 21:58:11,565 [INFO] beef_cattle done: +0
+2026-05-06 21:58:26,565 [INFO] beef_cattle/CN_south: have=['adg'], missing=['FCR', 'mortality']
+2026-05-06 21:58:30,636 [INFO] Qwen queries for beef_cattle: ['beef cattle feed conversion ratio (FCR) statistics South China 2023', 'South China beef cattle mortality rate data 2022-2023', '華南地區肉牛料肉比（FCR）統計數據 2023', '華南地區肉牛死亡率數據 2022-2023']
+2026-05-06 21:58:34,385 [INFO] Tavily [5] "beef cattle feed conversion ratio (FCR) statistics Sout"
+2026-05-06 21:58:45,969 [INFO] Tavily [5] "South China beef cattle mortality rate data 2022-2023"
+2026-05-06 21:59:06,615 [INFO] Tavily [5] "華南地區肉牛料肉比（FCR）統計數據 2023"
+2026-05-06 21:59:19,988 [INFO] Tavily [5] "華南地區肉牛死亡率數據 2022-2023"
+2026-05-06 21:59:37,964 [INFO] beef_cattle done: +0
+2026-05-06 21:59:52,966 [INFO] finisher_pig/CN_north: have=['fcr', 'adg'], missing=['mortality']
+2026-05-06 21:59:56,454 [INFO] Qwen queries for finisher_pig: ['mortality rate finisher pigs North China 2023', '北方育肥猪死亡率 2023', 'finisher pig mortality statistics North China', '华北地区育肥猪成活率 2022-2023']
+2026-05-06 21:59:59,985 [INFO] Tavily [5] "mortality rate finisher pigs North China 2023"
+2026-05-06 22:00:30,259 [INFO] Tavily [5] "北方育肥猪死亡率 2023"
+2026-05-06 22:00:51,015 [INFO]   ✅ finisher_pig +1 | https://www.yicai.com/news/101937139.html
+2026-05-06 22:01:02,791 [INFO] Tavily [5] "finisher pig mortality statistics North China"
+2026-05-06 22:01:29,032 [INFO] Tavily [5] "华北地区育肥猪成活率 2022-2023"
+2026-05-06 22:01:49,750 [INFO] finisher_pig done: +1
+2026-05-06 22:02:04,751 [INFO] meat_sheep/CN_north: have=['adg'], missing=['FCR', 'mortality']
+2026-05-06 22:02:08,379 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR feed conversion ratio CN North China 2023', 'CN North China meat sheep mortality rate statistics 2022', '肉羊 料肉比 CN华北 2023', '肉羊 死亡率 CN华北 2022']
+2026-05-06 22:02:09,724 [INFO] Tavily [5] "meat sheep FCR feed conversion ratio CN North China 202"
+2026-05-06 22:02:29,477 [INFO] Tavily [5] "CN North China meat sheep mortality rate statistics 202"
+2026-05-06 22:02:46,734 [INFO] Tavily [5] "肉羊 料肉比 CN华北 2023"
+2026-05-06 22:03:08,375 [INFO]   ✅ meat_sheep +2 | http://agri.china.com.cn/2026-03/25/content_43382407.htm
+2026-05-06 22:03:22,108 [INFO] Tavily [5] "肉羊 死亡率 CN华北 2022"
+2026-05-06 22:03:40,831 [INFO] meat_sheep done: +2
+2026-05-06 22:03:55,831 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-06 22:04:00,215 [INFO] Qwen queries for tilapia: ['2020-2023 tilapia Streptococcus agalactiae mortality rate South China', '2018-2022 南美白对虾 链球菌病 死亡率 华南地区 数据', '2021-2023 Nile tilapia streptococcosis loss percentage South China aquaculture', '2019-2023 罗非鱼 链球菌感染 经济损失比例 华南 养殖']
+2026-05-06 22:04:06,189 [INFO] Tavily [5] "2020-2023 tilapia Streptococcus agalactiae mortality ra"
+2026-05-06 22:04:36,273 [INFO] Tavily [1] "2018-2022 南美白对虾 链球菌病 死亡率 华南地区 数据"
+2026-05-06 22:04:44,276 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 22:05:04,293 [WARNING] Attempt 1 failed: Failed to perform, curl: (28) Operation timed out after 20014 milliseconds with 679248 out of 10514487 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-06 22:05:25,308 [WARNING] Attempt 2 failed: Failed to perform, curl: (28) Operation timed out after 20011 milliseconds with 713424 out of 10514487 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-06 22:05:46,319 [ERROR] Failed after 3 attempts: Failed to perform, curl: (28) Operation timed out after 20006 milliseconds with 5344272 out of 10514487 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-05-06 22:06:19,900 [INFO] Tavily [5] "2021-2023 Nile tilapia streptococcosis loss percentage "
+2026-05-06 22:06:36,060 [INFO] Tavily [5] "2019-2023 罗非鱼 链球菌感染 经济损失比例 华南 养殖"
+2026-05-06 22:06:59,915 [INFO] tilapia done: +0
+2026-05-06 22:07:14,916 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'mortality', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-06 22:07:18,786 [INFO] Qwen queries for grouper: ['2023年中国南方石斑鱼副溶血性弧菌损失率具体数据', '2022-2024 South China grouper vibrio loss rate statistics', '中国南方养殖石斑鱼弧菌病死亡率数值', 'Southern China grouper aquaculture vibrio mortality rate data']
+2026-05-06 22:07:22,706 [INFO] Tavily [5] "2023年中国南方石斑鱼副溶血性弧菌损失率具体数据"
+2026-05-06 22:07:47,311 [INFO] Tavily [5] "2022-2024 South China grouper vibrio loss rate statisti"
+2026-05-06 22:08:06,508 [INFO] Tavily [5] "中国南方养殖石斑鱼弧菌病死亡率数值"
+2026-05-06 22:08:33,400 [INFO] Tavily [5] "Southern China grouper aquaculture vibrio mortality rat"
+2026-05-06 22:08:51,706 [INFO] grouper done: +0
+2026-05-06 22:09:06,707 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-06 22:09:06,708 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-06 22:09:07,945 [INFO] Round 5 done. DB=311 +8
+2026-05-06 22:09:07,945 [INFO] Sleeping 1800s...
+2026-05-06 22:14:56,626 [INFO] === Round 2 | 1.0h | total: 14 ===
+2026-05-06 22:14:56,627 [INFO] dairy_goat/CN_all: have=['other', 'milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 22:15:00,544 [INFO] Qwen queries for dairy_goat: ['dairy goat FCR feed conversion ratio China 2023', '中国奶山羊 饲料转化率 FCR 数据 2023', 'dairy goat milk yield per lactation China statistics', '中国奶山羊 产奶量 单产 统计数据 2023']
+2026-05-06 22:15:04,277 [INFO] Tavily [5] "dairy goat FCR feed conversion ratio China 2023"
+2026-05-06 22:15:23,853 [INFO] Tavily [5] "中国奶山羊 饲料转化率 FCR 数据 2023"
+2026-05-06 22:15:49,842 [INFO] Tavily [5] "dairy goat milk yield per lactation China statistics"
+2026-05-06 22:16:17,569 [INFO] Tavily [5] "中国奶山羊 产奶量 单产 统计数据 2023"
+2026-05-06 22:16:38,485 [INFO] dairy_goat done: +0
+2026-05-06 22:16:53,486 [INFO] channel_catfish/CN_all: have=['mortality', 'adg', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=[]
+2026-05-06 22:16:53,486 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-06 22:16:53,486 [INFO] largemouth_catfish/CN_all: have=['fcr', 'FCR', 'survival', 'other'], missing=['ADG']
+2026-05-06 22:16:57,302 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain (ADG) growth performance 2023', '大口鲇 平均日增重 ADG 养殖 2022', '大口鲇 日增重 饲料效率 2023 数据', 'largemouth catfish FCR and ADG production statistics 2024']
+2026-05-06 22:17:00,781 [INFO] Tavily [5] "largemouth catfish average daily gain (ADG) growth perf"
+2026-05-06 22:17:18,330 [INFO] Tavily [5] "大口鲇 平均日增重 ADG 养殖 2022"
+2026-05-06 22:17:40,375 [INFO] Tavily [5] "大口鲇 日增重 饲料效率 2023 数据"
+2026-05-06 22:17:52,008 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 22:17:55,536 [INFO] Fetched (200) <GET http://www.aquaticjournal.com/data/article/ssswxb/preview/pdf/10.3724/1000-3207.2025.2025.0231.pdf> (referer: https://www.google.com/)
+2026-05-06 22:18:08,464 [INFO] Tavily [5] "largemouth catfish FCR and ADG production statistics 20"
+2026-05-06 22:18:22,012 [INFO]   ✅ largemouth_catfish +2 | https://agnet.mdac.ms.gov/agManage/uploads/2041.pdf
+2026-05-06 22:18:25,050 [INFO] largemouth_catfish done: +2
+2026-05-06 22:18:40,050 [INFO] dairy_cow/CN_all: have=['mortality', 'milk', 'other', 'fcr', 'market'], missing=['milk_yield', 'mastitis_loss']
+2026-05-06 22:18:43,531 [INFO] Qwen queries for dairy_cow: ['2023年中國奶牛產奶量統計數據', 'China dairy cow milk yield per cow 2023 statistics', '2023年中國奶牛乳房炎損失率數據', 'China dairy cattle mastitis loss rate 2023 data']
+2026-05-06 22:18:48,452 [INFO] Tavily [5] "2023年中國奶牛產奶量統計數據"
+2026-05-06 22:19:06,540 [INFO]   ✅ dairy_cow +1 | https://pdf.dfcfw.com/pdf/H3_AP202010211422738801_1.pdf?1603
+2026-05-06 22:19:18,641 [INFO] Tavily [5] "China dairy cow milk yield per cow 2023 statistics"
+2026-05-06 22:19:48,199 [INFO] Tavily [5] "2023年中國奶牛乳房炎損失率數據"
+2026-05-06 22:20:07,681 [INFO] Tavily [5] "China dairy cattle mastitis loss rate 2023 data"
+2026-05-06 22:20:27,783 [INFO] dairy_cow done: +1
+2026-05-06 22:20:42,784 [INFO] layer_chicken/CN_all: have=['mortality', 'fcr', 'slaughter', 'market'], missing=['egg_rate', 'AI_loss']
+2026-05-06 22:20:46,280 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中国蛋鸡产蛋率 2023年 统计数据', 'layer chicken AI loss rate China 2022', '中国蛋鸡人工授精损失率 2022年 数据']
+2026-05-06 22:20:47,442 [INFO] Tavily [5] "layer chicken egg rate statistics China 2023"
+2026-05-06 22:21:05,454 [INFO] Tavily [5] "中国蛋鸡产蛋率 2023年 统计数据"
+2026-05-06 22:21:25,661 [INFO] Tavily [5] "layer chicken AI loss rate China 2022"
+2026-05-06 22:21:59,063 [INFO] Tavily [4] "中国蛋鸡人工授精损失率 2022年 数据"
+2026-05-06 22:22:07,066 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 22:22:07,275 [WARNING] Attempt 1 failed: Failed to perform, curl: (60) SSL: no alternative certificate subject name matches target hostname 'cpfd.cnki.com.cn'. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-06 22:22:08,296 [WARNING] Attempt 2 failed: Failed to perform, curl: (60) SSL: no alternative certificate subject name matches target hostname 'cpfd.cnki.com.cn'. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.. Retrying in 1 seconds...
+2026-05-06 22:22:09,318 [ERROR] Failed after 3 attempts: Failed to perform, curl: (60) SSL: no alternative certificate subject name matches target hostname 'cpfd.cnki.com.cn'. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-05-06 22:22:16,082 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 22:22:16,584 [INFO] Fetched (200) <GET https://www.aminer.cn/research_report/5c75eb54d1ea9ca237c9c204> (referer: https://www.google.com/)
+2026-05-06 22:22:16,586 [INFO] layer_chicken done: +0
+2026-05-06 22:22:31,587 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'fcr', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-06 22:22:35,644 [INFO] Qwen queries for broiler: ['2023年中國肉雞平均日增重（ADG）數據', '2022-2023 Broiler average daily gain (ADG) statistics China', '中國肉雞疾病損失率 disease_loss 統計 2023', 'China broiler disease loss rate percentage 2022-2023 data']
+2026-05-06 22:22:39,165 [INFO] Tavily [5] "2023年中國肉雞平均日增重（ADG）數據"
+2026-05-06 22:23:04,214 [INFO] Tavily [5] "2022-2023 Broiler average daily gain (ADG) statistics C"
+2026-05-06 22:23:26,786 [INFO] Tavily [5] "中國肉雞疾病損失率 disease_loss 統計 2023"
+2026-05-06 22:23:57,828 [INFO] Tavily [5] "China broiler disease loss rate percentage 2022-2023 da"
+2026-05-06 22:24:15,337 [INFO] broiler done: +0
+2026-05-06 22:24:30,338 [INFO] shrimp/CN_south: have=['mortality', 'fcr', 'FCR', 'survival'], missing=['EMS_loss']
+2026-05-06 22:24:34,222 [INFO] Qwen queries for shrimp: ['2023年中国南方对虾EMS综合征死亡率统计数据', 'China South shrimp EMS loss mortality rate 2023', '2022-2024华南地区对虾早期死亡综合征EMS损失率', 'EMS loss percentage in Penaeus vannamei farming South China 2023']
+2026-05-06 22:24:38,072 [INFO] Tavily [5] "2023年中国南方对虾EMS综合征死亡率统计数据"
+2026-05-06 22:25:12,441 [INFO] Tavily [5] "China South shrimp EMS loss mortality rate 2023"
+2026-05-06 22:25:34,688 [INFO] Tavily [5] "2022-2024华南地区对虾早期死亡综合征EMS损失率"
+2026-05-06 22:26:07,476 [INFO] Tavily [5] "EMS loss percentage in Penaeus vannamei farming South C"
+2026-05-06 22:26:21,892 [INFO] shrimp done: +0
+2026-05-06 22:26:36,893 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 22:26:41,342 [INFO] Qwen queries for beef_cattle: ['beef cattle feed conversion ratio FCR average daily gain ADG mortality rate North China 2023', '中國北方地區肉牛飼料轉化率 FCR 日增重 ADG 死亡率數據 2023', 'average daily gain ADG and mortality statistics for beef cattle in Northern China 2022-2024', '北方肉牛養殖場日增重 ADG 與死亡率 mortality 行業報告 2023']
+2026-05-06 22:26:45,024 [INFO] Tavily [5] "beef cattle feed conversion ratio FCR average daily gai"
+2026-05-06 22:27:03,039 [INFO] Tavily [5] "中國北方地區肉牛飼料轉化率 FCR 日增重 ADG 死亡率數據 2023"
+2026-05-06 22:27:29,546 [INFO] Tavily [5] "average daily gain ADG and mortality statistics for bee"
+2026-05-06 22:27:55,471 [INFO] Tavily [5] "北方肉牛養殖場日增重 ADG 與死亡率 mortality 行業報告 2023"
+2026-05-06 22:28:21,179 [INFO] beef_cattle done: +0
+2026-05-06 22:28:36,180 [INFO] beef_cattle/CN_south: have=['adg'], missing=['FCR', 'mortality']
+2026-05-06 22:28:40,366 [INFO] Qwen queries for beef_cattle: ['2023年中国南方地区肉牛饲料转化率(FCR)行业平均值', '2022-2024年中国南方肉牛养殖场死亡率(mortality)统计数据', 'Feed conversion ratio (FCR) statistics for beef cattle in Southern China 2023', 'Mortality rate of beef cattle in Southern China livestock industry 2022-2024']
+2026-05-06 22:28:44,562 [INFO] Tavily [5] "2023年中国南方地区肉牛饲料转化率(FCR)行业平均值"
+2026-05-06 22:29:01,930 [INFO] Tavily [5] "2022-2024年中国南方肉牛养殖场死亡率(mortality)统计数据"
+2026-05-06 22:29:29,355 [INFO] Tavily [5] "Feed conversion ratio (FCR) statistics for beef cattle "
+2026-05-06 22:29:47,084 [INFO] Tavily [5] "Mortality rate of beef cattle in Southern China livesto"
+2026-05-06 22:30:07,393 [INFO] beef_cattle done: +0
+2026-05-06 22:30:22,394 [INFO] finisher_pig/CN_north: have=['mortality', 'adg', 'fcr'], missing=[]
+2026-05-06 22:30:22,395 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-06 22:30:22,395 [INFO] meat_sheep/CN_north: have=['adg', 'survival', 'other'], missing=['FCR', 'mortality']
+2026-05-06 22:30:26,401 [INFO] Qwen queries for meat_sheep: ['CN_north meat sheep feed conversion ratio (FCR) statistics 2023', '中国北方肉羊料肉比 FCR 数据 2023', 'CN_north meat sheep mortality rate percentage 2022-2023', '中国北方肉羊死亡率 mortality rate 统计数据 2022']
+2026-05-06 22:30:34,645 [INFO] Tavily [5] "CN_north meat sheep feed conversion ratio (FCR) statist"
+2026-05-06 22:30:58,805 [INFO] Tavily [5] "中国北方肉羊料肉比 FCR 数据 2023"
+2026-05-06 22:31:26,234 [INFO] Tavily [5] "CN_north meat sheep mortality rate percentage 2022-2023"
+2026-05-06 22:31:58,899 [INFO] Tavily [5] "中国北方肉羊死亡率 mortality rate 统计数据 2022"
+2026-05-06 22:32:23,028 [INFO] meat_sheep done: +0
+2026-05-06 22:32:38,030 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival'], missing=['strep_loss']
+2026-05-06 22:32:42,042 [INFO] Qwen queries for tilapia: ['2023 tilapia streptococcus disease loss rate South China', '2022 tilapia strep infection economic impact South China', '2023年 羅非魚 鏈球菌病 損失率 華南', '2022年 羅非魚 鏈球菌感染 經濟損失 中國南方']
+2026-05-06 22:32:50,211 [INFO] Tavily [5] "2023 tilapia streptococcus disease loss rate South Chin"
+2026-05-06 22:33:12,816 [INFO] Tavily [5] "2022 tilapia strep infection economic impact South Chin"
+2026-05-06 22:33:34,573 [INFO] Tavily [5] "2023年 羅非魚 鏈球菌病 損失率 華南"
+2026-05-06 22:34:02,773 [INFO] Tavily [5] "2022年 羅非魚 鏈球菌感染 經濟損失 中國南方"
+2026-05-06 22:34:14,940 [INFO] tilapia done: +0
+2026-05-06 22:34:29,940 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-06 22:34:34,004 [INFO] Qwen queries for grouper: ['2023-2024 grouper (CN_south) vibrio loss rate mortality data', '2023 grouper CN_south vibrio infection mortality percentage', '2023-2024 石斑鱼（华南）弧菌病死亡率数据', '2023 华南石斑鱼弧菌感染死亡率统计']
+2026-05-06 22:34:41,634 [INFO] Tavily [5] "2023-2024 grouper (CN_south) vibrio loss rate mortality"
+2026-05-06 22:35:10,356 [INFO] Tavily [5] "2023 grouper CN_south vibrio infection mortality percen"
+2026-05-06 22:35:34,350 [INFO] Tavily [5] "2023-2024 石斑鱼（华南）弧菌病死亡率数据"
+2026-05-06 22:36:05,484 [INFO] Tavily [5] "2023 华南石斑鱼弧菌感染死亡率统计"
+2026-05-06 22:36:39,851 [INFO] grouper done: +0
+2026-05-06 22:36:54,852 [INFO] largemouth_bass/CN_south: have=['edwardsiella', 'fcr', 'survival', 'adg'], missing=[]
+2026-05-06 22:36:54,852 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-06 22:36:56,122 [INFO] Round 2 done. DB=314 +3
+2026-05-06 22:36:56,122 [INFO] Sleeping 1800s...
+2026-05-06 22:39:07,947 [INFO] === Round 6 | 4.7h | total: 30 ===
+2026-05-06 22:39:07,948 [INFO] dairy_goat/CN_all: have=['milk', 'other'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 22:39:12,034 [INFO] Qwen queries for dairy_goat: ['dairy goat feed conversion ratio FCR statistics 2023', '奶山羊料肉比 FCR 數據 2023', 'dairy goat milk yield per lactation average 2022-2024', '奶山羊產奶量 平均值 統計 2022-2024']
+2026-05-06 22:39:18,101 [INFO] Tavily [5] "dairy goat feed conversion ratio FCR statistics 2023"
+2026-05-06 22:39:40,720 [INFO] Tavily [5] "奶山羊料肉比 FCR 數據 2023"
+2026-05-06 22:39:48,722 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 22:39:49,932 [INFO] Fetched (319) <GET https://www.sdmuge.net/news/xinjiang_1525.html> (referer: https://www.google.com/)
+2026-05-06 22:39:53,914 [INFO] Tavily [5] "dairy goat milk yield per lactation average 2022-2024"
+2026-05-06 22:40:21,131 [INFO]   ✅ dairy_goat +1 | https://www.99oaksfarm.com/blogs/articles/2024-dairy-goat-mi
+2026-05-06 22:41:06,611 [INFO] Tavily [5] "奶山羊產奶量 平均值 統計 2022-2024"
+2026-05-06 22:41:24,231 [INFO] dairy_goat done: +1
+2026-05-06 22:41:39,233 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other', 'adg'], missing=[]
+2026-05-06 22:41:39,233 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-06 22:41:39,234 [INFO] largemouth_catfish/CN_all: have=['survival', 'slaughter', 'fcr', 'FCR', 'other'], missing=['ADG']
+2026-05-06 22:41:43,312 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish ADG growth performance 2023', '大口鲇 平均日增重 ADG 养殖 2022', 'average daily gain largemouth catfish China 2021-2023', '大口鲇 生长性能 平均日增重 数据 2020-2023']
+2026-05-06 22:41:51,758 [INFO] Tavily [5] "largemouth catfish ADG growth performance 2023"
+2026-05-06 22:42:11,241 [INFO] Tavily [5] "大口鲇 平均日增重 ADG 养殖 2022"
+2026-05-06 22:42:43,498 [INFO] Tavily [5] "average daily gain largemouth catfish China 2021-2023"
+2026-05-06 22:43:11,702 [INFO] Tavily [5] "大口鲇 生长性能 平均日增重 数据 2020-2023"
+2026-05-06 22:43:32,274 [WARNING] This logic is deprecated now, and have no effect; It will be removed with v0.3. Use `Fetcher.configure(auto_match=False)` instead before fetching
+2026-05-06 22:43:34,111 [INFO] Fetched (200) <GET https://x.com/search?q=%E6%AC%A7%E5%8D%9A%E6%80%8E%E4%B9%88%E4%B8%8A%E4%B8%8B%E5%88%86%E5%90%88%E4%BD%9C%E5%BE%AE%2F%E9%9B%BB%3A153-1854-0820%E4%B8%80.oqy&src=live&f=live> (referer: https://www.google.com/)
+2026-05-06 22:43:36,659 [INFO] largemouth_catfish done: +0
+2026-05-06 22:43:51,660 [INFO] dairy_cow/CN_all: have=['fcr', 'mortality', 'other', 'market', 'milk'], missing=['milk_yield', 'mastitis_loss']
+2026-05-06 22:43:55,338 [INFO] Qwen queries for dairy_cow: ['2023年中國奶牛平均產奶量數據', 'China dairy cow average milk yield 2023 statistics', '2022年中國奶牛乳房炎損失率統計', 'China dairy cattle mastitis loss rate 2022 data']
+2026-05-06 22:43:58,638 [INFO] Tavily [5] "2023年中國奶牛平均產奶量數據"
+2026-05-06 22:44:14,131 [INFO] Tavily [5] "China dairy cow average milk yield 2023 statistics"
+2026-05-06 22:44:42,912 [INFO] Tavily [5] "2022年中國奶牛乳房炎損失率統計"
+2026-05-06 22:45:17,515 [INFO] Tavily [5] "China dairy cattle mastitis loss rate 2022 data"
+2026-05-06 22:45:41,123 [INFO] dairy_cow done: +0
+2026-05-06 22:45:56,123 [INFO] layer_chicken/CN_all: have=['mortality', 'fcr', 'slaughter', 'market'], missing=['egg_rate', 'AI_loss']
+2026-05-06 22:45:59,990 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中國 蛋雞 產蛋率 統計數據 2023', 'China layer hen egg production rate per bird annual report', '中國 蛋雞產業 產蛋性能指標 年度報告 2022-2023']
+2026-05-06 22:46:07,549 [INFO] Tavily [5] "layer chicken egg rate statistics China 2023"
+2026-05-06 22:46:29,060 [INFO] Tavily [5] "中國 蛋雞 產蛋率 統計數據 2023"
+2026-05-06 22:46:51,197 [INFO] Tavily [5] "China layer hen egg production rate per bird annual rep"
+2026-05-06 22:47:07,858 [INFO] Tavily [5] "中國 蛋雞產業 產蛋性能指標 年度報告 2022-2023"
+2026-05-06 22:47:24,772 [INFO] layer_chicken done: +0
+2026-05-06 22:47:39,773 [INFO] broiler/CN_all: have=['mortality', 'fcr', 'slaughter', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-06 22:47:43,824 [INFO] Qwen queries for broiler: ['broiler chicken average daily gain (ADG) statistics China 2023', '肉雞平均日增重(ADG) 中國 2023年 數據', 'broiler disease loss mortality rate China 2022-2023', '中國肉雞疾病損失率 死亡率 2022-2023']
+2026-05-06 22:47:49,767 [INFO] Tavily [5] "broiler chicken average daily gain (ADG) statistics Chi"
+2026-05-06 22:48:01,675 [INFO] Tavily [5] "肉雞平均日增重(ADG) 中國 2023年 數據"
+2026-05-06 22:48:22,196 [INFO] Tavily [5] "broiler disease loss mortality rate China 2022-2023"
+2026-05-06 22:48:38,543 [INFO] Tavily [5] "中國肉雞疾病損失率 死亡率 2022-2023"
+2026-05-06 22:48:55,413 [INFO] broiler done: +0
+2026-05-06 22:49:10,415 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-06 22:49:14,353 [INFO] Qwen queries for shrimp: ['2023年中國南部對蝦EMS綜合症死亡率統計數據', 'China South shrimp EMS loss mortality rate 2023', '2022-2024 Chinese Southern Penaeus vannamei EMS disease economic loss percentage', '中國南部養殖對蝦EMS發病率及損失率調查報告']
+2026-05-06 22:49:20,747 [INFO] Tavily [5] "2023年中國南部對蝦EMS綜合症死亡率統計數據"
+2026-05-06 22:49:38,511 [INFO] Tavily [5] "China South shrimp EMS loss mortality rate 2023"
+2026-05-06 22:49:55,237 [INFO] Tavily [5] "2022-2024 Chinese Southern Penaeus vannamei EMS disease"
+2026-05-06 22:50:10,925 [INFO] Tavily [5] "中國南部養殖對蝦EMS發病率及損失率調查報告"
+2026-05-06 22:50:26,821 [INFO] shrimp done: +0
+2026-05-06 22:50:41,823 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 22:50:46,385 [INFO] Qwen queries for beef_cattle: ['beef cattle feed conversion ratio (FCR) average daily gain (ADG) mortality rate North China 2023', '中国北方肉牛养殖 料肉比 FCR 日增重 ADG 死亡率 统计数据 2023', 'North China beef cattle production performance FCR ADG mortality statistics 2022-2024', '华北地区肉牛饲养效率 饲料转化率 日增重 成活率 行业报告 2023']
+2026-05-06 22:50:54,299 [INFO] Tavily [5] "beef cattle feed conversion ratio (FCR) average daily g"
+2026-05-06 22:51:14,536 [INFO] Tavily [5] "中国北方肉牛养殖 料肉比 FCR 日增重 ADG 死亡率 统计数据 2023"
+2026-05-06 22:51:51,458 [INFO] Tavily [5] "North China beef cattle production performance FCR ADG "
+2026-05-06 22:52:10,423 [INFO] Tavily [5] "华北地区肉牛饲养效率 饲料转化率 日增重 成活率 行业报告 2023"
+2026-05-06 22:52:31,629 [INFO] beef_cattle done: +0
+2026-05-06 22:52:46,631 [INFO] beef_cattle/CN_south: have=['adg'], missing=['FCR', 'mortality']
+2026-05-06 22:52:50,796 [INFO] Qwen queries for beef_cattle: ['2023年中國南方地區肉牛飼料轉化率(FCR)統計數據', 'South China beef cattle feed conversion ratio (FCR) statistics 2023', '2022-2024年中國南方養殖場肉牛死亡率(mortality)報告', 'South China beef cattle mortality rate statistics 2022-2024']
+2026-05-06 22:53:00,858 [INFO] Tavily [5] "2023年中國南方地區肉牛飼料轉化率(FCR)統計數據"
+2026-05-06 22:53:14,173 [INFO] Tavily [5] "South China beef cattle feed conversion ratio (FCR) sta"
+2026-05-06 22:53:26,455 [INFO]   ✅ beef_cattle +1 | https://www.statista.com/statistics/254421/feed-conversion-r
+2026-05-06 22:53:32,748 [INFO] Tavily [5] "2022-2024年中國南方養殖場肉牛死亡率(mortality)報告"
+2026-05-06 22:54:02,101 [INFO] Tavily [5] "South China beef cattle mortality rate statistics 2022-"
+2026-05-06 22:54:26,985 [INFO] beef_cattle done: +1
+2026-05-06 22:54:41,986 [INFO] finisher_pig/CN_north: have=['mortality', 'fcr', 'adg'], missing=[]
+2026-05-06 22:54:41,986 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-06 22:54:41,988 [INFO] meat_sheep/CN_north: have=['survival', 'other', 'adg'], missing=['FCR', 'mortality']
+2026-05-06 22:54:46,040 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR growth performance North China 2023', '肉羊 料肉比 生长性能 华北地区 2023', 'meat sheep mortality rate statistics North China 2022-2024', '肉羊 死亡率 统计数据 华北地区 2022-2024']
+2026-05-06 22:54:49,317 [INFO] Tavily [5] "meat sheep FCR growth performance North China 2023"
+2026-05-06 22:55:11,661 [INFO] Tavily [5] "肉羊 料肉比 生长性能 华北地区 2023"
+2026-05-06 22:55:39,254 [INFO] Tavily [5] "meat sheep mortality rate statistics North China 2022-2"
+2026-05-06 22:55:59,714 [INFO] Tavily [5] "肉羊 死亡率 统计数据 华北地区 2022-2024"
+2026-05-06 22:56:25,673 [INFO] meat_sheep done: +0
+2026-05-06 22:56:40,674 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-06 22:56:44,963 [INFO] Qwen queries for tilapia: ['2023 South China tilapia Streptococcus agalactiae economic loss per ton production', '2022-2024 华南地区罗非鱼链球菌病养殖经济损失估算', 'tilapia Streptococcosis mortality and financial loss South China 2023', '2023年中国南方罗非鱼链球菌感染导致的产量损失与成本分析']
+2026-05-06 22:56:53,474 [INFO] Tavily [5] "2023 South China tilapia Streptococcus agalactiae econo"
+2026-05-06 22:57:13,690 [INFO] Tavily [5] "2022-2024 华南地区罗非鱼链球菌病养殖经济损失估算"
+2026-05-06 22:57:27,077 [INFO] Tavily [5] "tilapia Streptococcosis mortality and financial loss So"
+2026-05-06 22:57:42,880 [INFO] Tavily [5] "2023年中国南方罗非鱼链球菌感染导致的产量损失与成本分析"
+2026-05-06 22:57:54,690 [INFO] tilapia done: +0
+2026-05-06 22:58:09,690 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'mortality', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-06 22:58:13,476 [INFO] Qwen queries for grouper: ['grouper vibrio loss rate 2023', 'grouper vibrio disease mortality statistics 2022', '石斑鱼 弧菌 损失率 2023', '石斑鱼 弧菌病 死亡率 统计数据 2022']
+2026-05-06 22:58:20,891 [INFO] Tavily [5] "grouper vibrio loss rate 2023"
+2026-05-06 22:58:43,023 [INFO] Tavily [5] "grouper vibrio disease mortality statistics 2022"
+2026-05-06 22:59:08,758 [INFO] Tavily [5] "石斑鱼 弧菌 损失率 2023"
+2026-05-06 22:59:32,305 [INFO] Tavily [5] "石斑鱼 弧菌病 死亡率 统计数据 2022"
+2026-05-06 22:59:44,177 [INFO] grouper done: +0
+2026-05-06 22:59:59,178 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-06 22:59:59,178 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-06 23:00:00,416 [INFO] Round 6 done. DB=316 +2
+2026-05-06 23:00:00,416 [INFO] Sleeping 1800s...
+2026-05-06 23:06:56,122 [INFO] === Round 3 | 1.9h | total: 17 ===
+2026-05-06 23:06:56,122 [INFO] dairy_goat/CN_all: have=['other', 'milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 23:07:00,075 [INFO] Qwen queries for dairy_goat: ['dairy goat FCR feed conversion ratio 2023 2024', '奶山羊 饲料转化率 FCR 数据 2023', 'dairy goat milk yield per lactation statistics 2023', '奶山羊 产奶量 平均 统计 2023']
+2026-05-06 23:07:03,628 [INFO] Tavily [5] "dairy goat FCR feed conversion ratio 2023 2024"
+2026-05-06 23:07:29,787 [INFO] Tavily [5] "奶山羊 饲料转化率 FCR 数据 2023"
+2026-05-06 23:07:53,291 [INFO] Tavily [5] "dairy goat milk yield per lactation statistics 2023"
+2026-05-06 23:08:37,709 [INFO]   ✅ dairy_goat +1 | https://www.extension.iastate.edu/dairyteam/files/documents/
+2026-05-06 23:08:41,123 [INFO] Tavily [5] "奶山羊 产奶量 平均 统计 2023"
+2026-05-06 23:09:38,309 [INFO] dairy_goat done: +1
+2026-05-06 23:09:53,310 [INFO] channel_catfish/CN_all: have=['mortality', 'adg', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=[]
+2026-05-06 23:09:53,310 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-06 23:09:53,310 [INFO] largemouth_catfish/CN_all: have=['slaughter', 'other', 'fcr', 'survival', 'FCR'], missing=['ADG']
+2026-05-06 23:09:57,375 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain ADG production statistics 2023', '大口鲇 平均日增重 ADG 养殖数据 2023', 'average daily gain of largemouth catfish in China 2022-2024', '中国大口鲇养殖 平均日增重 产量统计 2023']
+2026-05-06 23:10:00,513 [INFO] Tavily [5] "largemouth catfish average daily gain ADG production st"
+2026-05-06 23:10:21,644 [INFO] Tavily [5] "大口鲇 平均日增重 ADG 养殖数据 2023"
+2026-05-06 23:10:48,348 [INFO] Tavily [5] "average daily gain of largemouth catfish in China 2022-"
+2026-05-06 23:11:09,969 [INFO] Tavily [5] "中国大口鲇养殖 平均日增重 产量统计 2023"
+2026-05-06 23:11:31,511 [INFO] largemouth_catfish done: +0
+2026-05-06 23:11:46,512 [INFO] dairy_cow/CN_all: have=['mortality', 'milk', 'other', 'fcr', 'market'], missing=['milk_yield', 'mastitis_loss']
+2026-05-06 23:11:50,251 [INFO] Qwen queries for dairy_cow: ['2023年中國奶牛產奶量平均值統計', 'China dairy cow average milk yield per head 2023', '2022年中國奶牛乳房炎損失率及經濟影響', 'China dairy industry mastitis loss rate economic impact 2022']
+2026-05-06 23:11:53,733 [INFO] Tavily [5] "2023年中國奶牛產奶量平均值統計"
+2026-05-06 23:12:18,007 [INFO] Tavily [5] "China dairy cow average milk yield per head 2023"
+2026-05-06 23:12:42,733 [INFO] Tavily [5] "2022年中國奶牛乳房炎損失率及經濟影響"
+2026-05-06 23:13:14,304 [INFO] Tavily [5] "China dairy industry mastitis loss rate economic impact"
+2026-05-06 23:13:31,545 [INFO] dairy_cow done: +0
+2026-05-06 23:13:46,547 [INFO] layer_chicken/CN_all: have=['mortality', 'fcr', 'slaughter', 'market'], missing=['egg_rate', 'AI_loss']
+2026-05-06 23:13:50,075 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中国蛋鸡产蛋率数据 2023年', 'China layer chicken egg production rate per hen 2022', '中国蛋鸡养殖产蛋率指标 2022']
+2026-05-06 23:13:51,449 [INFO] Tavily [5] "layer chicken egg rate statistics China 2023"
+2026-05-06 23:14:13,532 [INFO] Tavily [5] "中国蛋鸡产蛋率数据 2023年"
+2026-05-06 23:14:34,823 [INFO] Tavily [5] "China layer chicken egg production rate per hen 2022"
+2026-05-06 23:14:53,182 [INFO] Tavily [5] "中国蛋鸡养殖产蛋率指标 2022"
+2026-05-06 23:15:09,907 [INFO] layer_chicken done: +0
+2026-05-06 23:15:24,908 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'fcr', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-06 23:15:29,025 [INFO] Qwen queries for broiler: ['2023年全球肉雞平均日增重（ADG）數據統計', '2022-2023年中國白羽肉雞平均日增重ADG行業報告', '2023 broiler average daily gain (ADG) statistics by region', '2022-2023 global broiler disease loss and mortality rates data']
+2026-05-06 23:15:37,756 [INFO] Tavily [5] "2023年全球肉雞平均日增重（ADG）數據統計"
+2026-05-06 23:16:05,094 [INFO] Tavily [5] "2022-2023年中國白羽肉雞平均日增重ADG行業報告"
+2026-05-06 23:16:44,306 [INFO] Tavily [5] "2023 broiler average daily gain (ADG) statistics by reg"
+2026-05-06 23:17:18,172 [INFO] Tavily [5] "2022-2023 global broiler disease loss and mortality rat"
+2026-05-06 23:17:42,375 [INFO] broiler done: +0
+2026-05-06 23:17:57,377 [INFO] shrimp/CN_south: have=['mortality', 'fcr', 'FCR', 'survival'], missing=['EMS_loss']
+2026-05-06 23:18:01,646 [INFO] Qwen queries for shrimp: ['"EMS" "shrimp" "China" "South China" "loss rate" 2023', '南美白对虾 EMS 损失率 华南 2023', 'Early Mortality Syndrome "Litopenaeus vannamei" "production loss" "Guangdong" 2022', '中国华南地区 对虾 早期死亡综合征 EMS 产量损失 2022']
+2026-05-06 23:18:05,317 [INFO] Tavily [5] ""EMS" "shrimp" "China" "South China" "loss rate" 2023"
+2026-05-06 23:18:33,681 [INFO] Tavily [5] "南美白对虾 EMS 损失率 华南 2023"
+2026-05-06 23:19:02,645 [INFO] Tavily [5] "Early Mortality Syndrome "Litopenaeus vannamei" "produc"
+2026-05-06 23:19:22,332 [INFO] Tavily [5] "中国华南地区 对虾 早期死亡综合征 EMS 产量损失 2022"
+2026-05-06 23:19:41,773 [INFO] shrimp done: +0
+2026-05-06 23:19:56,775 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 23:20:00,889 [INFO] Qwen queries for beef_cattle: ['2023-2024 China northern region beef cattle feed conversion ratio (FCR) statistics', '中国北方地区肉牛2023年平均日增重（ADG）数据', '2024 beef cattle mortality rate in North China provincial reports', '中国北方肉牛养殖死亡率（mortality）及平均日增重（ADG）行业报告']
+2026-05-06 23:20:04,536 [INFO] Tavily [5] "2023-2024 China northern region beef cattle feed conver"
+2026-05-06 23:20:28,746 [INFO] Tavily [5] "中国北方地区肉牛2023年平均日增重（ADG）数据"
+2026-05-06 23:20:48,121 [INFO] Tavily [5] "2024 beef cattle mortality rate in North China provinci"
+2026-05-06 23:21:11,833 [INFO] Tavily [5] "中国北方肉牛养殖死亡率（mortality）及平均日增重（ADG）行业报告"
+2026-05-06 23:21:28,449 [INFO] beef_cattle done: +0
+2026-05-06 23:21:43,450 [INFO] beef_cattle/CN_south: have=['adg', 'fcr'], missing=['mortality']
+2026-05-06 23:21:47,282 [INFO] Qwen queries for beef_cattle: ['beef cattle mortality rate 2023 South China', '中國南方肉牛死亡率統計數據 2023', 'beef cattle death loss percentage South China 2022-2024', '中國南方地區肉牛養殖死亡率報告 2023']
+2026-05-06 23:21:50,433 [INFO] Tavily [5] "beef cattle mortality rate 2023 South China"
+2026-05-06 23:22:11,916 [INFO] Tavily [5] "中國南方肉牛死亡率統計數據 2023"
+2026-05-06 23:22:43,424 [INFO] Tavily [5] "beef cattle death loss percentage South China 2022-2024"
+2026-05-06 23:22:57,748 [INFO] Tavily [5] "中國南方地區肉牛養殖死亡率報告 2023"
+2026-05-06 23:23:17,972 [INFO] beef_cattle done: +0
+2026-05-06 23:23:32,973 [INFO] finisher_pig/CN_north: have=['mortality', 'adg', 'fcr'], missing=[]
+2026-05-06 23:23:32,973 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-06 23:23:32,973 [INFO] meat_sheep/CN_north: have=['adg', 'survival', 'other'], missing=['FCR', 'mortality']
+2026-05-06 23:23:36,879 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR feed conversion ratio CN north China 2023', '肉羊 料肉比 FCR 中国北方 2023', 'meat sheep mortality rate CN north China statistics 2022', '肉羊 死亡率 mortality 中国北方 统计 2022']
+2026-05-06 23:23:41,111 [INFO] Tavily [5] "meat sheep FCR feed conversion ratio CN north China 202"
+2026-05-06 23:24:04,250 [INFO] Tavily [5] "肉羊 料肉比 FCR 中国北方 2023"
+2026-05-06 23:24:20,559 [INFO] Tavily [5] "meat sheep mortality rate CN north China statistics 202"
+2026-05-06 23:24:56,428 [INFO] Tavily [5] "肉羊 死亡率 mortality 中国北方 统计 2022"
+2026-05-06 23:25:17,049 [INFO] meat_sheep done: +0
+2026-05-06 23:25:32,050 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival'], missing=['strep_loss']
+2026-05-06 23:25:35,994 [INFO] Qwen queries for tilapia: ['2023 tilapia streptococcus loss rate CN_south', '2022 tilapia strep mortality loss CN_south', '2023 南美白对虾 链球菌 损失率 CN_south', '2022 罗非鱼 链球菌 死亡率 损失 CN_south']
+2026-05-06 23:25:40,515 [INFO] Tavily [5] "2023 tilapia streptococcus loss rate CN_south"
+2026-05-06 23:26:02,255 [INFO] Tavily [5] "2022 tilapia strep mortality loss CN_south"
+2026-05-06 23:26:21,217 [INFO] Tavily [5] "2023 南美白对虾 链球菌 损失率 CN_south"
+2026-05-06 23:26:53,077 [INFO] Tavily [5] "2022 罗非鱼 链球菌 死亡率 损失 CN_south"
+2026-05-06 23:27:12,899 [INFO] tilapia done: +0
+2026-05-06 23:27:27,900 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-06 23:27:31,787 [INFO] Qwen queries for grouper: ['2023年中国南方石斑鱼弧菌病死亡率统计', 'vibrio loss mortality rate grouper South China 2023', '2022-2024 grouper vibrio infection loss percentage South China', '中国南方养殖石斑鱼弧菌病经济损失占比数据']
+2026-05-06 23:27:34,904 [INFO] Tavily [5] "2023年中国南方石斑鱼弧菌病死亡率统计"
+2026-05-06 23:27:57,932 [INFO] Tavily [5] "vibrio loss mortality rate grouper South China 2023"
+2026-05-06 23:28:15,303 [INFO] Tavily [5] "2022-2024 grouper vibrio infection loss percentage Sout"
+2026-05-06 23:28:37,727 [INFO] Tavily [5] "中国南方养殖石斑鱼弧菌病经济损失占比数据"
+2026-05-06 23:29:07,709 [INFO] grouper done: +0
+2026-05-06 23:29:22,710 [INFO] largemouth_bass/CN_south: have=['edwardsiella', 'fcr', 'survival', 'adg'], missing=[]
+2026-05-06 23:29:22,710 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-06 23:29:23,990 [INFO] Round 3 done. DB=317 +1
+2026-05-06 23:29:23,990 [INFO] Sleeping 1800s...
+2026-05-06 23:30:00,418 [INFO] === Round 7 | 5.5h | total: 32 ===
+2026-05-06 23:30:00,419 [INFO] dairy_goat/CN_all: have=['milk', 'litter', 'other'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 23:30:04,211 [INFO] Qwen queries for dairy_goat: ['dairy goat FCR feed conversion ratio 2023', '奶山羊 料肉比 FCR 數據 2023', 'dairy goat milk yield per lactation statistics', '奶山羊 產奶量 平均 統計數據 2023']
+2026-05-06 23:30:08,229 [INFO] Tavily [5] "dairy goat FCR feed conversion ratio 2023"
+2026-05-06 23:30:20,213 [INFO] Tavily [5] "奶山羊 料肉比 FCR 數據 2023"
+2026-05-06 23:30:44,005 [INFO] Tavily [5] "dairy goat milk yield per lactation statistics"
+2026-05-06 23:31:02,423 [INFO] Tavily [5] "奶山羊 產奶量 平均 統計數據 2023"
+2026-05-06 23:31:10,426 [INFO] dairy_goat done: +0
+2026-05-06 23:31:25,428 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other', 'adg'], missing=[]
+2026-05-06 23:31:25,429 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-06 23:31:25,430 [INFO] largemouth_catfish/CN_all: have=['survival', 'slaughter', 'fcr', 'FCR', 'other'], missing=['ADG']
+2026-05-06 23:31:29,250 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain ADG growth performance 2023', '大口鲇 平均日增重 ADG 生长性能 2023', 'largemouth catfish daily weight gain ADG production statistics China 2022', '大口鲇 日均增重 养殖数据 中国 2022']
+2026-05-06 23:31:33,048 [INFO] Tavily [5] "largemouth catfish average daily gain ADG growth perfor"
+2026-05-06 23:31:47,436 [INFO] Tavily [1] "大口鲇 平均日增重 ADG 生长性能 2023"
+2026-05-06 23:32:01,250 [INFO] Tavily [5] "largemouth catfish daily weight gain ADG production sta"
+2026-05-06 23:32:19,244 [INFO] Tavily [5] "大口鲇 日均增重 养殖数据 中国 2022"
+2026-05-06 23:32:35,510 [INFO] largemouth_catfish done: +0
+2026-05-06 23:32:50,512 [INFO] dairy_cow/CN_all: have=['fcr', 'mortality', 'other', 'market', 'milk'], missing=['milk_yield', 'mastitis_loss']
+2026-05-06 23:32:54,206 [INFO] Qwen queries for dairy_cow: ['2023 China dairy cow average milk yield per cow statistics', '2023年中国奶牛平均单产数据', 'China dairy industry mastitis economic loss per cow 2023', '2023年中国奶牛乳房炎经济损失统计']
+2026-05-06 23:32:57,692 [INFO] Tavily [5] "2023 China dairy cow average milk yield per cow statist"
+2026-05-06 23:33:20,292 [INFO] Tavily [5] "2023年中国奶牛平均单产数据"
+2026-05-06 23:33:48,263 [INFO] Tavily [5] "China dairy industry mastitis economic loss per cow 202"
+2026-05-06 23:34:07,523 [INFO] Tavily [5] "2023年中国奶牛乳房炎经济损失统计"
+2026-05-06 23:34:32,076 [INFO] dairy_cow done: +0
+2026-05-06 23:34:47,078 [INFO] layer_chicken/CN_all: have=['mortality', 'fcr', 'slaughter', 'market'], missing=['egg_rate', 'AI_loss']
+2026-05-06 23:34:50,922 [INFO] Qwen queries for layer_chicken: ['layer chicken egg production rate statistics China 2023', '中国蛋鸡产蛋率统计数据 2023', 'China layer hen mortality and AI loss rates 2022-2024', '中国蛋鸡人工授精损失率及死亡率统计 2023']
+2026-05-06 23:34:55,003 [INFO] Tavily [5] "layer chicken egg production rate statistics China 2023"
+2026-05-06 23:35:06,438 [INFO] Tavily [5] "中国蛋鸡产蛋率统计数据 2023"
+2026-05-06 23:35:22,271 [INFO] Tavily [5] "China layer hen mortality and AI loss rates 2022-2024"
+2026-05-06 23:35:46,295 [INFO] Tavily [5] "中国蛋鸡人工授精损失率及死亡率统计 2023"
+2026-05-06 23:36:22,381 [INFO]   ✅ layer_chicken +4 | https://pdf.dfcfw.com/pdf/H3_AP202310151601474165_1.pdf?1697
+2026-05-06 23:36:22,382 [INFO] layer_chicken done: +4
+2026-05-06 23:36:37,385 [INFO] broiler/CN_all: have=['mortality', 'fcr', 'slaughter', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-06 23:36:41,354 [INFO] Qwen queries for broiler: ['broiler chicken average daily gain (ADG) statistics China 2023', '肉雞平均日增重（ADG）數據 中國 2023', 'broiler disease loss mortality rate China industry report 2024', '中國肉雞疾病損失率及死亡率行業報告 2024']
+2026-05-06 23:36:48,084 [INFO] Tavily [5] "broiler chicken average daily gain (ADG) statistics Chi"
+2026-05-06 23:37:10,509 [INFO] Tavily [5] "肉雞平均日增重（ADG）數據 中國 2023"
+2026-05-06 23:37:31,159 [INFO]   ✅ broiler +1 | https://html.rhhz.net/XMSYXB/html/2023/11/1701008013041-9638
+2026-05-06 23:37:37,691 [INFO] Tavily [5] "broiler disease loss mortality rate China industry repo"
+2026-05-06 23:38:05,496 [INFO] Tavily [5] "中國肉雞疾病損失率及死亡率行業報告 2024"
+2026-05-06 23:38:24,610 [INFO] broiler done: +1
+2026-05-06 23:38:39,611 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-06 23:38:43,207 [INFO] Qwen queries for shrimp: ['2023年中国南方对虾EMS综合征死亡率统计', '2022-2024 South China shrimp EMS loss rate data', 'China Southern shrimp farming EMS mortality statistics 2023', '2023年华南地区对虾早期死亡综合征损失率调查']
+2026-05-06 23:38:47,191 [INFO] Tavily [5] "2023年中国南方对虾EMS综合征死亡率统计"
+2026-05-06 23:39:03,082 [INFO] Tavily [5] "2022-2024 South China shrimp EMS loss rate data"
+2026-05-06 23:39:24,748 [INFO] Tavily [5] "China Southern shrimp farming EMS mortality statistics "
+2026-05-06 23:39:41,989 [INFO] Tavily [5] "2023年华南地区对虾早期死亡综合征损失率调查"
+2026-05-06 23:39:58,785 [INFO] shrimp done: +0
+2026-05-06 23:40:13,786 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-06 23:40:18,139 [INFO] Qwen queries for beef_cattle: ['China North beef cattle average daily gain (ADG) and feed conversion ratio (FCR) statistics 2023', '中国北方肉牛平均日增重(ADG)和饲料转化率(FCR)数据 2023', 'beef cattle mortality rate in Northern China regional report 2022-2023', '中国北方地区肉牛死亡率统计及影响因素分析 2022-2023']
+2026-05-06 23:40:21,926 [INFO] Tavily [5] "China North beef cattle average daily gain (ADG) and fe"
+2026-05-06 23:40:37,455 [INFO] Tavily [5] "中国北方肉牛平均日增重(ADG)和饲料转化率(FCR)数据 2023"
+2026-05-06 23:40:51,569 [INFO] Tavily [5] "beef cattle mortality rate in Northern China regional r"
+2026-05-06 23:41:21,304 [INFO] Tavily [5] "中国北方地区肉牛死亡率统计及影响因素分析 2022-2023"
+2026-05-06 23:41:47,081 [INFO] beef_cattle done: +0
+2026-05-06 23:42:02,082 [INFO] beef_cattle/CN_south: have=['fcr', 'adg'], missing=['mortality']
+2026-05-06 23:42:05,824 [INFO] Qwen queries for beef_cattle: ['2023年中國南方地區肉牛死亡率統計數據', 'China South beef cattle mortality rate statistics 2023', '中國南方養殖場肉牛平均死亡率報告', 'Beef cattle mortality percentage in Southern China farms 2022-2023']
+2026-05-06 23:42:11,770 [INFO] Tavily [5] "2023年中國南方地區肉牛死亡率統計數據"
+2026-05-06 23:42:31,742 [INFO] Tavily [5] "China South beef cattle mortality rate statistics 2023"
+2026-05-06 23:42:50,675 [INFO] Tavily [5] "中國南方養殖場肉牛平均死亡率報告"
+2026-05-06 23:43:10,353 [INFO] Tavily [5] "Beef cattle mortality percentage in Southern China farm"
+2026-05-06 23:43:24,483 [INFO] beef_cattle done: +0
+2026-05-06 23:43:39,483 [INFO] finisher_pig/CN_north: have=['mortality', 'fcr', 'adg'], missing=[]
+2026-05-06 23:43:39,484 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-06 23:43:39,486 [INFO] meat_sheep/CN_north: have=['survival', 'other', 'adg'], missing=['FCR', 'mortality']
+2026-05-06 23:43:43,227 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR CN_north 2023', 'meat sheep mortality rate CN_north 2022', '肉羊 料肉比 CN_north 2023', '肉羊 死亡率 CN_north 2022']
+2026-05-06 23:43:46,888 [INFO] Tavily [5] "meat sheep FCR CN_north 2023"
+2026-05-06 23:44:11,181 [INFO] Tavily [5] "meat sheep mortality rate CN_north 2022"
+2026-05-06 23:44:33,915 [INFO]   ✅ meat_sheep +1 | https://media.4-paws.org/7/c/2/4/7c241cbe9ba939fe37c9d6f700d
+2026-05-06 23:44:50,104 [INFO] Tavily [5] "肉羊 料肉比 CN_north 2023"
+2026-05-06 23:45:13,175 [INFO] Tavily [5] "肉羊 死亡率 CN_north 2022"
+2026-05-06 23:45:25,394 [INFO] meat_sheep done: +1
+2026-05-06 23:45:40,395 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-06 23:45:44,382 [INFO] Qwen queries for tilapia: ['2023年南中國地區羅非魚鏈球菌病死亡率統計數據', '2022-2024 South China tilapia Streptococcus iniae mortality rate research', '南中國養殖羅非魚鏈球菌損失率（strep_loss）數據報告', '2023 South China farmed tilapia Streptococcosis economic loss and mortality statistics']
+2026-05-06 23:45:48,472 [INFO] Tavily [5] "2023年南中國地區羅非魚鏈球菌病死亡率統計數據"
+2026-05-06 23:48:53,192 [INFO] tilapia done: +0
+2026-05-06 23:49:08,193 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'mortality', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-06 23:49:12,158 [INFO] Qwen queries for grouper: ['2023年中国南方石斑鱼弧菌病死亡率统计', '2022-2024 South China grouper vibrio infection mortality rate', '中国南方养殖石斑鱼副溶血性弧菌损失比例', 'South China grouper farming vibrio-related production loss percentage 2023']
+2026-05-06 23:52:53,901 [INFO] grouper done: +0
+2026-05-06 23:53:08,902 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-06 23:53:08,902 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-06 23:53:10,126 [INFO] Round 7 done. DB=323 +6
+2026-05-06 23:53:10,126 [INFO] Sleeping 1800s...
+2026-05-06 23:59:23,990 [INFO] === Round 4 | 2.8h | total: 18 ===
+2026-05-06 23:59:23,990 [INFO] dairy_goat/CN_all: have=['litter', 'other', 'milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-06 23:59:28,011 [INFO] Qwen queries for dairy_goat: ['"dairy goat" FCR feed conversion ratio China 2023', '中国 奶山羊 料肉比 FCR 数据 2023', '"dairy goat" milk yield per lactation China statistics 2022', '中国 奶山羊 产奶量 平均值 统计 2022']
+2026-05-07 00:03:09,765 [INFO] dairy_goat done: +0
+2026-05-07 00:03:24,765 [INFO] channel_catfish/CN_all: have=['mortality', 'adg', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=[]
+2026-05-07 00:03:24,765 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 00:03:24,765 [INFO] largemouth_catfish/CN_all: have=['slaughter', 'other', 'fcr', 'survival', 'FCR'], missing=['ADG']
+2026-05-07 00:03:28,636 [INFO] Qwen queries for largemouth_catfish: ['ADG of largemouth catfish production in China 2023', '大口鲇在中国的平均日增重（ADG）数据 2022-2023', '大口鲇养殖平均日增重 ADG 中国 2023', 'China largemouth catfish ADG growth performance statistics 2023']
+2026-05-07 00:07:10,204 [INFO] largemouth_catfish done: +0
+2026-05-07 00:07:25,205 [INFO] dairy_cow/CN_all: have=['mortality', 'milk', 'other', 'fcr', 'market'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 00:07:28,867 [INFO] Qwen queries for dairy_cow: ['dairy cow milk yield per cow China 2023 statistics', '中国奶牛单产奶量 2023年 数据', 'China dairy cow mastitis loss economic impact 2022-2024', '中国奶牛乳房炎经济损失 2023年 研究报告']
+2026-05-07 00:11:10,600 [INFO] dairy_cow done: +0
+2026-05-07 00:11:25,602 [INFO] layer_chicken/CN_all: have=['mortality', 'slaughter', 'litter', 'other', 'egg', 'fcr', 'market', 'survival'], missing=['egg_rate', 'AI_loss']
+2026-05-07 00:11:29,264 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中国蛋鸡产蛋率数据 2023年', 'China layer hen egg production rate per bird 2022', '中国蛋鸡养殖行业产蛋效率指标 2022-2023']
+2026-05-07 00:15:10,982 [INFO] layer_chicken done: +0
+2026-05-07 00:15:25,983 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'other', 'fcr', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-07 00:15:29,878 [INFO] Qwen queries for broiler: ['broiler chicken average daily gain (ADG) statistics China 2023', 'broiler ADG data China market report 2024', '肉雞平均日增重（ADG）數據 中國 2023', '中國肉雞產業疾病損失率統計 2024']
+2026-05-07 00:19:11,692 [INFO] broiler done: +0
+2026-05-07 00:19:26,692 [INFO] shrimp/CN_south: have=['mortality', 'fcr', 'FCR', 'survival'], missing=['EMS_loss']
+2026-05-07 00:19:30,578 [INFO] Qwen queries for shrimp: ['"EMS loss" shrimp CN_south 2023', '南美白对虾 中国南部 EMS损失率 2023', 'EMS mortality rate Litopenaeus vannamei South China 2022', '中国南方对虾养殖 EMS综合征损失数据 2022']
+2026-05-07 00:23:10,127 [INFO] === Round 8 | 6.4h | total: 38 ===
+2026-05-07 00:23:10,127 [INFO] dairy_goat/CN_all: have=['milk', 'litter', 'other'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 00:23:12,292 [INFO] shrimp done: +0
+2026-05-07 00:23:14,143 [INFO] Qwen queries for dairy_goat: ['"dairy goat" FCR "milk yield" statistics 2023', '奶山羊 料肉比 产奶量 数据 2023', 'dairy goat mortality rate "litter size" 2022-2023', '奶山羊 死亡率 繁殖性能 统计 2022']
+2026-05-07 00:23:27,293 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 00:23:31,251 [INFO] Qwen queries for beef_cattle: ['China North beef cattle Feed Conversion Ratio (FCR) statistics 2023', '中国北方肉牛饲料转化率(FCR)数据 2023', 'China North beef cattle Average Daily Gain (ADG) performance data 2022-2023', '中国北方肉牛日增重(ADG)及死亡率(mortality)统计 2023']
+2026-05-07 00:26:55,903 [INFO] dairy_goat done: +0
+2026-05-07 00:27:10,904 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other', 'adg'], missing=[]
+2026-05-07 00:27:10,904 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 00:27:10,905 [INFO] largemouth_catfish/CN_all: have=['survival', 'slaughter', 'fcr', 'FCR', 'other'], missing=['ADG']
+2026-05-07 00:27:12,892 [INFO] beef_cattle done: +0
+2026-05-07 00:27:14,760 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain ADG production performance 2023 China', '大口鲇 平均日增重 ADG 养殖 生长性能 2023', '大口鲇 平均日增重 数值 中国 2022', 'largemouth catfish growth rate daily gain statistics China 2022']
+2026-05-07 00:27:27,892 [INFO] beef_cattle/CN_south: have=['adg', 'fcr'], missing=['mortality']
+2026-05-07 00:27:31,699 [INFO] Qwen queries for beef_cattle: ['"beef cattle" mortality rate CN_south 2023', '南方肉牛 CN_south 死亡率 2023', 'beef cattle mortality statistics CN_south 2022', '中国南方肉牛 CN_south 存活率 死亡率 2022']
+2026-05-07 00:30:56,474 [INFO] largemouth_catfish done: +0
+2026-05-07 00:31:11,475 [INFO] dairy_cow/CN_all: have=['fcr', 'mortality', 'other', 'market', 'milk'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 00:31:13,392 [INFO] beef_cattle done: +0
+2026-05-07 00:31:15,131 [INFO] Qwen queries for dairy_cow: ['2023-2024 China dairy cow average milk yield per cow statistics', '2023 China dairy cattle mastitis incidence rate and economic loss data', '中国奶牛2023年平均单产牛奶量统计数据', '2024年中国奶牛乳房炎发病率及经济损失报告']
+2026-05-07 00:31:28,393 [INFO] finisher_pig/CN_north: have=['mortality', 'adg', 'fcr'], missing=[]
+2026-05-07 00:31:28,393 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 00:31:28,394 [INFO] meat_sheep/CN_north: have=['mortality', 'adg', 'survival', 'other'], missing=['FCR']
+2026-05-07 00:31:32,638 [INFO] Qwen queries for meat_sheep: ['"meat sheep" "feed conversion ratio" "North China" 2023', '"肉羊" "料肉比" "中国北方" 2023', '"meat sheep" "FCR" "North China" production data 2022-2024', '"肉羊" "饲料转化率" "华北地区" 生产数据 2022-2024']
+2026-05-07 00:34:56,829 [INFO] dairy_cow done: +0
+2026-05-07 00:35:11,830 [INFO] layer_chicken/CN_all: have=['survival', 'slaughter', 'fcr', 'mortality', 'litter', 'other', 'market', 'egg'], missing=['egg_rate', 'AI_loss']
+2026-05-07 00:35:14,287 [INFO] meat_sheep done: +0
+2026-05-07 00:35:15,627 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中国蛋鸡产蛋率统计数据 2023', 'China layer hen egg production rate per bird annual report 2024', '中国蛋鸡养殖行业产蛋率指标分析 2024']
+2026-05-07 00:35:29,287 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival'], missing=['strep_loss']
+2026-05-07 00:35:33,068 [INFO] Qwen queries for tilapia: ['strep loss rate in South China tilapia aquaculture 2023 2024', 'strep loss mortality South China tilapia production data', '南美白對蝦/羅非魚鏈球菌病損失率 2023', '華南羅非魚鏈球菌病養殖損失數據 2024']
+2026-05-07 00:38:57,284 [INFO] layer_chicken done: +0
+2026-05-07 00:39:12,285 [INFO] broiler/CN_all: have=['slaughter', 'fcr', 'mortality', 'FCR', 'other'], missing=['ADG', 'disease_loss']
+2026-05-07 00:39:14,841 [INFO] tilapia done: +0
+2026-05-07 00:39:16,546 [INFO] Qwen queries for broiler: ['"broiler" "ADG" "daily gain" site:usda.gov 2023', '"肉雞" "平均日增重" ADG 2023 數據', '"broiler" "disease loss" mortality cost site:extension.org 2022-2024', '"肉雞" "疾病損失" 死亡率 經濟損失 2023']
+2026-05-07 00:39:29,841 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-07 00:39:33,941 [INFO] Qwen queries for grouper: ['"vibrio loss" grouper South China aquaculture statistics 2023', '石斑鱼 弧菌损失率 华南 养殖 数据 2023', 'grouper vibrio mortality rate South China 2022-2024', '华南 石斑鱼 弧菌病 死亡率 经济损失 2022']
+2026-05-07 00:42:58,226 [INFO] broiler done: +0
+2026-05-07 00:43:13,227 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-07 00:43:15,487 [INFO] grouper done: +0
+2026-05-07 00:43:17,926 [INFO] Qwen queries for shrimp: ['"shrimp" "EMS" "loss" "China" "South" "2023" OR "2024"', '南美白对虾 EMS综合征 死亡率 中国 华南 2023 2024', '"Litopenaeus vannamei" "EMS" "mortality rate" "Guangdong" OR "Guangxi" "2022-2024"', '中国南方 对虾 早期死亡综合征 损失率 产量影响 2023年']
+2026-05-07 00:43:30,488 [INFO] largemouth_bass/CN_south: have=['edwardsiella', 'fcr', 'survival', 'adg'], missing=[]
+2026-05-07 00:43:30,488 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 00:43:31,680 [INFO] Round 4 done. DB=323 +0
+2026-05-07 00:43:31,680 [INFO] Sleeping 1800s...
+2026-05-07 00:46:59,627 [INFO] shrimp done: +0
+2026-05-07 00:47:14,628 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 00:47:18,552 [INFO] Qwen queries for beef_cattle: ['CN_north beef cattle feed conversion ratio FCR average daily gain ADG mortality rate 2023', '中國北方肉牛 料肉比 FCR 日增重 ADG 死亡率 2023', 'beef cattle performance data CN_north FCR ADG mortality statistics', '中國北方地區肉牛生產性能數據 料肉比 日增重 死亡率']
+2026-05-07 00:51:00,163 [INFO] beef_cattle done: +0
+2026-05-07 00:51:15,164 [INFO] beef_cattle/CN_south: have=['fcr', 'adg'], missing=['mortality']
+2026-05-07 00:51:18,755 [INFO] Qwen queries for beef_cattle: ['beef cattle mortality rate South China 2023', 'South China beef cattle industry report mortality statistics 2022-2023', '华南地区肉牛死亡率 2023年数据', '中国南方肉牛养殖死亡率统计报告 2022']
+2026-05-07 00:55:00,525 [INFO] beef_cattle done: +0
+2026-05-07 00:55:15,526 [INFO] finisher_pig/CN_north: have=['mortality', 'fcr', 'adg'], missing=[]
+2026-05-07 00:55:15,527 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 00:55:15,529 [INFO] meat_sheep/CN_north: have=['survival', 'mortality', 'other', 'adg'], missing=['FCR']
+2026-05-07 00:55:19,161 [INFO] Qwen queries for meat_sheep: ['meat sheep feed conversion ratio CN_north 2023', '肉羊 料肉比 CN_north 2023', 'feed conversion ratio meat sheep northern China', '北方地区 肉羊 饲料转化率 数据']
+2026-05-07 00:59:00,892 [INFO] meat_sheep done: +0
+2026-05-07 00:59:15,892 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-07 00:59:19,400 [INFO] Qwen queries for tilapia: ['2023 tilapia streptococcus loss rate South China', '2022 tilapia streptococcosis mortality South China', '2023 罗非鱼 链球菌 损失率 华南', '2022 罗非鱼 链球菌病 死亡率 华南']
+2026-05-07 01:03:01,044 [INFO] tilapia done: +0
+2026-05-07 01:03:16,045 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'mortality', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-07 01:03:19,815 [INFO] Qwen queries for grouper: ['2023年中国南方石斑鱼弧菌病损失率统计', '2022-2024 South China grouper vibrio disease mortality rate', '广东广西石斑鱼养殖弧菌感染致死率数据', 'Vibrio loss percentage in grouper aquaculture South China 2023']
+2026-05-07 01:07:01,525 [INFO] grouper done: +0
+2026-05-07 01:07:16,526 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-07 01:07:16,526 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 01:07:17,793 [INFO] Round 8 done. DB=323 +0
+2026-05-07 01:07:17,793 [INFO] Sleeping 1800s...
+2026-05-07 01:13:31,681 [INFO] === Round 5 | 4.0h | total: 18 ===
+2026-05-07 01:13:31,681 [INFO] dairy_goat/CN_all: have=['litter', 'other', 'milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 01:13:35,280 [INFO] Qwen queries for dairy_goat: ['"dairy goat" FCR feed conversion ratio 2023', '奶山羊 料肉比 FCR 數據 2023', '"dairy goat" milk yield per lactation statistics', '奶山羊 產奶量 milk yield 統計數據 2023']
+2026-05-07 01:17:16,920 [INFO] dairy_goat done: +0
+2026-05-07 01:17:31,920 [INFO] channel_catfish/CN_all: have=['mortality', 'adg', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=[]
+2026-05-07 01:17:31,920 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 01:17:31,920 [INFO] largemouth_catfish/CN_all: have=['slaughter', 'other', 'fcr', 'survival', 'FCR'], missing=['ADG']
+2026-05-07 01:17:35,406 [INFO] Qwen queries for largemouth_catfish: ['ADG of largemouth catfish in China 2023', '大口鲇平均日增重 中国 2023', 'largemouth catfish average daily gain per day China 2022', '大口鲇养殖平均日增重数据 中国 2022']
+2026-05-07 01:21:17,046 [INFO] largemouth_catfish done: +0
+2026-05-07 01:21:32,047 [INFO] dairy_cow/CN_all: have=['mortality', 'milk', 'other', 'fcr', 'market'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 01:21:36,404 [INFO] Qwen queries for dairy_cow: ['"dairy cow" AND "milk yield" AND "China" AND "2023" OR "2024"', '"奶牛" AND "产奶量" AND "中国" AND "2023" OR "2024"', '"dairy cow" AND "mastitis loss" AND "China" AND "economic impact" AND "2023"', '"奶牛" AND "乳房炎损失" AND "中国" AND "经济效益" AND "2023"']
+2026-05-07 01:25:18,053 [INFO] dairy_cow done: +0
+2026-05-07 01:25:33,053 [INFO] layer_chicken/CN_all: have=['mortality', 'slaughter', 'litter', 'other', 'egg', 'fcr', 'market', 'survival'], missing=['egg_rate', 'AI_loss']
+2026-05-07 01:25:36,806 [INFO] Qwen queries for layer_chicken: ['"layer chicken" "egg production rate" China statistics 2023', '中国 蛋鸡 产蛋率 统计 2023', '"layer chicken" mortality "AI loss" China annual report 2022', '中国 蛋鸡 人工授精损失率 死亡率 2022']
+2026-05-07 01:29:18,462 [INFO] layer_chicken done: +0
+2026-05-07 01:29:33,463 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'other', 'fcr', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-07 01:29:37,170 [INFO] Qwen queries for broiler: ['broiler average daily gain (ADG) statistics China 2023', '肉雞平均日增重（ADG）數據 中國 2023', 'broiler disease loss rate China poultry industry report 2024', '中國肉雞疾病損失率 行業報告 2024']
+2026-05-07 01:33:18,817 [INFO] broiler done: +0
+2026-05-07 01:33:33,818 [INFO] shrimp/CN_south: have=['mortality', 'fcr', 'FCR', 'survival'], missing=['EMS_loss']
+2026-05-07 01:33:37,998 [INFO] Qwen queries for shrimp: ['"shrimp" "EMS" "mortality rate" "China" 2023', '"南美白对虾" "EMS" "死亡率" "中国" 2023', '"Litopenaeus vannamei" "Early Mortality Syndrome" "loss" "Guangdong" 2022', '"凡纳滨对虾" "早期死亡综合征" "损失率" "广东" 2022']
+2026-05-07 01:37:17,794 [INFO] === Round 9 | 7.7h | total: 38 ===
+2026-05-07 01:37:17,794 [INFO] dairy_goat/CN_all: have=['milk', 'litter', 'other'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 01:37:19,667 [INFO] shrimp done: +0
+2026-05-07 01:37:21,567 [INFO] Qwen queries for dairy_goat: ['"dairy goat" FCR feed conversion ratio China 2023', '中国 奶山羊 料肉比 FCR 数据 2023', '"dairy goat" milk yield per lactation China statistics 2022', '中国 奶山羊 产奶量 milk yield 统计 2022']
+2026-05-07 01:37:34,668 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 01:37:38,857 [INFO] Qwen queries for beef_cattle: ['China North beef cattle average daily gain (ADG) and feed conversion ratio (FCR) statistics 2023', '中国北方肉牛平均日增重(ADG)和料肉比(FCR)数据 2023', 'beef cattle mortality rate in Northern China production systems 2022-2024', '中国北方地区肉牛养殖死亡率统计 2022-2024']
+2026-05-07 01:41:03,282 [INFO] dairy_goat done: +0
+2026-05-07 01:41:18,283 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other', 'adg'], missing=[]
+2026-05-07 01:41:18,284 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 01:41:18,285 [INFO] largemouth_catfish/CN_all: have=['survival', 'slaughter', 'fcr', 'FCR', 'other'], missing=['ADG']
+2026-05-07 01:41:20,442 [INFO] beef_cattle done: +0
+2026-05-07 01:41:21,937 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain ADG performance trial 2023', '大口鲇 平均日增重 ADG 生长性能 2022', '大口鲇鱼 平均日增重 饲料转化率 研究 2021', 'largemouth catfish growth rate ADG kg/day 2024']
+2026-05-07 01:41:35,443 [INFO] beef_cattle/CN_south: have=['adg', 'fcr'], missing=['mortality']
+2026-05-07 01:41:39,120 [INFO] Qwen queries for beef_cattle: ['2023年中國南方肉牛死亡率統計數據', 'South China beef cattle mortality rate statistics 2023', '2022-2024年中國南方養殖場肉牛死亡指標分析', '2022-2024 South China feedlot beef cattle mortality indicators analysis']
+2026-05-07 01:45:03,699 [INFO] largemouth_catfish done: +0
+2026-05-07 01:45:18,700 [INFO] dairy_cow/CN_all: have=['fcr', 'mortality', 'other', 'market', 'milk'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 01:45:20,758 [INFO] beef_cattle done: +0
+2026-05-07 01:45:22,127 [INFO] Qwen queries for dairy_cow: ['2023 global dairy cow average milk yield per cow statistics', '2023年中国奶牛平均单产牛奶量统计数据', '2023 China dairy cow mastitis incidence rate and economic loss data', '2023年中国奶牛乳房炎发病率及经济损失数据']
+2026-05-07 01:45:35,759 [INFO] finisher_pig/CN_north: have=['mortality', 'adg', 'fcr'], missing=[]
+2026-05-07 01:45:35,759 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 01:45:35,759 [INFO] meat_sheep/CN_north: have=['mortality', 'adg', 'survival', 'other'], missing=['FCR']
+2026-05-07 01:45:39,472 [INFO] Qwen queries for meat_sheep: ['"meat sheep" "feed conversion ratio" "North China" 2023', '肉羊 "料肉比" "华北地区" 2023', '"meat sheep" FCR "Northern China" 2022', '肉羊 "饲料转化率" "中国北方" 2022']
+2026-05-07 01:49:04,029 [INFO] dairy_cow done: +0
+2026-05-07 01:49:19,030 [INFO] layer_chicken/CN_all: have=['survival', 'slaughter', 'fcr', 'mortality', 'litter', 'other', 'market', 'egg'], missing=['egg_rate', 'AI_loss']
+2026-05-07 01:49:21,134 [INFO] meat_sheep done: +0
+2026-05-07 01:49:22,815 [INFO] Qwen queries for layer_chicken: ['2023年中國蛋雞產蛋率(egg_rate)統計數據', 'China layer chicken egg rate statistics 2023', '2022-2024年中國蛋雞生產性能指標產蛋率報告', 'China poultry industry report layer chicken egg production rate 2024']
+2026-05-07 01:49:36,134 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival'], missing=['strep_loss']
+2026-05-07 01:49:39,665 [INFO] Qwen queries for tilapia: ['2023 tilapia streptococcus disease loss rate CN_south', '2022 tilapia strep loss mortality CN_south', '2023年 南美白對蝦 鏈球菌 損失率 數據', '2022年 羅非魚 鏈球菌 死亡率 損失 統計']
+2026-05-07 01:53:04,654 [INFO] layer_chicken done: +0
+2026-05-07 01:53:19,655 [INFO] broiler/CN_all: have=['slaughter', 'fcr', 'mortality', 'FCR', 'other'], missing=['ADG', 'disease_loss']
+2026-05-07 01:53:21,221 [INFO] tilapia done: +0
+2026-05-07 01:53:23,385 [INFO] Qwen queries for broiler: ['2023年中國肉雞平均日增重（ADG）數據', 'China broiler average daily gain ADG statistics 2023', '中國肉雞疾病損失率 disease_loss 2022-2024', 'China broiler disease loss percentage mortality rate 2023']
+2026-05-07 01:53:36,222 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-07 01:53:40,292 [INFO] Qwen queries for grouper: ['"vibrio loss" grouper South China aquaculture mortality rate statistics 2023', '石斑鱼 华南 弧菌病 死亡率 统计数据 2023', 'grouper vibrio infection loss percentage South China production report 2022-2024', '华南地区 石斑鱼养殖 弧菌损失率 年度报告 2022-2024']
+2026-05-07 01:56:59,800 [INFO] broiler done: +0
+2026-05-07 01:57:14,801 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-07 01:57:16,525 [INFO] grouper done: +0
+2026-05-07 01:57:18,420 [INFO] Qwen queries for shrimp: ['"EMS loss" shrimp CN_south 2023', '南美白对虾 中国南方 EMS综合征损失率 2023', 'shrimp EMS mortality rate CN_south 2022', '中国南方对虾养殖 EMS损失数据 2022']
+2026-05-07 01:57:31,525 [INFO] largemouth_bass/CN_south: have=['edwardsiella', 'fcr', 'survival', 'adg'], missing=[]
+2026-05-07 01:57:31,525 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 01:57:32,770 [INFO] Round 5 done. DB=323 +0
+2026-05-07 01:57:32,770 [INFO] Sleeping 1800s...
+2026-05-07 02:01:00,159 [INFO] shrimp done: +0
+2026-05-07 02:01:15,159 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 02:01:19,361 [INFO] Qwen queries for beef_cattle: ['2023年中国北方肉牛平均日增重(ADG)及料肉比(FCR)统计数据', 'China Northern beef cattle mortality rate and feed conversion ratio (FCR) 2022-2023', '中国北方地区肉牛养殖平均日增重(ADG)与成活率(mortality)行业报告', 'Average daily gain (ADG) and mortality rate of beef cattle in Northern China 2023']
+2026-05-07 02:05:01,021 [INFO] beef_cattle done: +0
+2026-05-07 02:05:16,021 [INFO] beef_cattle/CN_south: have=['fcr', 'adg'], missing=['mortality']
+2026-05-07 02:05:19,630 [INFO] Qwen queries for beef_cattle: ['beef cattle mortality rate China South 2023', '中国南方肉牛死亡率 2023', 'beef cattle death loss percentage South China 2022-2024', '中国南方地区肉牛养殖死亡率统计 2023']
+2026-05-07 02:09:01,367 [INFO] beef_cattle done: +0
+2026-05-07 02:09:16,368 [INFO] finisher_pig/CN_north: have=['mortality', 'fcr', 'adg'], missing=[]
+2026-05-07 02:09:16,368 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 02:09:16,370 [INFO] meat_sheep/CN_north: have=['survival', 'mortality', 'other', 'adg'], missing=['FCR']
+2026-05-07 02:09:20,070 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR feed conversion ratio CN_north 2023', '肉羊 料肉比 CN_north 2023', 'meat sheep growth performance FCR CN_north 2022', '北方肉羊 飼料轉化率 2022']
+2026-05-07 02:13:01,812 [INFO] meat_sheep done: +0
+2026-05-07 02:13:16,813 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-07 02:13:20,601 [INFO] Qwen queries for tilapia: ['2023 tilapia streptococcus loss rate data South China', '2022 tilapia streptococcosis mortality and economic loss statistics South China', '2023年 罗非鱼 链球菌病 损失率 数据 华南', '2022年 罗非鱼 链球菌感染 死亡率 经济损失 统计 华南']
+2026-05-07 02:17:02,250 [INFO] tilapia done: +0
+2026-05-07 02:17:17,251 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'mortality', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-07 02:17:21,310 [INFO] Qwen queries for grouper: ['2023 South China grouper vibrio loss mortality rate statistics', '2022-2024 中国南方 石斑鱼 弧菌 损失率 统计数据', 'grouper vibrio infection loss percentage South China aquaculture report 2023', '2023年 华南地区 石斑鱼养殖 弧菌病 死亡率 损失数据']
+2026-05-07 02:21:03,065 [INFO] grouper done: +0
+2026-05-07 02:21:18,066 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-07 02:21:18,067 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 02:21:19,395 [INFO] Round 9 done. DB=323 +0
+2026-05-07 02:21:19,395 [INFO] Sleeping 1800s...
+2026-05-07 02:27:32,771 [INFO] === Round 6 | 5.2h | total: 18 ===
+2026-05-07 02:27:32,771 [INFO] dairy_goat/CN_all: have=['litter', 'other', 'milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 02:27:36,472 [INFO] Qwen queries for dairy_goat: ['"dairy goat" FCR feed conversion ratio 2023', '奶山羊 料肉比 FCR 數據 2023', '"dairy goat" milk yield per lactation statistics 2022', '奶山羊 產奶量 milk yield 統計數據 2022']
+2026-05-07 02:31:18,372 [INFO] dairy_goat done: +0
+2026-05-07 02:31:33,372 [INFO] channel_catfish/CN_all: have=['mortality', 'adg', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=[]
+2026-05-07 02:31:33,372 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 02:31:33,372 [INFO] largemouth_catfish/CN_all: have=['slaughter', 'other', 'fcr', 'survival', 'FCR'], missing=['ADG']
+2026-05-07 02:31:37,091 [INFO] Qwen queries for largemouth_catfish: ['ADG of largemouth catfish production in China 2023', '大口鲇在中国的平均日增重（ADG）数据 2022-2024', 'Average daily gain of Clarias macrocephalus farming in China recent years', '中国大口鲇养殖平均日增重 ADG 具体数值 2023']
+2026-05-07 02:35:18,770 [INFO] largemouth_catfish done: +0
+2026-05-07 02:35:33,771 [INFO] dairy_cow/CN_all: have=['mortality', 'milk', 'other', 'fcr', 'market'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 02:35:37,166 [INFO] Qwen queries for dairy_cow: ['dairy cow milk yield per cow China 2023 statistics', '中国奶牛单产奶量 2023年 统计数据', 'China dairy cow mastitis loss economic impact 2022', '中国奶牛乳房炎经济损失 2022年 数据']
+2026-05-07 02:39:18,863 [INFO] dairy_cow done: +0
+2026-05-07 02:39:33,864 [INFO] layer_chicken/CN_all: have=['mortality', 'slaughter', 'litter', 'other', 'egg', 'fcr', 'market', 'survival'], missing=['egg_rate', 'AI_loss']
+2026-05-07 02:39:37,211 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中国蛋鸡产蛋率数据 2023年', 'China layer hen egg production rate by province 2022', '中国蛋鸡养殖产蛋率统计 2022年']
+2026-05-07 02:43:18,943 [INFO] layer_chicken done: +0
+2026-05-07 02:43:33,943 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'other', 'fcr', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-07 02:43:37,914 [INFO] Qwen queries for broiler: ['"broiler" "average daily gain" ADG production statistics China 2023', '肉雞 平均日增重 ADG 數據 中國 2023', '"broiler" "disease loss" mortality rate China 2022-2023', '肉雞 疾病損失率 死亡率 中國 2022-2023']
+2026-05-07 02:47:19,590 [INFO] broiler done: +0
+2026-05-07 02:47:34,591 [INFO] shrimp/CN_south: have=['mortality', 'fcr', 'FCR', 'survival'], missing=['EMS_loss']
+2026-05-07 02:47:38,268 [INFO] Qwen queries for shrimp: ['"EMS loss" shrimp CN_south 2023', '南美白对虾 中国南方 EMS损失率 2023', 'EMS mortality rate Litopenaeus vannamei South China 2022', '中国南方对虾养殖 EMS发病率 损失数据 2022']
+2026-05-07 02:51:19,397 [INFO] === Round 10 | 8.9h | total: 38 ===
+2026-05-07 02:51:19,397 [INFO] dairy_goat/CN_all: have=['milk', 'litter', 'other'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 02:51:19,959 [INFO] shrimp done: +0
+2026-05-07 02:51:22,944 [INFO] Qwen queries for dairy_goat: ['"dairy goat" FCR feed conversion ratio 2023', '奶山羊 饲料转化率 FCR 2023', '"dairy goat" milk yield per lactation 2022', '奶山羊 产奶量 单产 2022']
+2026-05-07 02:51:34,961 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 02:51:38,907 [INFO] Qwen queries for beef_cattle: ['beef cattle FCR ADG mortality CN_north 2023', 'CN_north beef cattle average daily gain feed conversion ratio mortality rate 2022', '中国北方 肉牛 料肉比 日增重 死亡率 2023', '中国北方 肉牛养殖 平均日增重 饲料转化率 成活率 2022']
+2026-05-07 02:55:04,669 [INFO] dairy_goat done: +0
+2026-05-07 02:55:19,669 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other', 'adg'], missing=[]
+2026-05-07 02:55:19,669 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 02:55:19,671 [INFO] largemouth_catfish/CN_all: have=['survival', 'slaughter', 'fcr', 'FCR', 'other'], missing=['ADG']
+2026-05-07 02:55:20,644 [INFO] beef_cattle done: +0
+2026-05-07 02:55:23,692 [INFO] Qwen queries for largemouth_catfish: ['2023年大口鲇（Largemouth catfish）平均日增重（ADG）具体数值', '2022-2023 China largemouth catfish average daily gain (ADG) production data', '2023大口鲇养殖平均日增重（ADG）统计报告', '2022-2023 largemouth catfish farming average daily gain (ADG) statistics China']
+2026-05-07 02:55:35,644 [INFO] beef_cattle/CN_south: have=['adg', 'fcr'], missing=['mortality']
+2026-05-07 02:55:39,362 [INFO] Qwen queries for beef_cattle: ['"beef cattle" mortality rate South China 2023', 'South China beef cattle industry report mortality statistics 2022-2023', '华南地区肉牛死亡率 2023年 统计数据', '中国南方肉牛养殖 死亡率 年度报告 2022-2023']
+2026-05-07 02:59:05,491 [INFO] largemouth_catfish done: +0
+2026-05-07 02:59:20,492 [INFO] dairy_cow/CN_all: have=['fcr', 'mortality', 'other', 'market', 'milk'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 02:59:21,233 [INFO] beef_cattle done: +0
+2026-05-07 02:59:23,926 [INFO] Qwen queries for dairy_cow: ['dairy cow milk yield per cow China 2023 statistics', '中国奶牛单产奶量 2023年 统计数据', 'China dairy cow mastitis prevalence economic loss 2022', '中国奶牛乳房炎发病率及经济损失 2022年 报告']
+2026-05-07 02:59:36,234 [INFO] finisher_pig/CN_north: have=['mortality', 'adg', 'fcr'], missing=[]
+2026-05-07 02:59:36,235 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 02:59:36,235 [INFO] meat_sheep/CN_north: have=['mortality', 'adg', 'survival', 'other'], missing=['FCR']
+2026-05-07 02:59:39,962 [INFO] Qwen queries for meat_sheep: ['"meat sheep" "feed conversion ratio" "North China" 2023', '肉羊 "料肉比" "华北地区" 2023', '"meat sheep" FCR "Northern China" 2022', '肉羊 "饲料转化率" "中国北方" 2022']
+2026-05-07 03:03:06,187 [INFO] dairy_cow done: +0
+2026-05-07 03:03:21,188 [INFO] layer_chicken/CN_all: have=['survival', 'slaughter', 'fcr', 'mortality', 'litter', 'other', 'market', 'egg'], missing=['egg_rate', 'AI_loss']
+2026-05-07 03:03:21,683 [INFO] meat_sheep done: +0
+2026-05-07 03:03:24,621 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '蛋雞產蛋率 中國 2023 數據', 'layer chicken AI loss rate China market report 2024', '中國蛋雞人工授精損失率 市場調研 2024']
+2026-05-07 03:03:36,685 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival'], missing=['strep_loss']
+2026-05-07 03:03:39,923 [INFO] Qwen queries for tilapia: ['"strep loss" tilapia CN_south 2023', '"strep loss" tilapia CN_south', '罗非鱼 strep_loss CN_south 2023', '罗非鱼 strep_loss CN_south']
+2026-05-07 03:07:06,285 [INFO] layer_chicken done: +0
+2026-05-07 03:07:21,285 [INFO] broiler/CN_all: have=['slaughter', 'fcr', 'mortality', 'FCR', 'other'], missing=['ADG', 'disease_loss']
+2026-05-07 03:07:21,707 [INFO] tilapia done: +0
+2026-05-07 03:07:25,149 [INFO] Qwen queries for broiler: ['broiler chicken average daily gain (ADG) statistics China 2023', '肉雞平均日增重（ADG）數據 中國 2023', 'broiler disease loss mortality rate China 2022-2024', '中國肉雞疾病損失率及死亡率數據 2022-2024']
+2026-05-07 03:07:36,707 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-07 03:07:40,583 [INFO] Qwen queries for grouper: ['"vibrio loss" grouper South China aquaculture statistics 2023', '石斑鱼 弧菌损失率 华南 养殖数据 2023', 'grouper vibrio mortality rate South China 2022-2024', '华南地区 石斑鱼 弧菌病死亡率 统计数据 2024']
+2026-05-07 03:11:06,787 [INFO] broiler done: +0
+2026-05-07 03:11:21,787 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-07 03:11:22,288 [INFO] grouper done: +0
+2026-05-07 03:11:25,425 [INFO] Qwen queries for shrimp: ['"EMS loss" shrimp CN_south 2023', 'EMS_loss 南美白对虾 华南 2023', '"EMS mortality" Litopenaeus vannamei South China 2022', 'EMS发病率 对虾养殖 华南地区 2022']
+2026-05-07 03:11:37,289 [INFO] largemouth_bass/CN_south: have=['edwardsiella', 'fcr', 'survival', 'adg'], missing=[]
+2026-05-07 03:11:37,289 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 03:11:38,550 [INFO] Round 6 done. DB=323 +0
+2026-05-07 03:11:38,550 [INFO] Sleeping 1800s...
+2026-05-07 03:15:07,311 [INFO] shrimp done: +0
+2026-05-07 03:15:22,312 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 03:15:26,311 [INFO] Qwen queries for beef_cattle: ['China North beef cattle feed conversion ratio FCR average daily gain ADG statistics 2023', '中国北方肉牛饲料转化率FCR日增重ADG数据 2023', 'North China beef cattle mortality rate per 1000 head 2022-2023', '中国北方地区肉牛死亡率统计 2022-2023']
+2026-05-07 03:19:08,139 [INFO] beef_cattle done: +0
+2026-05-07 03:19:23,139 [INFO] beef_cattle/CN_south: have=['fcr', 'adg'], missing=['mortality']
+2026-05-07 03:19:26,735 [INFO] Qwen queries for beef_cattle: ['beef cattle mortality rate China south 2023', '南方地區肉牛死亡率統計數據 2023', 'beef cattle death loss percentage southern China 2022-2024', '中國南方肉牛養殖場死亡率調查報告']
+2026-05-07 03:23:08,432 [INFO] beef_cattle done: +0
+2026-05-07 03:23:23,432 [INFO] finisher_pig/CN_north: have=['mortality', 'fcr', 'adg'], missing=[]
+2026-05-07 03:23:23,432 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 03:23:23,434 [INFO] meat_sheep/CN_north: have=['survival', 'mortality', 'other', 'adg'], missing=['FCR']
+2026-05-07 03:23:26,917 [INFO] Qwen queries for meat_sheep: ['meat sheep feed conversion ratio CN north 2023', '肉羊 料肉比 中国北方 2023', 'meat sheep FCR performance CN north region', '中国北方肉羊养殖 饲料转化率 FCR 数据']
+2026-05-07 03:27:08,527 [INFO] meat_sheep done: +0
+2026-05-07 03:27:23,528 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-07 03:27:27,071 [INFO] Qwen queries for tilapia: ['2023 tilapia streptococcus loss rate CN_south', '2022 tilapia strep mortality CN_south', '2023 南美白对虾 链球菌 损失率 CN_south', '2022 罗非鱼 链球菌 死亡率 CN_south']
+2026-05-07 03:31:08,824 [INFO] tilapia done: +0
+2026-05-07 03:31:23,825 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'mortality', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-07 03:31:27,561 [INFO] Qwen queries for grouper: ['grouper vibrio loss mortality rate South China 2023', '石斑鱼 弧菌 死亡率 损失率 华南 2023', 'grouper farming vibrio infection economic loss South China', '华南 石斑鱼养殖 弧菌病 经济损失 比例 2022']
+2026-05-07 03:35:09,350 [INFO] grouper done: +0
+2026-05-07 03:35:24,352 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-07 03:35:24,352 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 03:35:25,604 [INFO] Round 10 done. DB=323 +0
+2026-05-07 03:35:25,604 [INFO] Sleeping 1800s...
+2026-05-07 03:41:38,550 [INFO] === Round 7 | 6.5h | total: 18 ===
+2026-05-07 03:41:38,550 [INFO] dairy_goat/CN_all: have=['litter', 'other', 'milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 03:41:42,192 [INFO] Qwen queries for dairy_goat: ['dairy goat FCR feed conversion ratio China 2023', '奶山羊 料肉比 FCR 中国 2023', 'dairy goat milk yield per lactation China statistics', '奶山羊 产奶量 中国 2022-2023']
+2026-05-07 03:45:23,887 [INFO] dairy_goat done: +0
+2026-05-07 03:45:38,888 [INFO] channel_catfish/CN_all: have=['mortality', 'adg', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=[]
+2026-05-07 03:45:38,888 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 03:45:38,888 [INFO] largemouth_catfish/CN_all: have=['slaughter', 'other', 'fcr', 'survival', 'FCR'], missing=['ADG']
+2026-05-07 03:45:42,760 [INFO] Qwen queries for largemouth_catfish: ['ADG of largemouth catfish production in China 2023', '大口鲶平均日增重（ADG） 中国 2023 养殖数据', 'Average daily gain (ADG) of Chinese catfish (Silurus asotus) 2022-2024', '中国大口鲶养殖平均日增重 ADG 数值 2023']
+2026-05-07 03:49:24,435 [INFO] largemouth_catfish done: +0
+2026-05-07 03:49:39,436 [INFO] dairy_cow/CN_all: have=['mortality', 'milk', 'other', 'fcr', 'market'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 03:49:42,837 [INFO] Qwen queries for dairy_cow: ['dairy cow milk yield per cow China 2023 statistics', '中国奶牛单产奶量 2023年 数据', 'China dairy cow mastitis economic loss per head 2022', '中国奶牛乳房炎经济损失 2022 统计']
+2026-05-07 03:53:24,595 [INFO] dairy_cow done: +0
+2026-05-07 03:53:39,595 [INFO] layer_chicken/CN_all: have=['mortality', 'slaughter', 'litter', 'other', 'egg', 'fcr', 'market', 'survival'], missing=['egg_rate', 'AI_loss']
+2026-05-07 03:53:42,937 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中國蛋雞產蛋率數據 2023年', 'China layer hen egg production rate by province 2022', '中国蛋鸡养殖产蛋率统计 2023']
+2026-05-07 03:57:24,751 [INFO] layer_chicken done: +0
+2026-05-07 03:57:39,752 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'other', 'fcr', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-07 03:57:43,447 [INFO] Qwen queries for broiler: ['broiler average daily gain ADG statistics China 2023', '肉雞平均日增重 ADG 數據 中國 2023', 'broiler disease loss mortality rate China 2022', '肉雞疾病損失率 死亡率 數據 中國 2022']
+2026-05-07 04:01:25,079 [INFO] broiler done: +0
+2026-05-07 04:01:40,080 [INFO] shrimp/CN_south: have=['mortality', 'fcr', 'FCR', 'survival'], missing=['EMS_loss']
+2026-05-07 04:01:44,058 [INFO] Qwen queries for shrimp: ['"shrimp" "EMS" "mortality rate" "China" 2023', '南美白对虾 中国 早期死亡综合征 EMS 死亡率 2023', '"Penaeus vannamei" "EMS loss" "South China" aquaculture statistics', '华南地区 对虾养殖 EMS损失率 数据 2022-2023']
+2026-05-07 04:05:25,605 [INFO] === Round 11 | 10.1h | total: 38 ===
+2026-05-07 04:05:25,606 [INFO] dairy_goat/CN_all: have=['milk', 'litter', 'other'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 04:05:25,788 [INFO] shrimp done: +0
+2026-05-07 04:05:29,297 [INFO] Qwen queries for dairy_goat: ['"dairy goat" FCR feed conversion ratio average 2023', '奶山羊 料肉比 FCR 平均 2023', '"dairy goat" milk yield per lactation kg 2023', '奶山羊 产奶量 milk yield 平均 2023']
+2026-05-07 04:05:40,788 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 04:05:44,507 [INFO] Qwen queries for beef_cattle: ['2023年中国北方肉牛平均日增重ADG数据', 'China northern region beef cattle feed conversion ratio FCR statistics 2023', '中国北方地区肉牛养殖死亡率mortality率统计', '2022-2024 beef cattle ADG and mortality rates in Northern China']
+2026-05-07 04:09:10,826 [INFO] dairy_goat done: +0
+2026-05-07 04:09:25,827 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other', 'adg'], missing=[]
+2026-05-07 04:09:25,827 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 04:09:25,828 [INFO] largemouth_catfish/CN_all: have=['survival', 'slaughter', 'fcr', 'FCR', 'other'], missing=['ADG']
+2026-05-07 04:09:26,225 [INFO] beef_cattle done: +0
+2026-05-07 04:09:29,408 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain ADG performance 2023', '大口鲇 平均日增重 ADG 生长性能 2023', 'largemouth catfish growth rate ADG kg/day 2022', '大口鲇 日增重 养殖数据 2022']
+2026-05-07 04:09:41,226 [INFO] beef_cattle/CN_south: have=['adg', 'fcr'], missing=['mortality']
+2026-05-07 04:09:44,917 [INFO] Qwen queries for beef_cattle: ['"beef cattle" mortality rate South China 2023', 'South China beef cattle production statistics mortality 2022-2024', '华南地区肉牛死亡率 2023年 统计数据', '中国南方肉牛养殖 死亡率 2022-2024 报告']
+2026-05-07 04:13:11,149 [INFO] largemouth_catfish done: +0
+2026-05-07 04:13:26,149 [INFO] dairy_cow/CN_all: have=['fcr', 'mortality', 'other', 'market', 'milk'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 04:13:26,488 [INFO] beef_cattle done: +0
+2026-05-07 04:13:29,577 [INFO] Qwen queries for dairy_cow: ['2023 China dairy cow average milk yield per cow statistics', '2023年中国奶牛单产牛奶量统计数据', '2022 China dairy cattle mastitis incidence rate and economic loss data', '2022年中国奶牛乳房炎发病率及经济损失数据']
+2026-05-07 04:13:41,489 [INFO] finisher_pig/CN_north: have=['mortality', 'adg', 'fcr'], missing=[]
+2026-05-07 04:13:41,489 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 04:13:41,489 [INFO] meat_sheep/CN_north: have=['mortality', 'adg', 'survival', 'other'], missing=['FCR']
+2026-05-07 04:13:45,194 [INFO] Qwen queries for meat_sheep: ['"meat sheep" "feed conversion ratio" "North China" 2023', '"肉羊" "料肉比" "中国北方" 2023', '"meat sheep" FCR "North China" production data', '"肉羊" "FCR" "华北地区" 生产性能数据']
+2026-05-07 04:17:11,440 [INFO] dairy_cow done: +0
+2026-05-07 04:17:26,442 [INFO] layer_chicken/CN_all: have=['survival', 'slaughter', 'fcr', 'mortality', 'litter', 'other', 'market', 'egg'], missing=['egg_rate', 'AI_loss']
+2026-05-07 04:17:26,943 [INFO] meat_sheep done: +0
+2026-05-07 04:17:29,786 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', 'layer chicken egg rate data China 2024', '蛋雞產蛋率 中國 2023 統計數據', '蛋雞產蛋率 中國 2024 市場報告']
+2026-05-07 04:17:41,944 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival'], missing=['strep_loss']
+2026-05-07 04:17:45,387 [INFO] Qwen queries for tilapia: ['strep loss mortality rate tilapia South China 2023', 'strep loss survival rate tilapia South China 2022', '链球菌病损失率 罗非鱼 华南 2023', '链球菌病死亡率 罗非鱼 华南 2022']
+2026-05-07 04:21:11,481 [INFO] layer_chicken done: +0
+2026-05-07 04:21:26,481 [INFO] broiler/CN_all: have=['slaughter', 'fcr', 'mortality', 'FCR', 'other'], missing=['ADG', 'disease_loss']
+2026-05-07 04:21:27,144 [INFO] tilapia done: +0
+2026-05-07 04:21:30,364 [INFO] Qwen queries for broiler: ['"broiler" "average daily gain" ADG growth performance 2023 China', '肉雞 平均日增重 ADG 生長性能 2023 中國', '"broiler" "disease loss" mortality economic impact 2022 China', '肉雞 疾病損失 死亡率 經濟影響 2022 中國']
+2026-05-07 04:21:42,145 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-07 04:21:46,086 [INFO] Qwen queries for grouper: ['2023-2024 grouper vibrio loss rate statistics South China', '2023 grouper vibrio disease mortality South China aquaculture report', '2023-2024 石斑鱼 弧菌 死亡率 华南 统计数据', '2023 华南地区 石斑鱼 弧菌病 损失率 养殖报告']
+2026-05-07 04:25:12,423 [INFO] broiler done: +0
+2026-05-07 04:25:27,425 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-07 04:25:28,219 [INFO] grouper done: +0
+2026-05-07 04:25:31,464 [INFO] Qwen queries for shrimp: ['"EMS" "shrimp" "China" "South China" "mortality rate" 2023', '南美白对虾 华南 早期死亡综合征 EMS 死亡率 2022', 'EMS loss percentage Penaeus vannamei South China aquaculture 2024', '中国南部 对虾养殖 EMS早期死亡综合征 损失率 产量影响 2023']
+2026-05-07 04:25:43,219 [INFO] largemouth_bass/CN_south: have=['edwardsiella', 'fcr', 'survival', 'adg'], missing=[]
+2026-05-07 04:25:43,220 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 04:25:44,482 [INFO] Round 7 done. DB=323 +0
+2026-05-07 04:25:44,483 [INFO] Sleeping 1800s...
+2026-05-07 04:29:13,232 [INFO] shrimp done: +0
+2026-05-07 04:29:28,233 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 04:29:32,141 [INFO] Qwen queries for beef_cattle: ['China North beef cattle feed conversion ratio FCR average daily gain ADG 2023', '中国北方肉牛饲料转化率 FCR 日增重 ADG 统计数据 2023', 'China North beef cattle mortality rate statistics 2022-2023', '中国北方肉牛死亡率 mortality 统计报告 2023']
+2026-05-07 04:33:14,014 [INFO] beef_cattle done: +0
+2026-05-07 04:33:29,015 [INFO] beef_cattle/CN_south: have=['fcr', 'adg'], missing=['mortality']
+2026-05-07 04:33:32,658 [INFO] Qwen queries for beef_cattle: ['beef cattle mortality rate South China 2023', 'South China beef cattle industry report mortality statistics 2022-2023', '华南地区肉牛死亡率 2023年 统计数据', '中国南方肉牛养殖死亡率 2022年 行业报告']
+2026-05-07 04:37:14,670 [INFO] beef_cattle done: +0
+2026-05-07 04:37:29,671 [INFO] finisher_pig/CN_north: have=['mortality', 'fcr', 'adg'], missing=[]
+2026-05-07 04:37:29,671 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 04:37:29,672 [INFO] meat_sheep/CN_north: have=['survival', 'mortality', 'other', 'adg'], missing=['FCR']
+2026-05-07 04:37:33,491 [INFO] Qwen queries for meat_sheep: ['meat sheep feed conversion ratio CN_north 2023', '肉羊 料肉比 CN_north 2023', 'feed efficiency meat sheep northern China 2022-2024', '北方肉羊 飼料轉化率 2022-2024']
+2026-05-07 04:41:15,219 [INFO] meat_sheep done: +0
+2026-05-07 04:41:30,220 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-07 04:41:33,827 [INFO] Qwen queries for tilapia: ['2023 tilapia streptococcus loss rate CN_south', '2022 tilapia strep mortality percentage South China', '2023年 罗非鱼 链球菌 损失率 CN_south', '2022年 华南地区 罗非鱼 链球菌死亡率 数据']
+2026-05-07 04:45:15,733 [INFO] tilapia done: +0
+2026-05-07 04:45:30,734 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'mortality', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-07 04:45:34,674 [INFO] Qwen queries for grouper: ['2023年中国南方石斑鱼弧菌病损失率统计数据', '2023 Vibrio loss rate statistics in grouper farming in South China', '2022-2023 South China grouper aquaculture vibrio disease economic loss', '2022-2023 中国南方石斑鱼养殖弧菌病经济损失数据']
+2026-05-07 04:49:16,391 [INFO] grouper done: +0
+2026-05-07 04:49:31,391 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-07 04:49:31,391 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 04:49:32,612 [INFO] Round 11 done. DB=323 +0
+2026-05-07 04:49:32,612 [INFO] Sleeping 1800s...
+2026-05-07 04:55:44,484 [INFO] === Round 8 | 7.7h | total: 18 ===
+2026-05-07 04:55:44,484 [INFO] dairy_goat/CN_all: have=['litter', 'other', 'milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 04:55:48,210 [INFO] Qwen queries for dairy_goat: ['dairy goat FCR feed conversion ratio China 2023', '奶牛山羊 饲料转化率 FCR 中国 2023', 'dairy goat milk yield per lactation China statistics 2022', '中国 奶山羊 产奶量 单产 统计数据 2022']
+2026-05-07 04:59:30,118 [INFO] dairy_goat done: +0
+2026-05-07 04:59:45,120 [INFO] channel_catfish/CN_all: have=['mortality', 'adg', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=[]
+2026-05-07 04:59:45,120 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 04:59:45,121 [INFO] largemouth_catfish/CN_all: have=['slaughter', 'other', 'fcr', 'survival', 'FCR'], missing=['ADG']
+2026-05-07 04:59:49,269 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain ADG performance data 2023', '大口鲇 平均日增重 ADG 养殖数据 2023', 'largemouth catfish growth rate ADG kg/day China 2022-2024', '大口鲇 日增重 生长性能 中国 2022-2024']
+2026-05-07 05:03:31,043 [INFO] largemouth_catfish done: +0
+2026-05-07 05:03:46,044 [INFO] dairy_cow/CN_all: have=['mortality', 'milk', 'other', 'fcr', 'market'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 05:03:49,540 [INFO] Qwen queries for dairy_cow: ['dairy cow milk yield per cow China 2023 statistics', '中国奶牛单产 milk yield 2023 数据', 'China dairy cow mastitis loss economic impact 2022-2024', '中国奶牛乳房炎 mastitis_loss 经济损失 2023']
+2026-05-07 05:07:31,214 [INFO] dairy_cow done: +0
+2026-05-07 05:07:46,215 [INFO] layer_chicken/CN_all: have=['mortality', 'slaughter', 'litter', 'other', 'egg', 'fcr', 'market', 'survival'], missing=['egg_rate', 'AI_loss']
+2026-05-07 05:07:49,481 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中国蛋鸡产蛋率数据 2023', 'layer chicken artificial insemination loss rate China', '中国蛋鸡人工授精损失率统计 2022']
+2026-05-07 05:11:31,212 [INFO] layer_chicken done: +0
+2026-05-07 05:11:46,213 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'other', 'fcr', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-07 05:11:49,911 [INFO] Qwen queries for broiler: ['broiler average daily gain ADG kg/day China 2023', '肉雞 平均日增重 ADG 中國 2023', 'broiler disease loss mortality rate China 2022', '肉雞 疾病損失率 死亡率 中國 2022']
+2026-05-07 05:15:31,718 [INFO] broiler done: +0
+2026-05-07 05:15:46,718 [INFO] shrimp/CN_south: have=['mortality', 'fcr', 'FCR', 'survival'], missing=['EMS_loss']
+2026-05-07 05:15:50,358 [INFO] Qwen queries for shrimp: ['"EMS loss" shrimp CN_south 2023', '南美白对虾 中国南方 EMS损失率 2023', 'EMS mortality rate Litopenaeus vannamei South China 2022', '中国南方对虾养殖 EMS综合征损失数据 2022']
+2026-05-07 05:19:32,120 [INFO] shrimp done: +0
+2026-05-07 05:19:32,614 [INFO] === Round 12 | 11.4h | total: 38 ===
+2026-05-07 05:19:32,615 [INFO] dairy_goat/CN_all: have=['milk', 'litter', 'other'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 05:19:36,167 [INFO] Qwen queries for dairy_goat: ['"dairy goat" FCR feed conversion ratio 2023', '奶山羊 料肉比 FCR 2023', '"dairy goat" milk yield per lactation 2023', '奶山羊 产奶量 2023']
+2026-05-07 05:19:47,121 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 05:19:51,413 [INFO] Qwen queries for beef_cattle: ['beef cattle feed conversion ratio FCR average daily gain ADG mortality rate China North region 2023', 'China North beef cattle production performance FCR ADG mortality statistics 2022-2024', '中國北方肉牛飼料轉化率 FCR 日增重 ADG 死亡率 數據 2023', '中國北方地區肉牛養殖性能指標 FCR ADG 死亡率統計 2022-2024']
+2026-05-07 05:23:17,983 [INFO] dairy_goat done: +0
+2026-05-07 05:23:32,984 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other', 'adg'], missing=[]
+2026-05-07 05:23:32,984 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 05:23:32,986 [INFO] largemouth_catfish/CN_all: have=['survival', 'slaughter', 'fcr', 'FCR', 'other'], missing=['ADG']
+2026-05-07 05:23:33,177 [INFO] beef_cattle done: +0
+2026-05-07 05:23:36,786 [INFO] Qwen queries for largemouth_catfish: ['ADG of largemouth catfish in China 2023', '中国大口鲇平均日增重（ADG）数据 2022-2024', 'Average daily gain (ADG) of Clarias macrocephalus in China aquaculture reports 2023', '中国大口鲇养殖平均日增重指标 2024年最新数据']
+2026-05-07 05:23:48,178 [INFO] beef_cattle/CN_south: have=['adg', 'fcr'], missing=['mortality']
+2026-05-07 05:23:51,786 [INFO] Qwen queries for beef_cattle: ['"beef cattle" mortality rate CN_south 2023', '南方肉牛 CN_south 死亡率 2023', 'beef cattle mortality statistics CN_south 2022', '中国南方肉牛 CN_south 死亡统计 2022']
+2026-05-07 05:27:18,415 [INFO] largemouth_catfish done: +0
+2026-05-07 05:27:33,417 [INFO] dairy_cow/CN_all: have=['fcr', 'mortality', 'other', 'market', 'milk'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 05:27:33,508 [INFO] beef_cattle done: +0
+2026-05-07 05:27:36,866 [INFO] Qwen queries for dairy_cow: ['dairy cow milk yield per cow 2023 China statistics', '中國 奶牛 單產 2023 數據', 'China dairy cow mastitis prevalence economic loss 2022', '中國 奶牛 乳房炎 發病率 損失 2022']
+2026-05-07 05:27:48,509 [INFO] finisher_pig/CN_north: have=['mortality', 'adg', 'fcr'], missing=[]
+2026-05-07 05:27:48,509 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 05:27:48,509 [INFO] meat_sheep/CN_north: have=['mortality', 'adg', 'survival', 'other'], missing=['FCR']
+2026-05-07 05:27:52,250 [INFO] Qwen queries for meat_sheep: ['"meat sheep" "feed conversion ratio" "North China" 2023', '肉羊 "料肉比" "华北地区" 2023', '"meat sheep" "FCR" "Northern China" 2022', '肉羊 "饲料转化率" "中国北方" 2022']
+2026-05-07 05:31:18,528 [INFO] dairy_cow done: +0
+2026-05-07 05:31:33,529 [INFO] layer_chicken/CN_all: have=['survival', 'slaughter', 'fcr', 'mortality', 'litter', 'other', 'market', 'egg'], missing=['egg_rate', 'AI_loss']
+2026-05-07 05:31:34,041 [INFO] meat_sheep done: +0
+2026-05-07 05:31:36,903 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中国蛋鸡产蛋率数据 2023年', 'layer chicken AI loss rate China market report', '中国蛋鸡人工授精损失率统计 2022-2023']
+2026-05-07 05:31:49,041 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival'], missing=['strep_loss']
+2026-05-07 05:31:52,525 [INFO] Qwen queries for tilapia: ['strep loss mortality rate in South China tilapia 2023', 'South China tilapia streptococcus infection loss statistics 2022', '華南地區羅非魚鏈球菌病死亡率數據 2023', '華南羅非魚鏈球菌感染損失統計 2022']
+2026-05-07 05:35:18,749 [INFO] layer_chicken done: +0
+2026-05-07 05:35:33,749 [INFO] broiler/CN_all: have=['slaughter', 'fcr', 'mortality', 'FCR', 'other'], missing=['ADG', 'disease_loss']
+2026-05-07 05:35:34,424 [INFO] tilapia done: +0
+2026-05-07 05:35:37,549 [INFO] Qwen queries for broiler: ['"broiler" "average daily gain" ADG "China" 2023', '肉雞 平均日增重 ADG 中國 2023', '"broiler" "disease loss" mortality rate "China" 2022', '肉雞 疾病損失 死亡率 中國 2022']
+2026-05-07 05:35:49,425 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-07 05:35:53,345 [INFO] Qwen queries for grouper: ['2023 South China grouper farming vibrio loss rate statistics', '2023年 中国南方 石斑鱼 养殖 弧菌 死亡率 统计', 'grouper vibrio infection mortality rate South China 2022-2024', '华南地区石斑鱼弧菌病损失率 2022-2024']
+2026-05-07 05:39:19,725 [INFO] broiler done: +0
+2026-05-07 05:39:34,727 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-07 05:39:35,549 [INFO] grouper done: +0
+2026-05-07 05:39:38,299 [INFO] Qwen queries for shrimp: ['"EMS loss" shrimp CN_south 2023', '南美白对虾 南方 EMS损失率 2023', '"EMS mortality" Penaeus vannamei South China 2022', '中国南方对虾 EMS综合征死亡率 2022']
+2026-05-07 05:39:50,549 [INFO] largemouth_bass/CN_south: have=['edwardsiella', 'fcr', 'survival', 'adg'], missing=[]
+2026-05-07 05:39:50,549 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 05:39:51,742 [INFO] Round 8 done. DB=323 +0
+2026-05-07 05:39:51,742 [INFO] Sleeping 1800s...
+2026-05-07 05:43:20,018 [INFO] shrimp done: +0
+2026-05-07 05:43:35,019 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 05:43:39,167 [INFO] Qwen queries for beef_cattle: ['China North beef cattle average daily gain (ADG) feed conversion ratio (FCR) statistics 2023', '中国北方肉牛平均日增重(ADG)料肉比(FCR)数据 2023', 'China North beef cattle mortality rate per 1000 head 2022-2023', '中国北方肉牛死亡率统计 2022-2023']
+2026-05-07 05:47:20,779 [INFO] beef_cattle done: +0
+2026-05-07 05:47:35,780 [INFO] beef_cattle/CN_south: have=['fcr', 'adg'], missing=['mortality']
+2026-05-07 05:47:39,505 [INFO] Qwen queries for beef_cattle: ['2023年中國南方地區肉牛死亡率統計數據', 'China South beef cattle mortality rate statistics 2023', '2022-2024年華南肉牛養殖場死亡率調查報告', 'South China beef cattle farm mortality rate report 2022-2024']
+2026-05-07 05:51:21,570 [INFO] beef_cattle done: +0
+2026-05-07 05:51:36,572 [INFO] finisher_pig/CN_north: have=['mortality', 'fcr', 'adg'], missing=[]
+2026-05-07 05:51:36,572 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 05:51:36,573 [INFO] meat_sheep/CN_north: have=['survival', 'mortality', 'other', 'adg'], missing=['FCR']
+2026-05-07 05:51:40,144 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR CN_north 2023', '肉羊 料肉比 CN_north 2023', 'feed conversion ratio meat sheep Northern China 2022', '中国北方 肉羊 饲料转化率 2022']
+2026-05-07 05:55:21,895 [INFO] meat_sheep done: +0
+2026-05-07 05:55:36,897 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-07 05:55:40,571 [INFO] Qwen queries for tilapia: ['2023年南中國羅非魚鏈球菌病死亡率數據', '2022-2024 South China tilapia Streptococcus agalactiae loss rate statistics', 'South China tilapia farm Streptococcus mortality rate 2023', '2023年中國南方羅非魚鏈球菌感染損失率']
+2026-05-07 05:59:22,229 [INFO] tilapia done: +0
+2026-05-07 05:59:37,229 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'mortality', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-07 05:59:40,908 [INFO] Qwen queries for grouper: ['grouper vibrio loss mortality rate South China 2023', '石斑鱼 弧菌 死亡率 损失 华南 2023', 'grouper farming vibrio infection economic loss South China', '华南 石斑鱼 养殖 弧菌病 经济损失 比例']
+2026-05-07 06:03:22,666 [INFO] grouper done: +0
+2026-05-07 06:03:37,667 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-07 06:03:37,667 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 06:03:38,870 [INFO] Round 12 done. DB=323 +0
+2026-05-07 06:03:38,870 [INFO] Sleeping 1800s...
+2026-05-07 06:09:51,743 [INFO] === Round 9 | 8.9h | total: 18 ===
+2026-05-07 06:09:51,743 [INFO] dairy_goat/CN_all: have=['litter', 'other', 'milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 06:09:55,596 [INFO] Qwen queries for dairy_goat: ['dairy goat FCR (feed conversion ratio) statistics China 2023', '中国奶山羊 料肉比 FCR 数据 2023', 'dairy goat milk yield per doe China annual average 2022-2024', '中国奶山羊 单产 milk yield 年均 2023']
+2026-05-07 06:13:37,381 [INFO] dairy_goat done: +0
+2026-05-07 06:13:52,381 [INFO] channel_catfish/CN_all: have=['mortality', 'adg', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=[]
+2026-05-07 06:13:52,381 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 06:13:52,381 [INFO] largemouth_catfish/CN_all: have=['slaughter', 'other', 'fcr', 'survival', 'FCR'], missing=['ADG']
+2026-05-07 06:13:55,762 [INFO] Qwen queries for largemouth_catfish: ['ADG of largemouth catfish in China 2023', '大口鲇平均日增重 中国 2023', 'largemouth catfish growth performance ADG China', '大口鲇养殖 平均日增重 数据 2022']
+2026-05-07 06:17:37,582 [INFO] largemouth_catfish done: +0
+2026-05-07 06:17:52,583 [INFO] dairy_cow/CN_all: have=['mortality', 'milk', 'other', 'fcr', 'market'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 06:17:56,065 [INFO] Qwen queries for dairy_cow: ['2023 China dairy cow milk yield per cow statistics', '中国奶牛单产奶量统计 2023', 'China dairy cattle mastitis economic loss data 2022-2023', '中国奶牛乳房炎经济损失数据 2022-2023']
+2026-05-07 06:21:37,978 [INFO] dairy_cow done: +0
+2026-05-07 06:21:52,979 [INFO] layer_chicken/CN_all: have=['mortality', 'slaughter', 'litter', 'other', 'egg', 'fcr', 'market', 'survival'], missing=['egg_rate', 'AI_loss']
+2026-05-07 06:21:56,341 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中国蛋鸡产蛋率数据 2023年', 'layer chicken AI loss rate China market report', '中国蛋鸡人工授精损失率统计 2022-2023']
+2026-05-07 06:25:38,000 [INFO] layer_chicken done: +0
+2026-05-07 06:25:53,001 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'other', 'fcr', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-07 06:25:56,819 [INFO] Qwen queries for broiler: ['broiler average daily gain (ADG) statistics China 2023', 'broiler disease loss rate China 2022-2023', '肉雞平均日增重（ADG）數據 中國 2023', '中國肉雞疾病損失率統計 2022-2023']
+2026-05-07 06:29:38,556 [INFO] broiler done: +0
+2026-05-07 06:29:53,557 [INFO] shrimp/CN_south: have=['mortality', 'fcr', 'FCR', 'survival'], missing=['EMS_loss']
+2026-05-07 06:29:57,637 [INFO] Qwen queries for shrimp: ['"shrimp" "EMS" "mortality rate" "China" 2023', '"南美白对虾" "EMS" "死亡率" "中国" 2023', '"Litopenaeus vannamei" "EMS" "loss" "Guangdong" 2022', '"凡纳滨对虾" "EMS" "损失率" "广东" 2022']
+2026-05-07 06:33:38,872 [INFO] === Round 13 | 12.6h | total: 38 ===
+2026-05-07 06:33:38,873 [INFO] dairy_goat/CN_all: have=['milk', 'litter', 'other'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 06:33:39,431 [INFO] shrimp done: +0
+2026-05-07 06:33:42,590 [INFO] Qwen queries for dairy_goat: ['"dairy goat" FCR milk yield China 2023', '中国 奶山羊 饲料转化率 产奶量 2023', '"dairy goat" mortality rate ADG China 2022', '中国 奶山羊 成活率 日增重 死亡率 2022']
+2026-05-07 06:33:54,432 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 06:33:58,726 [INFO] Qwen queries for beef_cattle: ['China North beef cattle average daily gain ADG kg/day 2023', '中国北方肉牛平均日增重 ADG 数据 2023', 'China North beef cattle feed conversion ratio FCR statistics', '中国北方肉牛料肉比 FCR 统计 2023', 'China North beef cattle mortality rate percentage 2022-2023', '中国北方肉牛死亡率 百分比 2023']
+2026-05-07 06:37:24,384 [INFO] dairy_goat done: +0
+2026-05-07 06:37:39,385 [INFO] channel_catfish/CN_all: have=['survival', 'slaughter', 'harvest', 'fcr', 'mortality', 'FCR', 'other', 'adg'], missing=[]
+2026-05-07 06:37:39,386 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 06:37:39,387 [INFO] largemouth_catfish/CN_all: have=['survival', 'slaughter', 'fcr', 'FCR', 'other'], missing=['ADG']
+2026-05-07 06:37:40,303 [INFO] beef_cattle done: +0
+2026-05-07 06:37:43,190 [INFO] Qwen queries for largemouth_catfish: ['largemouth catfish average daily gain ADG production performance 2023 China', '大口鲇 平均日增重 ADG 养殖性能 2023 中国', '大口鲇鱼 平均日增重 数据 2022-2023', 'largemouth catfish growth rate ADG statistics China aquaculture 2023']
+2026-05-07 06:37:55,304 [INFO] beef_cattle/CN_south: have=['adg', 'fcr'], missing=['mortality']
+2026-05-07 06:37:58,841 [INFO] Qwen queries for beef_cattle: ['"beef cattle" mortality rate CN_south 2023', '南方肉牛 死亡率 2023', '"beef cattle" mortality statistics CN_south 2022', '中国南方 肉牛养殖 死亡率 数据 2022']
+2026-05-07 06:41:25,242 [INFO] largemouth_catfish done: +0
+2026-05-07 06:41:40,242 [INFO] dairy_cow/CN_all: have=['fcr', 'mortality', 'other', 'market', 'milk'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 06:41:41,040 [INFO] beef_cattle done: +0
+2026-05-07 06:41:43,749 [INFO] Qwen queries for dairy_cow: ['dairy cow milk yield per cow China 2023 statistics', '中國 奶牛 產奶量 單產 2023 數據', 'China dairy cow mastitis economic loss per cow 2022', '中國 奶牛 乳房炎 經濟損失 2022 統計']
+2026-05-07 06:41:56,041 [INFO] finisher_pig/CN_north: have=['mortality', 'adg', 'fcr'], missing=[]
+2026-05-07 06:41:56,041 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 06:41:56,041 [INFO] meat_sheep/CN_north: have=['mortality', 'adg', 'survival', 'other'], missing=['FCR']
+2026-05-07 06:41:59,739 [INFO] Qwen queries for meat_sheep: ['"meat sheep" "feed conversion ratio" "North China" 2023', '肉羊 "料肉比" "华北地区" 2023', '"meat sheep" FCR "Northern China" 2022', '肉羊 "饲料转化率" "中国北方" 2022']
+2026-05-07 06:45:25,669 [INFO] dairy_cow done: +0
+2026-05-07 06:45:40,670 [INFO] layer_chicken/CN_all: have=['survival', 'slaughter', 'fcr', 'mortality', 'litter', 'other', 'market', 'egg'], missing=['egg_rate', 'AI_loss']
+2026-05-07 06:45:41,565 [INFO] meat_sheep done: +0
+2026-05-07 06:45:44,898 [INFO] Qwen queries for layer_chicken: ['"layer chicken" "egg production rate" OR "hen day production" China 2023 2024', '中国 蛋鸡 产蛋率 数据 2023 2024', '"layer chicken" "AI loss" OR "artificial insemination loss" China poultry industry report 2023', '中国 蛋鸡 人工授精损失率 或 受精率 数据 2024']
+2026-05-07 06:45:56,566 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival'], missing=['strep_loss']
+2026-05-07 06:46:00,060 [INFO] Qwen queries for tilapia: ['"strep loss" tilapia CN_south 2023', 'strep loss rate tilapia South China 2022', '南美白對蝦 鏈球菌損失率 CN_south 2023', 'CN_south 羅非魚 鏈球菌死亡率 2022']
+2026-05-07 06:49:26,576 [INFO] layer_chicken done: +0
+2026-05-07 06:49:41,577 [INFO] broiler/CN_all: have=['slaughter', 'fcr', 'mortality', 'FCR', 'other'], missing=['ADG', 'disease_loss']
+2026-05-07 06:49:41,864 [INFO] tilapia done: +0
+2026-05-07 06:49:45,166 [INFO] Qwen queries for broiler: ['2023年中國肉雞平均日增重ADG數據統計', 'China broiler ADG performance data 2023', '2024年中國肉雞疾病損失率disease_loss分析', 'China broiler disease loss rate statistics 2024']
+2026-05-07 06:49:56,864 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-07 06:50:00,911 [INFO] Qwen queries for grouper: ['2023-2024 grouper vibrio loss mortality rate South China aquaculture statistics', '2024年 石斑鱼 弧菌 损失率 死亡率 华南 养殖 数据', 'grouper farming vibrio infection loss percentage South China 2023', '2023年 华南 石斑鱼养殖 弧菌病 经济损失率 具体数值']
+2026-05-07 06:53:27,332 [INFO] broiler done: +0
+2026-05-07 06:53:42,333 [INFO] shrimp/CN_south: have=['survival', 'fcr', 'mortality', 'FCR'], missing=['EMS_loss']
+2026-05-07 06:53:43,192 [INFO] grouper done: +0
+2026-05-07 06:53:45,980 [INFO] Qwen queries for shrimp: ['"EMS loss" shrimp CN_south 2023', '南美白对虾 中国南方 EMS死亡损失 2023', 'EMS mortality rate Penaeus vannamei South China 2022', '中国南方对虾养殖 EMS综合征 存活率 2022']
+2026-05-07 06:53:58,194 [INFO] largemouth_bass/CN_south: have=['edwardsiella', 'fcr', 'survival', 'adg'], missing=[]
+2026-05-07 06:53:58,194 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 06:53:59,460 [INFO] Round 9 done. DB=323 +0
+2026-05-07 06:53:59,461 [INFO] Sleeping 1800s...
+2026-05-07 06:57:27,718 [INFO] shrimp done: +0
+2026-05-07 06:57:42,719 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 06:57:46,824 [INFO] Qwen queries for beef_cattle: ['China North beef cattle average daily gain (ADG) feed conversion ratio (FCR) statistics 2023', '中国北方肉牛平均日增重(ADG)料肉比(FCR)数据 2023', 'North China beef cattle mortality rate per thousand 2022-2023', '中国北方地区肉牛死亡率统计 2022-2023']
+2026-05-07 07:01:28,559 [INFO] beef_cattle done: +0
+2026-05-07 07:01:43,560 [INFO] beef_cattle/CN_south: have=['fcr', 'adg'], missing=['mortality']
+2026-05-07 07:01:47,346 [INFO] Qwen queries for beef_cattle: ['2023年中國南方地區肉牛死亡率統計數據', 'China southern region beef cattle mortality rate 2023 statistics', '2022-2024年中國南方養殖場肉牛平均死亡率', 'Average mortality rate of beef cattle in southern China farms 2022-2024']
+2026-05-07 07:05:29,015 [INFO] beef_cattle done: +0
+2026-05-07 07:05:44,016 [INFO] finisher_pig/CN_north: have=['mortality', 'fcr', 'adg'], missing=[]
+2026-05-07 07:05:44,016 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 07:05:44,018 [INFO] meat_sheep/CN_north: have=['survival', 'mortality', 'other', 'adg'], missing=['FCR']
+2026-05-07 07:05:47,634 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR CN_north 2023', '肉羊 料肉比 CN_north 2023', 'meat sheep feed conversion ratio CN_north 2022', '肉羊 饲料转化率 CN_north 2022']
+2026-05-07 07:09:29,216 [INFO] meat_sheep done: +0
+2026-05-07 07:09:44,218 [INFO] tilapia/CN_south: have=['survival', 'fcr', 'mortality', 'adg', 'strep'], missing=['strep_loss']
+2026-05-07 07:09:47,810 [INFO] Qwen queries for tilapia: ['2023 tilapia streptococcus loss rate South China', '2022 tilapia mortality due to streptococcus South China', '2023年 罗非鱼 链球菌 损失率 华南', '2022年 罗非鱼 链球菌病 死亡率 华南']
+2026-05-07 07:13:29,567 [INFO] tilapia done: +0
+2026-05-07 07:13:44,569 [INFO] grouper/CN_south: have=['survival', 'fcr', 'vibrio', 'mortality', 'other', 'adg'], missing=['vibrio_loss']
+2026-05-07 07:13:48,256 [INFO] Qwen queries for grouper: ['grouper vibrio loss mortality rate South China 2023', '石斑鱼 弧菌 死亡率 损失 华南 2023', 'grouper farming vibrio infection economic loss South China', '华南地区 石斑鱼 养殖 弧菌病 经济损失 数据']
+2026-05-07 07:17:29,990 [INFO] grouper done: +0
+2026-05-07 07:17:44,990 [INFO] largemouth_bass/CN_south: have=['survival', 'fcr', 'edwardsiella', 'adg'], missing=[]
+2026-05-07 07:17:44,990 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 07:17:46,232 [INFO] Round 13 done. DB=323 +0
+2026-05-07 07:17:46,233 [INFO] Sleeping 1800s...
+2026-05-07 07:19:04,139 [INFO] Interrupted.
+2026-05-07 07:23:59,462 [INFO] === Round 10 | 10.2h | total: 18 ===
+2026-05-07 07:23:59,462 [INFO] dairy_goat/CN_all: have=['litter', 'other', 'milk'], missing=['FCR', 'ADG', 'milk_yield', 'mortality']
+2026-05-07 07:24:03,135 [INFO] Qwen queries for dairy_goat: ['dairy goat FCR feed conversion ratio China 2023', '中国奶山羊 料肉比 FCR 数据 2023', 'dairy goat milk yield per lactation China statistics', '中国奶山羊 产奶量 平均 数据 2024']
+2026-05-07 07:27:44,956 [INFO] dairy_goat done: +0
+2026-05-07 07:27:59,957 [INFO] channel_catfish/CN_all: have=['mortality', 'adg', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=[]
+2026-05-07 07:27:59,957 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 07:27:59,957 [INFO] largemouth_catfish/CN_all: have=['adg', 'slaughter', 'other', 'fcr', 'survival', 'FCR'], missing=[]
+2026-05-07 07:27:59,957 [INFO]   → largemouth_catfish 已足夠，跳過
+2026-05-07 07:27:59,957 [INFO] dairy_cow/CN_all: have=['mortality', 'milk', 'other', 'mastitis', 'fcr', 'market'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 07:28:03,850 [INFO] Qwen queries for dairy_cow: ['"dairy cow" milk yield per cow 2023 China statistics', '中国 奶牛 单产 2023 数据', '"dairy cow" mastitis economic loss China 2022-2024', '中国 奶牛 乳房炎 经济损失 2023']
+2026-05-07 07:31:45,584 [INFO] dairy_cow done: +0
+2026-05-07 07:32:00,585 [INFO] layer_chicken/CN_all: have=['mortality', 'slaughter', 'litter', 'other', 'egg', 'fcr', 'market', 'survival', 'AI'], missing=['egg_rate', 'AI_loss']
+2026-05-07 07:32:04,240 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中国蛋鸡产蛋率统计数据 2023', 'China layer hen egg production rate per bird annual report', '中国蛋鸡行业产蛋率指标分析报告']
+2026-05-07 07:35:45,974 [INFO] layer_chicken done: +0
+2026-05-07 07:36:00,974 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'other', 'fcr', 'disease', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-07 07:36:04,679 [INFO] Qwen queries for broiler: ['broiler average daily gain ADG statistics China 2023', '肉雞平均日增重 ADG 中國 2023年 數據', 'broiler disease loss percentage China poultry industry report 2024', '肉雞疾病損失率 中國 禽業報告 2024']
+2026-05-07 07:39:46,539 [INFO] broiler done: +0
+2026-05-07 07:40:01,540 [INFO] shrimp/CN_south: have=['mortality', 'EMS', 'fcr', 'survival', 'FCR'], missing=['EMS_loss']
+2026-05-07 07:40:05,389 [INFO] Qwen queries for shrimp: ['"EMS loss" shrimp production South China 2023', 'South China shrimp farm EMS mortality rate statistics 2022-2024', '华南地区对虾养殖EMS损失率 2023', '中国南方对虾EMS发病损失数据 2022-2024']
+2026-05-07 07:43:47,152 [INFO] shrimp done: +0
+2026-05-07 07:44:02,153 [INFO] beef_cattle/CN_north: have=['slaughter'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 07:44:05,878 [INFO] Qwen queries for beef_cattle: ['beef cattle feed conversion ratio (FCR) North China 2023', 'FCR ADG mortality beef cattle North China region statistics', '中国北方肉牛饲料转化率 FCR 2023', '中国北方肉牛平均日增重 ADG 死亡率 统计 2023']
+2026-05-07 07:47:48,684 [INFO] beef_cattle done: +0
+2026-05-07 07:48:03,684 [INFO] beef_cattle/CN_south: have=['slaughter', 'adg', 'fcr'], missing=['mortality']
+2026-05-07 07:48:07,415 [INFO] Qwen queries for beef_cattle: ['"beef cattle mortality rate" CN_south 2023', '南方肉牛死亡率统计 2023', '"beef cattle" "mortality" CN_south annual report', '中国南方地区肉牛养殖死亡率数据 2023']
+2026-05-07 07:51:49,791 [INFO] beef_cattle done: +0
+2026-05-07 07:52:04,792 [INFO] finisher_pig/CN_north: have=['mortality', 'adg', 'slaughter', 'fcr', 'spot'], missing=[]
+2026-05-07 07:52:04,792 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 07:52:04,793 [INFO] meat_sheep/CN_north: have=['mortality', 'adg', 'slaughter', 'other', 'survival'], missing=['FCR']
+2026-05-07 07:52:08,641 [INFO] Qwen queries for meat_sheep: ['Feed conversion ratio (FCR) meat sheep production North China 2023', 'FCR meat sheep industry report North China 2022-2024', '肉羊 饲料转化率 FCR 华北地区 2023', '华北地区 肉羊养殖 料肉比 FCR 数据 2022']
+2026-05-07 07:55:50,473 [INFO] meat_sheep done: +0
+2026-05-07 07:56:05,474 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival'], missing=['strep_loss']
+2026-05-07 07:56:09,173 [INFO] Qwen queries for tilapia: ['strep loss mortality rate tilapia South China 2023', 'strep loss percentage tilapia South China 2024', '链球菌病损失率 罗非鱼 华南 2023', '链球菌病死亡率 罗非鱼 华南 2024']
+2026-05-07 07:59:52,084 [INFO] tilapia done: +0
+2026-05-07 08:00:07,086 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-07 08:00:10,982 [INFO] Qwen queries for grouper: ['grouper vibrio loss mortality rate South China 2023', '石斑鱼 弧菌 死亡率 华南 2023', 'grouper farming vibrio infection loss percentage South China', '华南地区 石斑鱼 养殖 弧菌病 损失率']
+2026-05-07 08:03:53,319 [INFO] grouper done: +0
+2026-05-07 08:04:08,319 [INFO] largemouth_bass/CN_south: have=['edwardsiella', 'fcr', 'survival', 'adg'], missing=[]
+2026-05-07 08:04:08,319 [INFO]   → largemouth_bass 已足夠，跳過
+2026-05-07 08:04:09,700 [INFO] Round 10 done. DB=628 +0
+2026-05-07 08:04:09,700 [INFO] Sleeping 1800s...
+2026-05-07 08:34:09,701 [INFO] === Round 11 | 11.4h | total: 18 ===
+2026-05-07 08:34:09,703 [INFO] dairy_goat/CN_all: have=['mortality', 'adg', 'litter', 'milk', 'other', 'fcr', 'spot'], missing=['milk_yield']
+2026-05-07 08:34:13,667 [INFO] Qwen queries for dairy_goat: ['dairy goat milk yield statistics China 2023', '中国奶山羊单产数据 2023年', 'average milk production per dairy goat in China 2022-2024', '中国荷斯坦奶山羊平均产奶量 2023']
+2026-05-07 08:37:55,642 [INFO] dairy_goat done: +0
+2026-05-07 08:38:10,643 [INFO] channel_catfish/CN_all: have=['mortality', 'adg', 'slaughter', 'other', 'fcr', 'survival', 'harvest', 'FCR'], missing=[]
+2026-05-07 08:38:10,644 [INFO]   → channel_catfish 已足夠，跳過
+2026-05-07 08:38:10,644 [INFO] largemouth_catfish/CN_all: have=['adg', 'slaughter', 'other', 'fcr', 'survival', 'FCR'], missing=[]
+2026-05-07 08:38:10,644 [INFO]   → largemouth_catfish 已足夠，跳過
+2026-05-07 08:38:10,644 [INFO] dairy_cow/CN_all: have=['mortality', 'milk', 'other', 'mastitis', 'fcr', 'market'], missing=['milk_yield', 'mastitis_loss']
+2026-05-07 08:38:14,152 [INFO] Qwen queries for dairy_cow: ['2023年中國荷斯坦奶牛平均產奶量統計', 'China dairy cow average milk yield 2023 statistics', '2022年中國奶牛乳房炎經濟損失估算', 'China dairy cattle mastitis economic loss estimate 2022']
+2026-05-07 08:41:56,105 [INFO] dairy_cow done: +0
+2026-05-07 08:42:11,106 [INFO] layer_chicken/CN_all: have=['mortality', 'slaughter', 'litter', 'other', 'egg', 'fcr', 'market', 'survival', 'feed', 'AI'], missing=['egg_rate', 'AI_loss']
+2026-05-07 08:42:15,124 [INFO] Qwen queries for layer_chicken: ['layer chicken egg rate statistics China 2023', '中国蛋鸡产蛋率 2023年 统计数据', 'China layer chicken production efficiency egg rate per hen 2022-2024', '中国蛋鸡养殖 产蛋率 年度数据 2022-2024']
+2026-05-07 08:45:56,870 [INFO] layer_chicken done: +0
+2026-05-07 08:46:11,871 [INFO] broiler/CN_all: have=['mortality', 'slaughter', 'other', 'fcr', 'disease', 'FCR'], missing=['ADG', 'disease_loss']
+2026-05-07 08:46:15,352 [INFO] Qwen queries for broiler: ['broiler average daily gain (ADG) statistics China 2023', 'broiler disease loss rate estimation China 2022', '肉雞平均日增重（ADG）數據 中國 2023', '肉雞疾病損失率估算 中國 2022']
+2026-05-07 08:49:57,445 [INFO] broiler done: +0
+2026-05-07 08:50:12,445 [INFO] shrimp/CN_south: have=['mortality', 'shrimp', 'EMS', 'fcr', 'survival', 'spot', 'FCR'], missing=['EMS_loss']
+2026-05-07 08:50:16,421 [INFO] Qwen queries for shrimp: ['2023年 中國南方 對蝦 EMS 損失率 數據', '2022-2024 South China shrimp EMS mortality loss statistics', '廣西 養蝦 EMS 爆發 經濟損失 比例 2023', 'Guangxi shrimp farming EMS outbreak economic loss percentage 2023']
+2026-05-07 08:53:58,047 [INFO] shrimp done: +0
+2026-05-07 08:54:13,048 [INFO] beef_cattle/CN_north: have=['slaughter', 'spot'], missing=['FCR', 'ADG', 'mortality']
+2026-05-07 08:54:16,991 [INFO] Qwen queries for beef_cattle: ['beef cattle FCR average daily gain mortality CN_north 2023', 'CN_north beef cattle FCR ADG mortality statistics 2022', 'CN_north 肉牛 料肉比 日增重 死亡率 2023', 'CN_north 肉牛 FCR ADG 死亡率 數據 2022']
+2026-05-07 08:57:58,688 [INFO] beef_cattle done: +0
+2026-05-07 08:58:13,689 [INFO] beef_cattle/CN_south: have=['slaughter', 'adg', 'fcr', 'spot'], missing=['mortality']
+2026-05-07 08:58:17,412 [INFO] Qwen queries for beef_cattle: ['2023 South China beef cattle mortality rate statistics', '2022-2024年中國南方地區肉牛死亡率數據報告', 'South China beef cattle industry report 2023 mortality per 1000 head', '2023年中國南方肉牛養殖死亡率及損失率統計分析']
+2026-05-07 09:01:59,814 [INFO] beef_cattle done: +0
+2026-05-07 09:02:14,815 [INFO] finisher_pig/CN_north: have=['mortality', 'adg', 'slaughter', 'fcr', 'spot'], missing=[]
+2026-05-07 09:02:14,816 [INFO]   → finisher_pig 已足夠，跳過
+2026-05-07 09:02:14,816 [INFO] meat_sheep/CN_north: have=['mortality', 'adg', 'slaughter', 'other', 'survival', 'spot'], missing=['FCR']
+2026-05-07 09:02:18,579 [INFO] Qwen queries for meat_sheep: ['meat sheep FCR performance data North China 2023', 'FCR meat sheep growth efficiency North China 2022-2024', '肉羊 北方 料重比 FCR 数据 2023', '中国北方肉羊 饲料转化率 FCR 生产性能 2022']
+2026-05-07 09:06:00,750 [INFO] meat_sheep done: +0
+2026-05-07 09:06:15,751 [INFO] tilapia/CN_south: have=['mortality', 'adg', 'fcr', 'strep', 'survival', 'spot'], missing=['strep_loss']
+2026-05-07 09:06:19,864 [INFO] Qwen queries for tilapia: ['"strep loss" mortality rate tilapia South China 2023', 'South China tilapia streptococcus disease loss percentage 2022', '华南地区 罗非鱼 链球菌病 损失率 2023', '广东 广西 罗非鱼 链球菌感染 经济损失 百分比 2022']
+2026-05-07 09:10:01,664 [INFO] tilapia done: +0
+2026-05-07 09:10:16,665 [INFO] grouper/CN_south: have=['mortality', 'adg', 'vibrio', 'other', 'fcr', 'survival'], missing=['vibrio_loss']
+2026-05-07 09:10:20,708 [INFO] Qwen queries for grouper: ['2023年 南美白对虾 弧菌 损失率 统计数据', 'Grouper aquaculture vibrio mortality rate 2023 South China', '2024 石斑鱼 弧菌病 死亡率 损失 数据', 'Vibrio loss percentage grouper farming 2022-2024 South China']
