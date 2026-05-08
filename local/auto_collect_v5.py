@@ -680,12 +680,33 @@ def firecrawl_scrape(url):
     return ''
 
 MCP_SCRAPER_URL = 'http://localhost:8765'
+CF_WORKER_URL   = 'https://noisy-wildflower-65e1.yujenli1976.workers.dev'
+
+def cf_worker_fetch(url):
+    """Cloudflare Worker 代理爬取（繞過地區限制）"""
+    try:
+        import urllib.parse
+        proxied = f'{CF_WORKER_URL}?url={urllib.parse.quote(url)}'
+        resp = requests.get(proxied, timeout=20,
+            headers={'User-Agent': 'Mozilla/5.0'})
+        if resp.status_code == 200 and len(resp.text) > 200:
+            logging.info(f'CF Worker OK {url[:55]}')
+            return resp.text[:6000]
+    except Exception as e:
+        logging.debug(f'CF Worker: {e}')
+    return ''
 
 def scrape_url(url, mode='auto'):
     """智能爬蟲：MCP Scrapling(Qwen3.6) → Crawl4AI → Firecrawl"""
     if any(d in url for d in SKIP_DOMAINS):
         return ''
     # 層1：scrapling MCP Server（port 8765，Qwen3.6智能路由）
+    # CN域名優先走 CF Worker
+    cn_domains = ['baidu.com', 'cnki.net', 'wanfangdata.com', 'chinesestandard.net',
+                  'qikan.com', 'cqvip.com', 'oriprobe.com']
+    if any(d in url for d in cn_domains):
+        text = cf_worker_fetch(url)
+        if text: return text
     try:
         resp = requests.post(f'{MCP_SCRAPER_URL}/call',
             json={'tool': 'scrape_url',
@@ -753,6 +774,14 @@ def write_to_db(conn, species, region, kpis, url, title, text_for_verify=''):
         vmid = kpi.get('value_mid')
         if vmid is None: continue
         if not kpi.get('unit'): kpi['unit'] = 'unknown'
+        # 寫入前值域驗證，攔截明顯錯誤
+        metric = kpi.get('kpi','')
+        if metric == 'fcr' and not (0.5 <= vmid <= 15): continue
+        if metric == 'adg' and not (0 < vmid <= 3000): continue
+        if metric == 'mortality' and not (0 <= vmid <= 100): continue
+        if metric == 'egg_rate' and not (0 <= vmid <= 100): continue
+        if metric == 'survival' and not (0 <= vmid <= 100): continue
+        if metric == 'milk_yield' and not (0 < vmid <= 100000): continue
         metric  = kpi.get('kpi', 'unknown')
         year    = kpi.get('year') or 2024
         kpi_id  = f"{metric}_{species}_{region.lower()}"
