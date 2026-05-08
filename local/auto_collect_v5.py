@@ -68,11 +68,11 @@ FAO_SPECIES_MAP = {
 
 ALL_SPECIES = [
     # 豬 — 各地區分開，價格/FCR差異顯著
-    ('finisher_pig',   'CN_northeast', ['FCR','ADG','mortality','slaughter_wt']),
-    ('finisher_pig',   'CN_north',     ['FCR','ADG','mortality','slaughter_wt']),
-    ('finisher_pig',   'CN_east',      ['FCR','ADG','mortality','slaughter_wt']),
-    ('finisher_pig',   'CN_south',     ['FCR','ADG','mortality','slaughter_wt']),
-    ('finisher_pig',   'CN_central',   ['FCR','ADG','mortality','slaughter_wt']),
+    ('finisher_pig',   'CN_northeast', ['FCR','ADG','mortality']),
+    ('finisher_pig',   'CN_north',     ['FCR','ADG','mortality']),
+    ('finisher_pig',   'CN_east',      ['FCR','ADG','mortality']),
+    ('finisher_pig',   'CN_south',     ['FCR','ADG','mortality']),
+    ('finisher_pig',   'CN_central',   ['FCR','ADG','mortality']),
     ('finisher_pig',   'SEA_malaysia', ['FCR','ADG','mortality']),
     ('finisher_pig',   'SEA_vietnam',  ['FCR','ADG','mortality']),
     ('breeding_sow',   'CN_northeast', ['litter_size','mortality','FCR']),
@@ -209,7 +209,11 @@ DB現有：{db_summary}
 為以下物種生成6條搜索查詢（英文3條+中文3條），避免重複已有資料：
 物種：{species}（{region}）缺少：{missing_kpis}
 已搜過的查詢：{searched_queries}
-要求：具體含物種+KPI+地區+年份，優先2023-2025年數據。
+要求：
+1. 英文查詢用通用名詞（如pig不用finisher_pig，chicken不用broiler）
+2. 地區用省份名或國家名（如Heilongjiang, Northeast China）
+3. 不要用底線或代碼格式
+4. 優先2022-2025年數據
 輸出純JSON數組：["q1","q2","q3","q4","q5","q6"]"""
 
 EXTRACT_PROMPT = """從以下文字抽取{species}的生產KPI。
@@ -252,6 +256,9 @@ QUERY_EXPAND_PROMPT = """根據以下抽取結果，判斷是否需要擴展搜�
 物種：{species}（{region}）
 
 如果缺少重要KPI，生成2條追加查詢；否則回覆空數組。
+查詢規則：
+1. 用自然語言，不用代碼（如"South China"不用"CN_south"，"pig"不用"finisher_pig"）
+2. 具體含物種+KPI+地區
 輸出純JSON數組：["q1","q2"] 或 []"""
 
 # ── 初始化 ────────────────────────────────────────────────
@@ -461,28 +468,18 @@ def fao_to_kpi(fao_records, species, region='CN_all'):
     return kpis
 
 # ── 多源搜尋引擎 ──────────────────────────────────────────
-def search_tavily(query, max_results=5):
-    if not TAVILY_KEY:
-        return []
-    for attempt in range(MAX_RETRIES):
-        try:
-            resp = requests.post('https://api.tavily.com/search', json={
-                'api_key': TAVILY_KEY,
-                'query': query,
-                'max_results': max_results,
-                'search_depth': 'advanced',
-                'include_raw_content': True,
-            }, timeout=30)
-            if resp.status_code == 200:
-                results = resp.json().get('results', [])
-                logging.info(f'Tavily [{len(results)}] "{query[:50]}"')
-                return [{'url': r.get('url',''), 'title': r.get('title',''),
-                         'snippet': r.get('content','')[:500],
-                         'raw': r.get('raw_content','') or '',
-                         'source': 'tavily'} for r in results]
-        except Exception as e:
-            logging.warning(f'Tavily: {e}')
-        time.sleep(RETRY_DELAY)
+def search_ddg(query, max_results=5):
+    """DuckDuckGo 搜尋（免費無限額，替代超額 Tavily）"""
+    try:
+        from ddgs import DDGS
+        results = list(DDGS().text(query, max_results=max_results))
+        logging.info(f'DDG [{len(results)}] "{query[:50]}"')
+        return [{'url': r.get('href',''), 'title': r.get('title',''),
+                 'snippet': r.get('body','')[:500],
+                 'raw': r.get('body','') or '',
+                 'source': 'ddg'} for r in results if r.get('href')]
+    except Exception as e:
+        logging.warning(f'DDG: {e}')
     return []
 
 def search_semantic_scholar(query, max_results=5):
@@ -548,7 +545,7 @@ def multi_search(query, target_kpis=None):
 
     with ThreadPoolExecutor(max_workers=3) as ex:
         futures = {
-            ex.submit(search_tavily, query, 5): 'tavily',
+            ex.submit(search_ddg, query, 5): 'ddg',
             ex.submit(search_semantic_scholar, query, 3): 'scholar',
             ex.submit(search_firecrawl, query, 3): 'firecrawl',
         }
@@ -688,6 +685,7 @@ def write_to_db(conn, species, region, kpis, url, title, text_for_verify=''):
         if kpi.get('confidence') == 'low': continue
         vmid = kpi.get('value_mid')
         if vmid is None: continue
+        if not kpi.get('unit'): kpi['unit'] = 'unknown'
         metric  = kpi.get('kpi', 'unknown')
         year    = kpi.get('year') or 2024
         kpi_id  = f"{metric}_{species}_{region.lower()}"
@@ -739,7 +737,7 @@ def write_to_db(conn, species, region, kpis, url, title, text_for_verify=''):
                 'TW' if region.startswith('TW') else 'GLOBAL',
                 species,kpi.get('condition',''),kpi_id,
                 vmid,kpi.get('value_min'),kpi.get('value_max'),
-                kpi.get('unit',''),year,credibility,
+                kpi.get('unit','') or 'unknown',year,credibility,
                 'gov_stats' if is_fao else 'academic_background',
                 url,title,f"auto_v5|{kpi.get('condition','')}",
                 'zh-CN',confirmed,
@@ -764,7 +762,7 @@ def write_ingredient_evidence(conn, ingredient, species, region, kpis, url, titl
              year,study_type,credibility,source_url,source_title,raw_text,confirmed,updated_at)
             VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
             str(uuid.uuid4()),ingredient,species,region,kpi.get('kpi','unknown'),
-            effect,kpi.get('unit',''),ctrl,effect,impv,
+            effect,kpi.get('unit','') or 'unknown',ctrl,effect,impv,
             kpi.get('year',2024),kpi.get('study_type','field_trial'),
             kpi.get('credibility',3),url,title,kpi.get('raw_text',''),
             1,datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')))
@@ -954,9 +952,12 @@ def process_species(conn, species, region, target_kpis,
             # Qwen 抽取
             kpis = qwen_extract(full_text, species)
             if kpis:
-                n, u, c = write_to_db(conn, species, region, kpis, url, title, full_text)
-                sp_new += n; sp_upd += u; sp_conf += c
-                all_extracted_kpis.extend([k.get('kpi') for k in kpis])
+                try:
+                    n, u, c = write_to_db(conn, species, region, kpis, url, title, full_text)
+                    sp_new += n; sp_upd += u; sp_conf += c
+                    all_extracted_kpis.extend([k.get('kpi') for k in kpis])
+                except Exception as db_err:
+                    logging.warning(f'DB write skip: {db_err} | {url[:50]}')
                 if n > 0:
                     logging.info(f'  ✅ {species} +{n}(✓{c}) | {url[:55]}')
                     sp_detail.append(f'{species}: +{n}(✓{c})')

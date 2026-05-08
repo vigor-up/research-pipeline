@@ -33,22 +33,45 @@ SEARCH_TARGETS = [
     ('finisher_pig', 'CN_northeast', ['FCR','ADG','mortality']),
     ('finisher_pig', 'CN_north',     ['FCR','ADG','mortality']),
     ('finisher_pig', 'CN_south',     ['FCR','ADG','mortality']),
+    ('finisher_pig', 'CN_central',   ['FCR','ADG','mortality']),
     ('finisher_pig', 'SEA_malaysia', ['FCR','ADG','mortality']),
+    ('finisher_pig', 'SEA_vietnam',  ['FCR','ADG','mortality']),
     ('breeding_sow', 'CN_northeast', ['litter_size','mortality']),
+    ('breeding_sow', 'CN_north',     ['litter_size','mortality']),
     # 牛
     ('beef_cattle',  'CN_northeast', ['FCR','ADG','mortality']),
     ('beef_cattle',  'CN_north',     ['FCR','ADG','mortality']),
+    ('beef_cattle',  'CN_southwest', ['FCR','ADG','mortality']),
+    ('beef_cattle',  'SEA_malaysia', ['FCR','ADG','mortality']),
     ('dairy_cow',    'CN_northeast', ['milk_yield','FCR','mortality']),
+    ('dairy_cow',    'CN_north',     ['milk_yield','FCR','mortality']),
+    # 羊
+    ('meat_sheep',   'CN_northeast', ['FCR','ADG','mortality']),
+    ('meat_sheep',   'CN_northwest', ['FCR','ADG','mortality']),
+    ('meat_goat',    'CN_south',     ['FCR','ADG','mortality']),
+    ('dairy_goat',   'CN_all',       ['milk_yield','FCR','mortality']),
     # 雞
     ('broiler',      'CN_northeast', ['FCR','ADG','mortality']),
     ('broiler',      'CN_south',     ['FCR','ADG','mortality']),
     ('broiler',      'SEA_malaysia', ['FCR','ADG','mortality']),
+    ('broiler',      'SEA_vietnam',  ['FCR','ADG','mortality']),
     ('layer_chicken','CN_northeast', ['FCR','egg_rate','mortality']),
+    ('layer_chicken','CN_north',     ['FCR','egg_rate','mortality']),
+    ('layer_chicken','CN_south',     ['FCR','egg_rate','mortality']),
     ('layer_chicken','SEA_malaysia', ['FCR','egg_rate','mortality']),
+    ('duck',         'CN_south',     ['FCR','ADG','mortality']),
+    ('duck',         'CN_east',      ['FCR','ADG','mortality']),
     # 水產
     ('shrimp',       'CN_south',     ['FCR','survival','mortality']),
     ('shrimp',       'SEA_thailand', ['FCR','survival','mortality']),
+    ('shrimp',       'SEA_vietnam',  ['FCR','survival','mortality']),
+    ('shrimp',       'SEA_malaysia', ['FCR','survival','mortality']),
     ('tilapia',      'CN_south',     ['FCR','ADG','survival']),
+    ('tilapia',      'SEA_thailand', ['FCR','ADG','survival']),
+    ('grouper',      'CN_south',     ['FCR','ADG','survival']),
+    ('largemouth_bass','CN_south',   ['FCR','ADG','survival']),
+    ('channel_catfish','CN_all',     ['FCR','ADG','survival']),
+    ('grass_carp',   'CN_south',     ['FCR','ADG','survival']),
     # 羊
     ('meat_sheep',   'CN_northeast', ['FCR','ADG','mortality']),
 ]
@@ -73,23 +96,17 @@ def tg(msg):
         logging.warning(f'TG: {e}')
 
 # ── 多源搜尋 ──────────────────────────────────────────────
-def search_tavily(query):
-    if not TAVILY_KEY:
-        return []
+def search_ddg(query):
+    """DuckDuckGo 搜尋（免費，替代超額 Tavily）"""
     try:
-        resp = requests.post('https://api.tavily.com/search', json={
-            'api_key': TAVILY_KEY, 'query': query,
-            'max_results': MAX_RESULTS_PER_QUERY,
-            'search_depth': 'advanced',
-            'include_raw_content': True}, timeout=30)
-        if resp.status_code == 200:
-            results = resp.json().get('results', [])
-            return [{'url': r.get('url',''), 'title': r.get('title',''),
-                     'snippet': r.get('content','')[:300],
-                     'raw': r.get('raw_content','') or '',
-                     'source': 'tavily'} for r in results]
+        from ddgs import DDGS
+        results = list(DDGS().text(query, max_results=MAX_RESULTS_PER_QUERY))
+        return [{'url': r.get('href',''), 'title': r.get('title',''),
+                 'snippet': r.get('body','')[:300],
+                 'raw': r.get('body','') or '',
+                 'source': 'ddg'} for r in results if r.get('href')]
     except Exception as e:
-        logging.warning(f'Tavily: {e}')
+        logging.warning(f'DDG: {e}')
     return []
 
 def search_semantic_scholar(query):
@@ -138,7 +155,7 @@ def multi_search(query):
     url_seen = set()
     with ThreadPoolExecutor(max_workers=3) as ex:
         futures = [
-            ex.submit(search_tavily, query),
+            ex.submit(search_ddg, query),
             ex.submit(search_semantic_scholar, query),
             ex.submit(search_firecrawl, query),
         ]
