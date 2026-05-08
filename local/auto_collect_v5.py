@@ -157,6 +157,8 @@ SKIP_DOMAINS = [
     'researchgate.net', 'jstor.org', 'sci-hub',
     'facebook.com', 'twitter.com', 'instagram.com',
     'youtube.com', 'tiktok.com',
+    'amazon.com', 'threads.com', 'foreflight.com',
+    'wikipedia.org', 'bbc.com',
 ]
 
 # ── 地區細化標準化 ────────────────────────────────────────
@@ -237,17 +239,19 @@ KPI: {kpi_id} = {value} {unit}
 
 INGREDIENT_EXTRACT_PROMPT = """從以下文字抽取{ingredient}在{species}上的試驗效果數據。
 只抽取文中明確出現的數字，不推測。
+注意：control_value 可以為 null，只要有 treatment_value 或 improvement_pct 就輸出。
 輸出純JSON數組：
-[{{"kpi":"fcr|adg|mortality|egg_rate|survival|milk_yield|other",
+[{{"kpi":"fcr|adg|mortality|egg_rate|survival|milk_yield|body_weight|other",
   "control_value":對照組數字或null,
-  "treatment_value":試驗組數字,
-  "unit":"單位",
-  "improvement_pct":改善百分比或null,
+  "treatment_value":試驗組數字或null,
+  "improvement_pct":改善百分比（如"improved 8%"則填8.0）或null,
+  "unit":"單位或空字串",
   "year":年份或null,
   "study_type":"field_trial|lab|meta_analysis|review",
   "confidence":"high|medium|low",
-  "raw_text":"原文關鍵句子（30字內）"}}]
-無數字回覆: []
+  "raw_text":"原文關鍵句子（40字內，必填）"}}]
+條件：至少有 treatment_value 或 improvement_pct 其中一個不為 null 才輸出。
+無有效數據回覆: []
 文字：{text}"""
 
 QUERY_EXPAND_PROMPT = """根據以下抽取結果，判斷是否需要擴展搜尋：
@@ -518,6 +522,67 @@ def search_semantic_scholar(query, max_results=5):
         logging.warning(f'SemanticScholar: {e}')
     return []
 
+def search_baidu_scholar(query, max_results=5):
+    try:
+        from ddgs import DDGS
+        results = list(DDGS().text(f'site:xueshu.baidu.com {query}', max_results=max_results))
+        logging.info(f'BaiduScholar [{len(results)}] "{query[:45]}"')
+        return [{'url': r.get('href',''), 'title': r.get('title',''),
+                 'snippet': r.get('body','')[:500], 'raw': r.get('body','') or '',
+                 'source': 'baidu_scholar'} for r in results if r.get('href')]
+    except Exception as e:
+        logging.warning(f'BaiduScholar: {e}')
+    return []
+
+def search_wanfang(query, max_results=5):
+    try:
+        from ddgs import DDGS
+        results = list(DDGS().text(f'site:wanfangdata.com.cn {query}', max_results=max_results))
+        logging.info(f'Wanfang [{len(results)}] "{query[:45]}"')
+        return [{'url': r.get('href',''), 'title': r.get('title',''),
+                 'snippet': r.get('body','')[:500], 'raw': r.get('body','') or '',
+                 'source': 'wanfang'} for r in results if r.get('href')]
+    except Exception as e:
+        logging.warning(f'Wanfang: {e}')
+    return []
+
+def search_cnki_mcp(query, max_results=5):
+    try:
+        resp = requests.post('http://localhost:8767/call',
+            json={'tool': 'search_cnki', 'params': {'query': query,
+                  'search_type': 'SU', 'max_results': max_results}},
+            timeout=20)
+        if resp.status_code == 200:
+            data = resp.json()
+            papers = data.get('papers', data.get('content', []))
+            results = []
+            for p in (papers if isinstance(papers, list) else []):
+                if isinstance(p, dict):
+                    results.append({'url': p.get('url', p.get('link', '')),
+                        'title': p.get('title',''),
+                        'snippet': p.get('abstract','')[:500],
+                        'raw': p.get('abstract','') or '', 'source': 'cnki'})
+            logging.info(f'CNKI [{len(results)}] "{query[:45]}"')
+            return results
+    except Exception as e:
+        logging.debug(f'CNKI MCP: {e}')
+    return []
+
+def scrape_urls_parallel(urls, max_workers=4):
+    results = {}
+    valid = [u for u in urls if u and not any(d in u for d in SKIP_DOMAINS)]
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        futures = {ex.submit(scrape_url, url): url for url in valid}
+        for future in as_completed(futures, timeout=120):
+            url = futures[future]
+            try:
+                text = future.result()
+                if text:
+                    results[url] = text
+            except Exception as e:
+                logging.debug(f'Parallel scrape fail {url[:50]}: {e}')
+    return results
+
 def search_firecrawl(query, max_results=5):
     """Firecrawl Search — JS密集頁面搜尋"""
     try:
@@ -543,11 +608,13 @@ def multi_search(query, target_kpis=None):
     all_results = []
     url_seen = set()
 
-    with ThreadPoolExecutor(max_workers=3) as ex:
+    with ThreadPoolExecutor(max_workers=5) as ex:
         futures = {
             ex.submit(search_ddg, query, 5): 'ddg',
             ex.submit(search_semantic_scholar, query, 3): 'scholar',
             ex.submit(search_firecrawl, query, 3): 'firecrawl',
+            ex.submit(search_baidu_scholar, query, 3): 'baidu',
+            ex.submit(search_cnki_mcp, query, 3): 'cnki',
         }
         for future in as_completed(futures, timeout=40):
             try:
@@ -753,21 +820,40 @@ def write_ingredient_evidence(conn, ingredient, species, region, kpis, url, titl
     inserted = 0
     for kpi in kpis:
         effect = kpi.get('treatment_value')
-        if effect is None: continue
+        impv_raw = kpi.get('improvement_pct')
+        # 放寬：有 treatment_value 或 improvement_pct 其中一個即可
+        if effect is None and impv_raw is None:
+            continue
         ctrl = kpi.get('control_value')
-        impv = round((effect-ctrl)/ctrl*100,2) if ctrl and ctrl!=0 else None
-        conn.execute("""INSERT OR IGNORE INTO ingredient_evidence
-            (id,ingredient,species,region,kpi_id,
-             effect_size,effect_unit,control_value,treatment_value,improvement_pct,
-             year,study_type,credibility,source_url,source_title,raw_text,confirmed,updated_at)
-            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
-            str(uuid.uuid4()),ingredient,species,region,kpi.get('kpi','unknown'),
-            effect,kpi.get('unit','') or 'unknown',ctrl,effect,impv,
-            kpi.get('year',2024),kpi.get('study_type','field_trial'),
-            kpi.get('credibility',3),url,title,kpi.get('raw_text',''),
-            1,datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')))
-        inserted += 1
-    if inserted > 0: conn.commit()
+        # 計算 improvement_pct
+        if impv_raw is not None:
+            impv = float(impv_raw)
+        elif ctrl and ctrl != 0 and effect is not None:
+            impv = round((effect - ctrl) / ctrl * 100, 2)
+        else:
+            impv = None
+        # effect_size 用 treatment_value，沒有就用 improvement_pct 作標記
+        effect_size = effect if effect is not None else impv
+        raw_text = kpi.get('raw_text','')
+        if not raw_text:
+            continue  # 沒有原文句子的跳過，品質太低
+        try:
+            conn.execute("""INSERT OR IGNORE INTO ingredient_evidence
+                (id,ingredient,species,region,kpi_id,
+                 effect_size,effect_unit,control_value,treatment_value,improvement_pct,
+                 year,study_type,credibility,source_url,source_title,raw_text,confirmed,updated_at)
+                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
+                str(uuid.uuid4()),ingredient,species,region,kpi.get('kpi','unknown'),
+                effect_size, kpi.get('unit','') or 'unknown',
+                ctrl, effect, impv,
+                kpi.get('year',2024), kpi.get('study_type','field_trial'),
+                kpi.get('credibility',3), url, title, raw_text,
+                1, datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')))
+            inserted += 1
+        except Exception as e:
+            logging.debug(f'ingredient_evidence insert fail: {e}')
+    if inserted > 0:
+        conn.commit()
     return inserted
 
 def query_kpi_stats(conn, species, region, kpi_name):
@@ -1103,18 +1189,24 @@ def main():
     logging.info('DONE')
 
 if __name__ == '__main__':
-    # ChangeDetection.io 觸發模式
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--mode', default='full',
-                        choices=['full', 'single', 'triggered'],
-                        help='full=全量, single=單物種, triggered=ChangeDetection觸發')
+                        choices=['full', 'single', 'triggered', 'ingredient'],
+                        help='full=全量 single=單物種 triggered=ChangeDetection觸發 ingredient=只跑原料論文')
     parser.add_argument('--species', default='', help='single模式指定物種')
     parser.add_argument('--region',  default='CN_all', help='single模式指定地區')
     args = parser.parse_args()
 
     try:
-        if args.mode == 'triggered':
+        if args.mode == 'ingredient':
+            setup_logging()
+            load_api_keys()
+            conn = sqlite3.connect(DB_PATH)
+            n = run_ingredient_collection(conn, set(), set())
+            tg(f'✅ ingredient done: +{n}筆原料論文')
+            conn.close()
+        elif args.mode == 'triggered':
             # ChangeDetection → Webhook → 觸發單輪收集
             setup_logging()
             load_api_keys()
