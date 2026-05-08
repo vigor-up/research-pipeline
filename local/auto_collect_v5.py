@@ -159,7 +159,13 @@ SKIP_DOMAINS = [
     'youtube.com', 'tiktok.com',
     'amazon.com', 'threads.com', 'foreflight.com',
     'wikipedia.org', 'bbc.com',
+    'naturalnews.com', 'supplements.selfdecode.com',
+    'linkedin.com', 'scribd.com', 'selfdecode.com',
+    'chemicalbook.com', 'learneating.com',
+    'globalgrowthinsights.com', 'marketdataforecast.com',
 ]
+
+SKIP_EXTENSIONS = ('.pdf', '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx')
 
 # ── 地區細化標準化 ────────────────────────────────────────
 REGION_NORMALIZE = {
@@ -699,6 +705,9 @@ def cf_worker_fetch(url):
 def scrape_url(url, mode='auto'):
     """智能爬蟲：MCP Scrapling(Qwen3.6) → Crawl4AI → Firecrawl"""
     if any(d in url for d in SKIP_DOMAINS):
+        return ''
+    if any(url.lower().endswith(ext) for ext in SKIP_EXTENSIONS):
+        logging.debug(f'Skip file extension: {url[:55]}')
         return ''
     # 層1：scrapling MCP Server（port 8765，Qwen3.6智能路由）
     # CN域名優先走 CF Worker
