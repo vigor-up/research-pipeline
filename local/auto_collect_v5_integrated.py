@@ -491,12 +491,31 @@ def qwen_page_value(snippet, species, target_kpis):
         pass
     return 'medium'  # 判讀失敗預設medium，繼續處理
 
+# ── Region code → 自然語言（搜尋查詢用）─────────────────────
+REGION_LABEL = {
+    'CN_northeast': 'Northeast China',
+    'CN_north':     'North China',
+    'CN_south':     'South China',
+    'CN_central':   'Central China',
+    'CN_east':      'East China',
+    'CN_southwest': 'Southwest China',
+    'CN_northwest': 'Northwest China',
+    'CN_all':       'China',
+    'SEA_vietnam':  'Vietnam',
+    'SEA_malaysia': 'Malaysia',
+    'SEA_thailand': 'Thailand',
+    'SEA_indonesia':'Indonesia',
+    'GLOBAL':       'Global',
+}
+
 def qwen_gen_queries(species, region, missing_kpis, db_summary, searched_queries=None):
+    region_label = REGION_LABEL.get(region, region)
+    species_label = species.replace('_', ' ')
     if not missing_kpis:
-        return [f'{species.replace("_"," ")} FCR ADG China {region} 2024']
+        return [f'{species_label} FCR ADG {region_label} 2024']
     prompt = GAP_PROMPT.format(
         db_summary=json.dumps(db_summary, ensure_ascii=False),
-        species=species, region=region,
+        species=species_label, region=region_label,
         missing_kpis=missing_kpis,
         searched_queries=json.dumps(searched_queries or [], ensure_ascii=False))
     content = qwen_call(prompt, max_tokens=400)
@@ -507,7 +526,7 @@ def qwen_gen_queries(species, region, missing_kpis, db_summary, searched_queries
             return [q for q in queries if isinstance(q, str)][:6]
     except Exception:
         pass
-    return [f'{species.replace("_"," ")} {" ".join(missing_kpis[:2])} China 2024']
+    return [f'{species_label} {" ".join(missing_kpis[:2])} {region_label} 2024']
 
 def qwen_extract(text, species):
     if not text or len(text) < 100:
@@ -1108,6 +1127,8 @@ def run_ingredient_collection(conn, visited_urls, visited_fingerprints):
                             logging.info(f'  Evidence {ingredient}/{species} +{n}')
     return total
 
+_fao_fetched = set()  # 每輪 reset，見 main()
+
 def process_species(conn, species, region, target_kpis,
                     visited_urls, visited_fingerprints):
     """單一物種的完整搜尋→抓取→抽取→入庫流程"""
@@ -1119,8 +1140,9 @@ def process_species(conn, species, region, target_kpis,
 
     logging.info(f'{species}/{region}: have={summary["have"]}, missing={missing}')
 
-    # ── A. FAO STAT 直拉（最高可信度）────────────────────
-    if species in FAO_SPECIES_MAP:
+    # ── A. FAO STAT 直拉（每個 species 全程只拉一次）────────
+    if species in FAO_SPECIES_MAP and species not in _fao_fetched:
+        _fao_fetched.add(species)
         for dataset, item_name in FAO_SPECIES_MAP[species]:
             fao_recs = fao_fetch(dataset, item_name)
             if fao_recs:
@@ -1131,7 +1153,9 @@ def process_species(conn, species, region, target_kpis,
                 sp_new += n; sp_upd += u; sp_conf += c
                 if n > 0:
                     logging.info(f'  🌐 FAO {species} +{n}')
-        time.sleep(3)
+        time.sleep(1)
+    elif species in FAO_SPECIES_MAP:
+        logging.debug(f'FAO skip {species} (already fetched this run)')
 
     # 檢查樣本數：即使 KPI 齊全，樣本數不足3仍繼續累積
     min_samples = conn.execute(
@@ -1139,7 +1163,7 @@ def process_species(conn, species, region, target_kpis,
         "WHERE species=? AND region=? AND confirmed=1",
         (species, region)).fetchone()[0] or 0
 
-    if not missing and min_samples >= 3:
+    if not missing and min_samples >= 2:
         logging.info(f'  → {species}/{region} 足夠(min_samples={min_samples})，跳搜尋')
         return sp_new, sp_upd, sp_conf, sp_detail
 
@@ -1302,6 +1326,7 @@ def main():
             break
 
         round_num += 1
+        _fao_fetched.clear()  # 每輪重置，允許重新拉 FAO
         logging.info(f'=== Round {round_num} | {elapsed:.1f}h ===')
         round_new = round_upd = round_conf = 0
         round_detail   = []
