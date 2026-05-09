@@ -2,7 +2,7 @@ name: EVO-X2 Data Collection
 
 on:
   schedule:
-    # 每天凌晨 2:00 台灣時間 = UTC 18:00
+    # 每日 02:00 台灣時間 = UTC 18:00
     - cron: '0 18 * * *'
   workflow_dispatch:
     inputs:
@@ -40,24 +40,55 @@ jobs:
 
       - name: Run collect_raw
         env:
-          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
-          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+          TAVILY_API_KEY:       ${{ secrets.TAVILY_API_KEY }}
+          FIRECRAWL_API_KEY:    ${{ secrets.FIRECRAWL_API_KEY }}
           SEMANTIC_SCHOLAR_KEY: ${{ secrets.SEMANTIC_SCHOLAR_KEY }}
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          TELEGRAM_TOKEN:       ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID:     ${{ secrets.TELEGRAM_CHAT_ID }}
+          R2_ACCESS_KEY_ID:     ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           python local/collect_raw.py
 
+      # ── 新增：collect_raw 完成後觸發 EVO-X2 process_raw ──
+      - name: Trigger EVO-X2 process_raw via webhook
+        if: success()
+        env:
+          TELEGRAM_TOKEN:   ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          # 方法1：透過 CF Tunnel webhook 直接觸發 process_raw
+          HTTP_CODE=$(curl -s -o /tmp/webhook_resp.txt -w "%{http_code}" \
+            -X POST "https://webhook.richtrong.com/webhook/github" \
+            -H "Content-Type: application/json" \
+            -H "X-Webhook-Secret: vigor_up_2026" \
+            -d '{"action":"process"}' \
+            --max-time 15 || echo "000")
+
+          echo "Webhook HTTP: $HTTP_CODE"
+          cat /tmp/webhook_resp.txt || true
+
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ EVO-X2 process_raw triggered via webhook"
+          else
+            # 方法2：Webhook 失敗時改用 Telegram Bot 發 /process 指令
+            echo "⚠️ Webhook failed ($HTTP_CODE), fallback to Telegram /process"
+            curl -s -X POST \
+              "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+              -d "chat_id=${TELEGRAM_CHAT_ID}" \
+              -d "text=/process" \
+              --max-time 10
+            echo "Telegram /process sent as fallback"
+          fi
+
       - name: Notify on failure
         if: failure()
         env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_TOKEN:   ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           curl -s -X POST \
-            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-            -d "chat_id=${TG_OWNER_CHAT_ID}" \
+            "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
             -d "text=❌ GitHub Actions collect_raw 失敗 $(date '+%Y-%m-%d %H:%M')" \
             -d "parse_mode=HTML"
