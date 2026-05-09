@@ -303,6 +303,16 @@ def normalize_region(region):
     return REGION_NORMALIZE.get(region.lower(), region)
 
 # ── 核心原料標籤偵測（機密，對外屏蔽）───────────────────
+
+# KPI 中英文對照（讓簡體 missing 能 match 到 DB 已有的英文 kpi_id）
+KPI_ZH_TO_EN = {
+    '饲料转化率': 'fcr', '料肉比': 'fcr', '料重比': 'fcr',
+    '日增重': 'adg', '平均日增重': 'adg',
+    '死亡率': 'mortality', '死淘率': 'mortality',
+    '产蛋率': 'egg_rate', '出栏体重': 'body_weight',
+    '存活率': 'survival', '成活率': 'survival',
+    '产奶量': 'milk_yield', '窝产仔数': 'litter_size',
+}
 INGREDIENT_TAGS_MAP = {
     'policosanol': [
         'policosanol','octacosanol','triacontanol','tetracosanol','pentacosanol',
@@ -569,7 +579,7 @@ def fao_fetch(dataset, item_name, area=FAO_AREA_CN, years='2020,2021,2022,2023')
             'year': years,
             'output_type': 'json',
         }
-        r = requests.get(url, params=params, timeout=20)
+        r = requests.get(url, params=params, timeout=3)
         if r.status_code == 200:
             data = r.json()
             items = data.get('data', [])
@@ -658,7 +668,7 @@ def search_semantic_scholar(query, max_results=5):
                 'fields': 'title,abstract,year,externalIds,openAccessPdf',
             },
             headers={'x-api-key': SEMANTIC_SCHOLAR_KEY},
-            timeout=20)
+            timeout=3)
         if resp.status_code == 200:
             papers = resp.json().get('data', [])
             results = []
@@ -752,7 +762,7 @@ def crawl4ai_fetch(url):
 
 def scrapling_fetch(url):
     try:
-        page = Fetcher(auto_match=False).get(url, timeout=20)
+        page = Fetcher(auto_match=False).get(url, timeout=3)
         text = page.get_all_text(ignore_tags=('script', 'style', 'nav', 'footer', 'header'))
         if text and len(text) > 200:
             logging.info(f'Scrapling ✓ {url[:55]}')
@@ -884,7 +894,23 @@ def get_db_summary(conn, species, region, target_kpis):
         "SELECT kpi_id, value, confirmed FROM market_kpi WHERE species=? AND region=?",
         (species, region)).fetchall()
     have    = {r[0].split('_')[0] for r in rows if r[1] is not None}
-    missing = [k for k in target_kpis if k.lower() not in have]
+        # 簡體KPI轉英文後比對DB已有欄位，避免重複搜尋
+    _kpi_map = {
+        '饲料转化率':'fcr','料肉比':'fcr','料重比':'fcr',
+        '日增重':'adg','平均日增重':'adg',
+        '死亡率':'mortality','死淘率':'mortality',
+        '产蛋率':'egg_rate','高峰产蛋率':'egg_rate_peak',
+        '蛋重':'egg_weight','出栏体重':'body_weight',
+        '存活率':'survival','成活率':'survival',
+        '产奶量':'milk_yield','乳脂率':'milk_fat',
+        '乳蛋白率':'milk_protein','体细胞数':'somatic_cell_count',
+        '窝产仔数':'litter_size','分娩率':'farrowing_rate',
+        '断奶成活率':'weaning_survival',
+        '受胎率':'conception_rate','配种妊娠率':'conception_rate',
+        '屠宰率':'dressing_rate','特定生长率':'sgr',
+    }
+    missing = [k for k in target_kpis
+               if _kpi_map.get(k, k).lower() not in have and k.lower() not in have]
     return {'have': list(have), 'missing': missing, 'total': len(rows)}
 
 def write_to_db(conn, species, region, kpis, url, title, text_for_verify=''):
