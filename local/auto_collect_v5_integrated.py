@@ -20,6 +20,29 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from scrapling import Fetcher
 
+# ── ChromaDB 初始化（延遲載入）───────────────────────────
+_chroma_collection = None
+
+def get_chroma_collection():
+    global _chroma_collection
+    if _chroma_collection is not None:
+        return _chroma_collection
+    try:
+        import chromadb
+        from chromadb.utils import embedding_functions
+        client = chromadb.PersistentClient(path=r'D:\LLM\knowledge\biotech\db')
+        ef = embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name='BAAI/bge-m3')
+        _chroma_collection = client.get_or_create_collection(
+            name='biotech_papers',
+            embedding_function=ef,
+            metadata={'hnsw:space': 'cosine'})
+        logging.info(f'ChromaDB connected: {_chroma_collection.count()} docs')
+        return _chroma_collection
+    except Exception as e:
+        logging.warning(f'ChromaDB init fail: {e}')
+        return None
+
 # ── 常數設定 ─────────────────────────────────────────────
 DB_PATH        = r'D:\LLM\knowledge\market\market_data.db'
 LOG_PATH       = r'D:\LLM\workflows\research-pipeline-v2\logs\auto_collect_v5.log'
@@ -259,15 +282,7 @@ SKIP_DOMAINS = [
     'researchgate.net', 'jstor.org', 'sci-hub',
     'facebook.com', 'twitter.com', 'instagram.com',
     'youtube.com', 'tiktok.com',
-    'amazon.com', 'threads.com', 'foreflight.com',
-    'wikipedia.org', 'bbc.com',
-    'naturalnews.com', 'supplements.selfdecode.com',
-    'linkedin.com', 'scribd.com', 'selfdecode.com',
-    'chemicalbook.com', 'learneating.com',
-    'globalgrowthinsights.com', 'marketdataforecast.com',
 ]
-
-SKIP_EXTENSIONS = ('.pdf', '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx')
 
 # ── 地區細化標準化 ────────────────────────────────────────
 REGION_NORMALIZE = {
@@ -367,19 +382,17 @@ KPI: {kpi_id} = {value} {unit}
 
 INGREDIENT_EXTRACT_PROMPT = """從以下文字抽取{ingredient}在{species}上的試驗效果數據。
 只抽取文中明確出現的數字，不推測。
-注意：control_value 可以為 null，只要有 treatment_value 或 improvement_pct 就輸出。
 輸出純JSON數組：
-[{{"kpi":"fcr|adg|mortality|egg_rate|survival|milk_yield|body_weight|other",
+[{{"kpi":"fcr|adg|mortality|egg_rate|survival|milk_yield|other",
   "control_value":對照組數字或null,
-  "treatment_value":試驗組數字或null,
-  "improvement_pct":改善百分比（如"improved 8%"則填8.0）或null,
-  "unit":"單位或空字串",
+  "treatment_value":試驗組數字,
+  "unit":"單位",
+  "improvement_pct":改善百分比或null,
   "year":年份或null,
   "study_type":"field_trial|lab|meta_analysis|review",
   "confidence":"high|medium|low",
-  "raw_text":"原文關鍵句子（40字內，必填）"}}]
-條件：至少有 treatment_value 或 improvement_pct 其中一個不為 null 才輸出。
-無有效數據回覆: []
+  "raw_text":"原文關鍵句子（30字內）"}}]
+無數字回覆: []
 文字：{text}"""
 
 QUERY_EXPAND_PROMPT = """根據以下抽取結果，判斷是否需要擴展搜尋：
@@ -613,6 +626,26 @@ def search_ddg(query, max_results=5):
     except Exception as e:
         logging.warning(f'DDG: {e}')
     return []
+    for attempt in range(MAX_RETRIES):
+        try:
+            resp = requests.post('https://api.tavily.com/search', json={
+                'api_key': TAVILY_KEY,
+                'query': query,
+                'max_results': max_results,
+                'search_depth': 'advanced',
+                'include_raw_content': True,
+            }, timeout=30)
+            if resp.status_code == 200:
+                results = resp.json().get('results', [])
+                logging.info(f'Tavily [{len(results)}] "{query[:50]}"')
+                return [{'url': r.get('url',''), 'title': r.get('title',''),
+                         'snippet': r.get('content','')[:500],
+                         'raw': r.get('raw_content','') or '',
+                         'source': 'tavily'} for r in results]
+        except Exception as e:
+            logging.warning(f'Tavily: {e}')
+        time.sleep(RETRY_DELAY)
+    return []
 
 def search_semantic_scholar(query, max_results=5):
     """Semantic Scholar — 學術論文直搜"""
@@ -650,67 +683,6 @@ def search_semantic_scholar(query, max_results=5):
         logging.warning(f'SemanticScholar: {e}')
     return []
 
-def search_baidu_scholar(query, max_results=5):
-    try:
-        from ddgs import DDGS
-        results = list(DDGS().text(f'site:xueshu.baidu.com {query}', max_results=max_results))
-        logging.info(f'BaiduScholar [{len(results)}] "{query[:45]}"')
-        return [{'url': r.get('href',''), 'title': r.get('title',''),
-                 'snippet': r.get('body','')[:500], 'raw': r.get('body','') or '',
-                 'source': 'baidu_scholar'} for r in results if r.get('href')]
-    except Exception as e:
-        logging.warning(f'BaiduScholar: {e}')
-    return []
-
-def search_wanfang(query, max_results=5):
-    try:
-        from ddgs import DDGS
-        results = list(DDGS().text(f'site:wanfangdata.com.cn {query}', max_results=max_results))
-        logging.info(f'Wanfang [{len(results)}] "{query[:45]}"')
-        return [{'url': r.get('href',''), 'title': r.get('title',''),
-                 'snippet': r.get('body','')[:500], 'raw': r.get('body','') or '',
-                 'source': 'wanfang'} for r in results if r.get('href')]
-    except Exception as e:
-        logging.warning(f'Wanfang: {e}')
-    return []
-
-def search_cnki_mcp(query, max_results=5):
-    try:
-        resp = requests.post('http://localhost:8767/call',
-            json={'tool': 'search_cnki', 'params': {'query': query,
-                  'search_type': 'SU', 'max_results': max_results}},
-            timeout=20)
-        if resp.status_code == 200:
-            data = resp.json()
-            papers = data.get('papers', data.get('content', []))
-            results = []
-            for p in (papers if isinstance(papers, list) else []):
-                if isinstance(p, dict):
-                    results.append({'url': p.get('url', p.get('link', '')),
-                        'title': p.get('title',''),
-                        'snippet': p.get('abstract','')[:500],
-                        'raw': p.get('abstract','') or '', 'source': 'cnki'})
-            logging.info(f'CNKI [{len(results)}] "{query[:45]}"')
-            return results
-    except Exception as e:
-        logging.debug(f'CNKI MCP: {e}')
-    return []
-
-def scrape_urls_parallel(urls, max_workers=4):
-    results = {}
-    valid = [u for u in urls if u and not any(d in u for d in SKIP_DOMAINS)]
-    with ThreadPoolExecutor(max_workers=max_workers) as ex:
-        futures = {ex.submit(scrape_url, url): url for url in valid}
-        for future in as_completed(futures, timeout=120):
-            url = futures[future]
-            try:
-                text = future.result()
-                if text:
-                    results[url] = text
-            except Exception as e:
-                logging.debug(f'Parallel scrape fail {url[:50]}: {e}')
-    return results
-
 def search_firecrawl(query, max_results=5):
     """Firecrawl Search — JS密集頁面搜尋"""
     try:
@@ -736,13 +708,11 @@ def multi_search(query, target_kpis=None):
     all_results = []
     url_seen = set()
 
-    with ThreadPoolExecutor(max_workers=5) as ex:
+    with ThreadPoolExecutor(max_workers=3) as ex:
         futures = {
             ex.submit(search_ddg, query, 5): 'ddg',
             ex.submit(search_semantic_scholar, query, 3): 'scholar',
             ex.submit(search_firecrawl, query, 3): 'firecrawl',
-            ex.submit(search_baidu_scholar, query, 3): 'baidu',
-            ex.submit(search_cnki_mcp, query, 3): 'cnki',
         }
         for future in as_completed(futures, timeout=40):
             try:
@@ -808,36 +778,59 @@ def firecrawl_scrape(url):
     return ''
 
 MCP_SCRAPER_URL = 'http://localhost:8765'
-CF_WORKER_URL   = 'https://noisy-wildflower-65e1.yujenli1976.workers.dev'
+RAGFLOW_API_KEY    = 'ragflow-fcCq8K0sVcefhVHboEmBOOzt5S2cQ7jCcHT5cCwhWRM'
+RAGFLOW_DATASET_ID = '5a68aa6e49ba11f190c657ee8852d812'
+RAGFLOW_URL        = 'http://localhost/api/v1'
 
-def cf_worker_fetch(url):
-    """Cloudflare Worker 代理爬取（繞過地區限制）"""
+_ragflow_doc_seen = set()
+_chroma_doc_seen  = set()
+
+def push_to_ragflow(text, url, title):
+    url_hash = hashlib.md5(url.encode()).hexdigest()
+    if url_hash in _ragflow_doc_seen or len(text) < 300:
+        return False
+    _ragflow_doc_seen.add(url_hash)
     try:
-        import urllib.parse
-        proxied = f'{CF_WORKER_URL}?url={urllib.parse.quote(url)}'
-        resp = requests.get(proxied, timeout=20,
-            headers={'User-Agent': 'Mozilla/5.0'})
-        if resp.status_code == 200 and len(resp.text) > 200:
-            logging.info(f'CF Worker OK {url[:55]}')
-            return resp.text[:6000]
+        resp = requests.post(
+            f'{RAGFLOW_URL}/datasets/{RAGFLOW_DATASET_ID}/documents',
+            headers={'Authorization': f'Bearer {RAGFLOW_API_KEY}'},
+            json={'name': f"{title[:80]}_{url_hash[:8]}.txt", 'text': text[:8000]},
+            timeout=30)
+        if resp.status_code in (200, 201):
+            logging.debug(f'RAGFlow pushed: {title[:50]}')
+            return True
     except Exception as e:
-        logging.debug(f'CF Worker: {e}')
-    return ''
+        logging.debug(f'RAGFlow push fail: {e}')
+    return False
+
+def push_to_chromadb(text, url, title, metadata=None):
+    url_hash = hashlib.md5(url.encode()).hexdigest()
+    if url_hash in _chroma_doc_seen:
+        return False
+    _chroma_doc_seen.add(url_hash)
+    col = get_chroma_collection()
+    if col is None:
+        return False
+    try:
+        if col.get(ids=[url_hash])['ids']:
+            return False
+        meta = {'url': url[:500], 'title': title[:200],
+                'source': 'auto_collect_v5',
+                'collected_at': datetime.now().strftime('%Y-%m-%d')}
+        if metadata:
+            meta.update({k: str(v)[:200] for k, v in metadata.items()})
+        col.add(ids=[url_hash], documents=[text[:8000]], metadatas=[meta])
+        logging.info(f'ChromaDB added: {title[:50]}')
+        return True
+    except Exception as e:
+        logging.debug(f'ChromaDB push fail: {e}')
+    return False
 
 def scrape_url(url, mode='auto'):
     """智能爬蟲：MCP Scrapling(Qwen3.6) → Crawl4AI → Firecrawl"""
     if any(d in url for d in SKIP_DOMAINS):
         return ''
-    if any(url.lower().endswith(ext) for ext in SKIP_EXTENSIONS):
-        logging.debug(f'Skip file extension: {url[:55]}')
-        return ''
     # 層1：scrapling MCP Server（port 8765，Qwen3.6智能路由）
-    # CN域名優先走 CF Worker
-    cn_domains = ['baidu.com', 'cnki.net', 'wanfangdata.com', 'chinesestandard.net',
-                  'qikan.com', 'cqvip.com', 'oriprobe.com']
-    if any(d in url for d in cn_domains):
-        text = cf_worker_fetch(url)
-        if text: return text
     try:
         resp = requests.post(f'{MCP_SCRAPER_URL}/call',
             json={'tool': 'scrape_url',
@@ -904,15 +897,7 @@ def write_to_db(conn, species, region, kpis, url, title, text_for_verify=''):
         if kpi.get('confidence') == 'low': continue
         vmid = kpi.get('value_mid')
         if vmid is None: continue
-        if not kpi.get('unit'): kpi['unit'] = 'unknown'
-        # 寫入前值域驗證，攔截明顯錯誤
-        metric = kpi.get('kpi','')
-        if metric == 'fcr' and not (0.5 <= vmid <= 15): continue
-        if metric == 'adg' and not (0 < vmid <= 3000): continue
-        if metric == 'mortality' and not (0 <= vmid <= 100): continue
-        if metric == 'egg_rate' and not (0 <= vmid <= 100): continue
-        if metric == 'survival' and not (0 <= vmid <= 100): continue
-        if metric == 'milk_yield' and not (0 < vmid <= 100000): continue
+        if kpi.get('unit') is None: kpi['unit'] = 'unknown'
         metric  = kpi.get('kpi', 'unknown')
         year    = kpi.get('year') or 2024
         kpi_id  = f"{metric}_{species}_{region.lower()}"
@@ -980,40 +965,21 @@ def write_ingredient_evidence(conn, ingredient, species, region, kpis, url, titl
     inserted = 0
     for kpi in kpis:
         effect = kpi.get('treatment_value')
-        impv_raw = kpi.get('improvement_pct')
-        # 放寬：有 treatment_value 或 improvement_pct 其中一個即可
-        if effect is None and impv_raw is None:
-            continue
+        if effect is None: continue
         ctrl = kpi.get('control_value')
-        # 計算 improvement_pct
-        if impv_raw is not None:
-            impv = float(impv_raw)
-        elif ctrl and ctrl != 0 and effect is not None:
-            impv = round((effect - ctrl) / ctrl * 100, 2)
-        else:
-            impv = None
-        # effect_size 用 treatment_value，沒有就用 improvement_pct 作標記
-        effect_size = effect if effect is not None else impv
-        raw_text = kpi.get('raw_text','')
-        if not raw_text:
-            continue  # 沒有原文句子的跳過，品質太低
-        try:
-            conn.execute("""INSERT OR IGNORE INTO ingredient_evidence
-                (id,ingredient,species,region,kpi_id,
-                 effect_size,effect_unit,control_value,treatment_value,improvement_pct,
-                 year,study_type,credibility,source_url,source_title,raw_text,confirmed,updated_at)
-                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
-                str(uuid.uuid4()),ingredient,species,region,kpi.get('kpi','unknown'),
-                effect_size, kpi.get('unit','') or 'unknown',
-                ctrl, effect, impv,
-                kpi.get('year',2024), kpi.get('study_type','field_trial'),
-                kpi.get('credibility',3), url, title, raw_text,
-                1, datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')))
-            inserted += 1
-        except Exception as e:
-            logging.debug(f'ingredient_evidence insert fail: {e}')
-    if inserted > 0:
-        conn.commit()
+        impv = round((effect-ctrl)/ctrl*100,2) if ctrl and ctrl!=0 else None
+        conn.execute("""INSERT OR IGNORE INTO ingredient_evidence
+            (id,ingredient,species,region,kpi_id,
+             effect_size,effect_unit,control_value,treatment_value,improvement_pct,
+             year,study_type,credibility,source_url,source_title,raw_text,confirmed,updated_at)
+            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
+            str(uuid.uuid4()),ingredient,species,region,kpi.get('kpi','unknown'),
+            effect,kpi.get('unit','') or 'unknown',ctrl,effect,impv,
+            kpi.get('year',2024),kpi.get('study_type','field_trial'),
+            kpi.get('credibility',3),url,title,kpi.get('raw_text',''),
+            1,datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')))
+        inserted += 1
+    if inserted > 0: conn.commit()
     return inserted
 
 def query_kpi_stats(conn, species, region, kpi_name):
@@ -1080,65 +1046,6 @@ def sync_to_r2(export_paths):
         logging.warning(f'R2 sync fail: {e}')
 
 # ── 主循環 ────────────────────────────────────────────────
-
-def _sync_to_chromadb(ingredient, species, kpis, url, title, full_text):
-    """ingredient_evidence 同步寫入 ChromaDB biotech_papers"""
-    try:
-        import chromadb
-        from sentence_transformers import SentenceTransformer
-        client = chromadb.PersistentClient(path=CHROMA_PATH if hasattr(sys.modules[__name__], 'CHROMA_PATH') else r'D:\LLM\knowledge\biotech\db')
-        col = client.get_or_create_collection(name='biotech_papers')
-
-        model_name = 'BAAI/bge-m3'
-        if not hasattr(_sync_to_chromadb, '_model'):
-            _sync_to_chromadb._model = SentenceTransformer(model_name)
-        model = _sync_to_chromadb._model
-
-        doc_id = f"ingredient:{ingredient}:{species}:{hashlib.md5(url.encode()).hexdigest()[:8]}"
-        # 已存在則跳過
-        existing = col.get(ids=[doc_id])
-        if existing['ids']:
-            return
-
-        summary_parts = []
-        for kpi in kpis[:3]:
-            k = kpi.get('kpi',''); v = kpi.get('treatment_value',''); u = kpi.get('unit','')
-            raw = kpi.get('raw_text','')
-            if raw:
-                summary_parts.append(f"{k}={v}{u}: {raw[:150]}")
-        summary = ' | '.join(summary_parts) or full_text[:300]
-
-        tags = [ingredient, species] + [k.get('kpi','') for k in kpis if k.get('kpi')]
-        vec = model.encode([summary], normalize_embeddings=True).tolist()
-
-        col.add(
-            ids=[doc_id],
-            embeddings=vec,
-            documents=[summary],
-            metadatas=[{
-                'title': title[:200],
-                'topic': ingredient,
-                'species': species,
-                'compound': ingredient,
-                'category': 'A',
-                'category_label': 'A=field_trial',
-                'strategic_value': 'defense_ammo,self_validation',
-                'quality_score': 3,
-                'year': str(datetime.now().year),
-                'url': url,
-                'tags': ','.join(tags),
-                'FCR': next((str(k.get('treatment_value','N/A')) for k in kpis if k.get('kpi')=='fcr'), 'N/A'),
-                'ADG': next((str(k.get('treatment_value','N/A')) for k in kpis if k.get('kpi')=='adg'), 'N/A'),
-                'intel_summary': summary[:500],
-                'indexed_at': datetime.utcnow().isoformat(),
-                'is_industry': 'false',
-                'study_type': kpis[0].get('study_type','field_trial') if kpis else 'field_trial',
-            }]
-        )
-        logging.info(f'  ChromaDB ↑ {doc_id}')
-    except Exception as e:
-        logging.warning(f'ChromaDB sync fail: {e}')
-
 def run_ingredient_collection(conn, visited_urls, visited_fingerprints):
     """核心原料論文搜尋模組"""
     total = 0
@@ -1161,6 +1068,10 @@ def run_ingredient_collection(conn, visited_urls, visited_fingerprints):
                 fp = content_fingerprint(full_text)
                 if fp in visited_fingerprints: continue
                 visited_fingerprints.add(fp)
+                # 原料論文推兩個向量庫
+                push_to_chromadb(full_text, url, title,
+                                  {'ingredient': ingredient, 'source': r.get('source','')})
+                push_to_ragflow(full_text, url, title)
                 for species in cfg['species_targets']:
                     kpis = qwen_extract_ingredient(full_text, ingredient, species)
                     if kpis:
@@ -1169,8 +1080,6 @@ def run_ingredient_collection(conn, visited_urls, visited_fingerprints):
                         if n > 0:
                             total += n
                             logging.info(f'  Evidence {ingredient}/{species} +{n}')
-                            # 同步寫入 ChromaDB
-                            _sync_to_chromadb(ingredient, species, kpis, url, title, full_text)
     return total
 
 def process_species(conn, species, region, target_kpis,
@@ -1268,6 +1177,15 @@ def process_species(conn, species, region, target_kpis,
                 if n > 0:
                     logging.info(f'  ✅ {species} +{n}(✓{c}) | {url[:55]}')
                     sp_detail.append(f'{species}: +{n}(✓{c})')
+                    # 同步寫入 ChromaDB
+                    push_to_chromadb(full_text, url, title, {
+                        'species': species, 'region': region,
+                        'topic': species, 'category': 'A',
+                        'category_label': 'A=field_trial',
+                        'strategic_value': 'self_validation',
+                        'quality_score': 3,
+                        'year': str(datetime.now().year),
+                    })
 
             # ── C. 參考文獻遞迴追蹤 ──────────────────────
             if full_text and len(full_text) > 500:
@@ -1410,24 +1328,18 @@ def main():
     logging.info('DONE')
 
 if __name__ == '__main__':
+    # ChangeDetection.io 觸發模式
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--mode', default='full',
-                        choices=['full', 'single', 'triggered', 'ingredient'],
-                        help='full=全量 single=單物種 triggered=ChangeDetection觸發 ingredient=只跑原料論文')
+                        choices=['full', 'single', 'triggered'],
+                        help='full=全量, single=單物種, triggered=ChangeDetection觸發')
     parser.add_argument('--species', default='', help='single模式指定物種')
     parser.add_argument('--region',  default='CN_all', help='single模式指定地區')
     args = parser.parse_args()
 
     try:
-        if args.mode == 'ingredient':
-            setup_logging()
-            load_api_keys()
-            conn = sqlite3.connect(DB_PATH)
-            n = run_ingredient_collection(conn, set(), set())
-            tg(f'✅ ingredient done: +{n}筆原料論文')
-            conn.close()
-        elif args.mode == 'triggered':
+        if args.mode == 'triggered':
             # ChangeDetection → Webhook → 觸發單輪收集
             setup_logging()
             load_api_keys()
@@ -1451,6 +1363,18 @@ if __name__ == '__main__':
             target = next(
                 ((s, r, k) for s, r, k in ALL_SPECIES
                  if s == args.species and r == args.region), None)
+            if not target:
+                DEFAULT_KPIS = {
+                    'broiler': ['FCR','ADG','mortality'],
+                    'finisher_pig': ['FCR','ADG','mortality'],
+                    'beef_cattle': ['FCR','ADG','mortality'],
+                    'layer_chicken': ['FCR','egg_rate','mortality'],
+                    'meat_sheep': ['FCR','ADG','mortality'],
+                    'shrimp': ['FCR','survival','mortality'],
+                }
+                kpis = DEFAULT_KPIS.get(args.species, ['FCR','ADG','mortality'])
+                target = (args.species, args.region, kpis)
+                logging.info(f'Dynamic target: {target}')
             if target:
                 n, u, c, _ = process_species(conn, *target, set(), set())
                 tg(f'✅ single {args.species}/{args.region}: new={n} upd={u} conf={c}')
