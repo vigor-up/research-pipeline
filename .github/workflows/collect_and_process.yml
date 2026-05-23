@@ -2,8 +2,8 @@ name: EVO-X2 Data Collection
 
 on:
   schedule:
-    # 每日 02:00 台灣時間 = UTC 18:00
-    - cron: '0 18 * * *'
+    # 每週一 02:00 台灣時間 = UTC 18:00 週日
+    - cron: '0 18 * * 0'
   workflow_dispatch:
     inputs:
       mode:
@@ -50,7 +50,7 @@ jobs:
         run: |
           python local/collect_raw.py
 
-      # ── 新增：collect_raw 完成後觸發 EVO-X2 process_raw ──
+      # ── collect_raw 完成後觸發 EVO-X2 process_raw ──
       - name: Trigger EVO-X2 process_raw via webhook
         if: success()
         env:
@@ -69,10 +69,10 @@ jobs:
           cat /tmp/webhook_resp.txt || true
 
           if [ "$HTTP_CODE" = "200" ]; then
-            echo "✅ EVO-X2 process_raw triggered via webhook"
+            echo "EVO-X2 process_raw triggered via webhook"
           else
             # 方法2：Webhook 失敗時改用 Telegram Bot 發 /process 指令
-            echo "⚠️ Webhook failed ($HTTP_CODE), fallback to Telegram /process"
+            echo "Webhook failed ($HTTP_CODE), fallback to Telegram /process"
             curl -s -X POST \
               "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
               -d "chat_id=${TELEGRAM_CHAT_ID}" \
@@ -90,5 +90,5 @@ jobs:
           curl -s -X POST \
             "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
             -d "chat_id=${TELEGRAM_CHAT_ID}" \
-            -d "text=❌ GitHub Actions collect_raw 失敗 $(date '+%Y-%m-%d %H:%M')" \
+            -d "text=GitHub Actions collect_raw failed $(date '+%Y-%m-%d %H:%M')" \
             -d "parse_mode=HTML"
