@@ -2,8 +2,8 @@ name: EVO-X2 Data Collection
 
 on:
   schedule:
-    # 每週一 02:00 台灣時間 = UTC 18:00 週日
-    - cron: '0 18 * * 0'
+    # 每日 02:00 台灣時間 = UTC 18:00
+    - cron: '0 18 * * *'
   workflow_dispatch:
     inputs:
       mode:

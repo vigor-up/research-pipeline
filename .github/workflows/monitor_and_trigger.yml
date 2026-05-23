@@ -2,6 +2,8 @@ name: Monitor & Trigger EVO-X2
 
 on:
   schedule:
+    # 每天 03:00 UTC+8 = 前日 19:00 UTC
+    - cron: '0 19 * * *'
     # 每週六 09:00 UTC+8 = 01:00 UTC
     - cron: '0 1 * * 6'
   workflow_dispatch:
