@@ -12,13 +12,13 @@ from pathlib import Path
 
 # ── Keys（GitHub Secrets）────────────────────────────────
 TAVILY_KEY           = os.environ.get('TAVILY_API_KEY', '')
-FIRECRAWL_KEY        = os.environ.get('FIRECRAWL_API_KEY', 'fc-f1b23a25854a4c96aa56acb89c65e930')
-SEMANTIC_SCHOLAR_KEY = os.environ.get('SEMANTIC_SCHOLAR_KEY', 's2k-8Zr1tg8DeqJiJKwD7U5ip0QK9pijy04E7lHXIKfc')
-TELEGRAM_TOKEN       = os.environ.get('TELEGRAM_TOKEN', '8703702788:AAFKEiGmLYTAuFVG9GX-gRtVTUUyi-f_5mM')
+FIRECRAWL_KEY        = os.environ.get('FIRECRAWL_API_KEY', '')
+SEMANTIC_SCHOLAR_KEY = os.environ.get('SEMANTIC_SCHOLAR_KEY', '')
+TELEGRAM_TOKEN       = os.environ.get('TELEGRAM_TOKEN', '')
 TELEGRAM_CHAT        = int(os.environ.get('TELEGRAM_CHAT_ID', '897274134'))
 R2_ENDPOINT          = 'https://adb1040c847f4ae4a7d6bfedcccd7b77.r2.cloudflarestorage.com'
-R2_ACCESS_KEY        = os.environ.get('R2_ACCESS_KEY_ID', 'f443b2e5acc77dd1af6a83a5d548b35b')
-R2_SECRET_KEY        = os.environ.get('R2_SECRET_ACCESS_KEY', 'da1c377ffbc03b865504e292480e0e2806ddb84a61bf87b7e6a2066632a4a357')
+R2_ACCESS_KEY        = os.environ.get('R2_ACCESS_KEY_ID', '')
+R2_SECRET_KEY        = os.environ.get('R2_SECRET_ACCESS_KEY', '')
 R2_BUCKET            = 'richtrong-collect'
 
 SLEEP_QUERY = 4
@@ -508,6 +508,72 @@ def scrape_url(url):
     if text: return text
     return firecrawl_scrape(url)
 
+# ── EVOX2-0757 閉環:讀 R2 gap_manifest.json,針對 assigned_to=='actions' 赤字格補採 ──
+# 本機 gap_manifest.py 算赤字+分工寫 R2;此處 Actions 端讀回,只採歸自己(actions)那半,
+# 不與本機 crawl_nightly(採 local 那半)撞同格。manifest 缺/錯→靜默略過(不阻斷常規收集)。
+GAP_MANIFEST_KEY = 'gap/gap_manifest.json'
+GAP_MAX_CELLS = 25  # 每輪上限:取最薄 N 個 actions 格(避 API 爆量);超出記 log 非靜默截斷
+
+
+def fetch_gap_actions_cells():
+    """讀 R2 gap_manifest,回 (最薄前 N 個 actions 赤字格, actions 總格數)。缺檔/錯誤→([],0)。"""
+    try:
+        import boto3
+        s3 = boto3.client('s3', endpoint_url=R2_ENDPOINT,
+            aws_access_key_id=R2_ACCESS_KEY, aws_secret_access_key=R2_SECRET_KEY,
+            region_name='auto')
+        obj = s3.get_object(Bucket=R2_BUCKET, Key=GAP_MANIFEST_KEY)
+        manifest = json.loads(obj['Body'].read().decode('utf-8'))
+    except Exception as e:
+        logging.warning(f'gap_manifest 讀取失敗(略過針對性補採): {e}')
+        return [], 0
+    cells = [c for c in manifest.get('cells', []) if c.get('assigned_to') == 'actions']
+    return cells[:GAP_MAX_CELLS], len(cells)  # manifest 已按 chunk_wide 升序,取最薄
+
+
+def _gap_query(cell):
+    comp = cell['compound'].replace('_', ' ')
+    sp = cell['species'].replace('_', ' ')
+    return f'{comp} {sp} feed supplementation'
+
+
+def collect_gap_targeted(all_records, url_seen):
+    picked, total = fetch_gap_actions_cells()
+    if not picked:
+        logging.info('gap_targeted: 無 actions 赤字格(或 manifest 缺),略過')
+        return
+    if total > len(picked):
+        logging.info(f'gap_targeted: actions 格 {total},本輪取最薄 {len(picked)}(cap={GAP_MAX_CELLS}),其餘留下輪')
+    added = 0
+    for cell in picked:
+        query = _gap_query(cell)
+        results = multi_search(query)
+        time.sleep(SLEEP_QUERY)
+        for r in results:
+            url = r.get('url', '')
+            if not url:
+                continue
+            h = hashlib.md5(url.encode()).hexdigest()
+            if h in url_seen:
+                continue
+            url_seen.add(h)
+            raw = r.get('raw', '') or scrape_url(url)
+            if raw and len(raw) > 200:
+                all_records.append({
+                    'type': 'gap_targeted',
+                    'compound': cell['compound'],
+                    'species': cell['species'],
+                    'query': query,
+                    'url': url,
+                    'title': r.get('title', ''),
+                    'text': raw[:5000],
+                    'source': r.get('source', ''),
+                    'collected_at': datetime.utcnow().isoformat(),
+                })
+                added += 1
+    logging.info(f'gap_targeted: +{added} records from {len(picked)} actions cells')
+
+
 # ── R2 上傳 ───────────────────────────────────────────────
 def upload_to_r2(records, date_str):
     try:
@@ -593,6 +659,9 @@ def main():
                     'source': r.get('source',''),
                     'collected_at': datetime.utcnow().isoformat(),
                 })
+
+    # EVOX2-0757 閉環:針對 gap_manifest actions 赤字格補採(讀 R2 manifest,只採自己那半)
+    collect_gap_targeted(all_records, url_seen)
 
     # 上傳 R2
     r2_key = upload_to_r2(all_records, date_str)
